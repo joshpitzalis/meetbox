@@ -1,4 +1,4 @@
-import { convertToTimeInterval } from "../components/TimeBar";
+import { convertToTimeInterval } from "../components";
 
 test("time converter converts time", () => {
   expect(convertToTimeInterval([1, 2])).toBe(`1 am to 2 am`);
@@ -7,3 +7,6 @@ test("time converter converts time", () => {
 });
 
 xtest("cant have two dates on teh same time", () => {});
+
+// xtest it can delete a time
+// if only one time then deleting remove steh date from teh calendar

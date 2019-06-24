@@ -1,12 +1,11 @@
-export const PrimaryButton = ({ action, text, className }) => {
-  return;
+export const PrimaryButton = ({ action, text, className }) => (
   <button
     className={`pointer f6 grow no-underline br-pill b--navy ph3 pv2 mb2 dib white bg-navy ttu ${className}`}
     onClick={action}
   >
     {text}
-  </button>;
-};
+  </button>
+);
 
 export const SecondaryButton = ({ action, text, className }) => {
   return (

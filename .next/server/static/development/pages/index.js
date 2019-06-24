@@ -106,21 +106,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SecondaryButton", function() { return SecondaryButton; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/components/Buttons.jsx";
 
 var PrimaryButton = function PrimaryButton(_ref) {
   var action = _ref.action,
       text = _ref.text,
       className = _ref.className;
-  return;
-  react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "pointer f6 grow no-underline br-pill b--navy ph3 pv2 mb2 dib white bg-navy ttu ".concat(className),
-    onClick: action,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 3
-    },
-    __self: this
+    onClick: action
   }, text);
 };
 var SecondaryButton = function SecondaryButton(_ref2) {
@@ -129,12 +122,7 @@ var SecondaryButton = function SecondaryButton(_ref2) {
       className = _ref2.className;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "pointer f6 grow  bn  ph3 pv2 mb2 dib gray ttu ".concat(className),
-    onClick: action,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 13
-    },
-    __self: this
+    onClick: action
   }, text);
 };
 
@@ -251,203 +239,136 @@ calendar.defaultProps = defaultProps;
 
 /***/ }),
 
-/***/ "./features/schedule/components/TimeBar.jsx":
-/*!**************************************************!*\
-  !*** ./features/schedule/components/TimeBar.jsx ***!
-  \**************************************************/
-/*! exports provided: default */
+/***/ "./features/schedule/components/TimeBar/TimeBlock.jsx":
+/*!************************************************************!*\
+  !*** ./features/schedule/components/TimeBar/TimeBlock.jsx ***!
+  \************************************************************/
+/*! exports provided: TimeBlock */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TimeBar; });
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/toConsumableArray */ "./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "./node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs2/helpers/esm/slicedToArray.js");
-/* harmony import */ var _babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/object/entries */ "./node_modules/@babel/runtime-corejs2/core-js/object/entries.js");
-/* harmony import */ var _babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! date-fns */ "date-fns");
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(date_fns__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var grommet__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! grommet */ "grommet");
-/* harmony import */ var grommet__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(grommet__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! prop-types */ "prop-types");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _components_Buttons__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../components/Buttons */ "./components/Buttons.jsx");
-/* harmony import */ var _static_svg_Add__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../static/svg/Add */ "./static/svg/Add.jsx");
-/* harmony import */ var _helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../helpers/timeBarHelpers */ "./features/schedule/helpers/timeBarHelpers.js");
-
-
-
-
-
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/features/schedule/components/TimeBar.jsx";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TimeBlock", function() { return TimeBlock; });
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! date-fns */ "date-fns");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(date_fns__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var grommet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! grommet */ "grommet");
+/* harmony import */ var grommet__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(grommet__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _static_svg_Add__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../static/svg/Add */ "./static/svg/Add.jsx");
+/* harmony import */ var _static_svg_Close__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../static/svg/Close */ "./static/svg/Close.jsx");
+/* harmony import */ var _helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../helpers/timeBarHelpers */ "./features/schedule/helpers/timeBarHelpers.js");
+var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/features/schedule/components/TimeBar/TimeBlock.jsx";
 
 
 
 
 
 
-
-var propTypes = {
-  dates: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.string).isRequired,
-  send: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.func.isRequired
-};
-var defaultProps = {};
-function TimeBar(_ref) {
-  var dates = _ref.dates,
-      send = _ref.send,
-      setDates = _ref.setDates;
-  return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("section", {
-    className: "w-100 h-75 tc",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 17
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("h1", {
-    className: "f1",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 18
-    },
-    __self: this
-  }, "Select up to 3 times..."), dates && _babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_4___default()(dates).map(function (_ref2, dateIndex) {
-    var _ref3 = Object(_babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_ref2, 2),
-        date = _ref3[0],
-        times = _ref3[1];
-
-    return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
-      key: date + dateIndex,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 22
-      },
-      __self: this
-    }, times.map(function (time, index) {
-      return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(TimeBlock, {
-        date: date,
-        setDates: setDates,
-        dates: dates,
-        time: time,
-        timeIndex: index,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 24
-        },
-        __self: this
-      });
-    }));
-  }), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_9__["SecondaryButton"], {
-    action: function action() {
-      return send("ADDED_NEW_DATE");
-    },
-    text: "+ Add Another Date",
-    className: "mt5 h-25",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 36
-    },
-    __self: this
-  }));
-}
-TimeBar.propTypes = propTypes;
-TimeBar.defaultProps = defaultProps;
-
-var handleNewTime = function handleNewTime(date, setDates, dates) {
-  return setDates(Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, dates, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, date, [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__["default"])(dates[date]), [[10, 11]]))));
-};
-
-var handleChangeTime = function handleChangeTime(newTimes, date, setDates, dates, index) {
-  var nextTimes = Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__["default"])(dates[date]);
-
-  nextTimes[index] = newTimes;
-  return setDates(Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, dates, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, date, nextTimes)));
-};
-
-var TimeBlock = function TimeBlock(_ref4) {
-  var time = _ref4.time,
-      date = _ref4.date,
-      setDates = _ref4.setDates,
-      dates = _ref4.dates,
-      timeIndex = _ref4.timeIndex;
-  return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_8___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("h3", {
+var TimeBlock = function TimeBlock(_ref) {
+  var time = _ref.time,
+      date = _ref.date,
+      setDates = _ref.setDates,
+      dates = _ref.dates,
+      timeIndex = _ref.timeIndex,
+      maxTimes = _ref.maxTimes;
+  return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_2___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("h3", {
     className: "tc mt5 relative top-2",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 63
+      lineNumber: 23
     },
     __self: this
-  }, Object(date_fns__WEBPACK_IMPORTED_MODULE_5__["format"])(new Date(date), "do MMMM"), " ", react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("span", {
+  }, Object(date_fns__WEBPACK_IMPORTED_MODULE_0__["format"])(new Date(date), "do MMMM"), " ", react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("span", {
     className: "f2 pl3",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 65
+      lineNumber: 25
     },
     __self: this
-  }, Object(_helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_11__["convertToTimeInterval"])(time))), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+  }, Object(_helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__["convertToTimeInterval"])(time))), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
     className: "h3 ma3 flex",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 67
+      lineNumber: 27
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
     className: "w-100 pt0",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 68
+      lineNumber: 28
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
     className: "flex justify-around relative top-2",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 69
+      lineNumber: 29
     },
     __self: this
   }, new Array(25).fill("").map(function (value, index) {
-    if (index === 0) {
-      return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+    if (index === 0 && maxTimes) {
+      return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
         key: index,
         className: "bn flex items-center justify-center w-100 z-1",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 73
+          lineNumber: 33
         },
         __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(_static_svg_Add__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_static_svg_Close__WEBPACK_IMPORTED_MODULE_4__["default"], {
         className: "grow pb2 pointer gray",
-        onClick: function onClick() {
-          return handleNewTime(date, setDates, dates);
+        action: function action() {
+          return Object(_helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__["handleClose"])(date, setDates, dates, timeIndex);
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 77
+          lineNumber: 37
         },
         __self: this
       }));
     }
 
-    return react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+    if (index === 0) {
+      return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
+        key: index,
+        className: "bn flex items-center justify-center w-100 z-1",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 48
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_static_svg_Add__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        className: "grow pb2 pointer gray",
+        action: function action() {
+          return Object(_helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__["handleNewTime"])(date, setDates, dates);
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 52
+        },
+        __self: this
+      }));
+    }
+
+    return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
       key: index,
       className: "bn tc w-100 ".concat((index <= 5 || index >= 20) && "bg-light-gray"),
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 85
+        lineNumber: 60
       },
       __self: this
-    }, react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("p", {
+    }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("p", {
       className: "code pb2 tc",
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 90
+        lineNumber: 65
       },
       __self: this
     }, index));
-  })), react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_6__["RangeSelector"], {
+  })), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_1__["RangeSelector"], {
     values: time,
     min: 0,
     max: 24,
@@ -455,16 +376,205 @@ var TimeBlock = function TimeBlock(_ref4) {
     color: "#7D52D8",
     className: "relative  bottom-2 pt1",
     onChange: function onChange(newTimes) {
-      return handleChangeTime(newTimes, date, setDates, dates, timeIndex);
+      return Object(_helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__["handleChangeTime"])(newTimes, date, setDates, dates, timeIndex);
     },
     round: "small",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 95
+      lineNumber: 70
     },
     __self: this
   }))));
 };
+
+/***/ }),
+
+/***/ "./features/schedule/components/TimeBar/index.jsx":
+/*!********************************************************!*\
+  !*** ./features/schedule/components/TimeBar/index.jsx ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TimeBar; });
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs2/helpers/esm/slicedToArray.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/object/entries */ "./node_modules/@babel/runtime-corejs2/core-js/object/entries.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_corejs2_core_js_object_values__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/object/values */ "./node_modules/@babel/runtime-corejs2/core-js/object/values.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_object_values__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_object_values__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _components_Buttons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../components/Buttons */ "./components/Buttons.jsx");
+/* harmony import */ var _TimeBlock__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./TimeBlock */ "./features/schedule/components/TimeBar/TimeBlock.jsx");
+
+
+
+var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/features/schedule/components/TimeBar/index.jsx";
+
+
+
+
+var propTypes = {
+  dates: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string).isRequired,
+  send: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func.isRequired
+};
+var defaultProps = {};
+function TimeBar(_ref) {
+  var dates = _ref.dates,
+      send = _ref.send,
+      setDates = _ref.setDates;
+  var maxTimes = dates && // Object.values(dates) &&
+  _babel_runtime_corejs2_core_js_object_values__WEBPACK_IMPORTED_MODULE_2___default()(dates).reduce(function (flat, toFlatten) {
+    return flat.concat(toFlatten);
+  }, []).length >= 3;
+  return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("section", {
+    className: "w-100 h-75 tc",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 19
+    },
+    __self: this
+  }, !maxTimes && react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("h1", {
+    className: "f1",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 20
+    },
+    __self: this
+  }, "Select up to 3 times..."), dates && _babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_1___default()(dates).map(function (_ref2, dateIndex) {
+    var _ref3 = Object(_babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref2, 2),
+        date = _ref3[0],
+        times = _ref3[1];
+
+    return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
+      key: date + dateIndex,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 24
+      },
+      __self: this
+    }, times.map(function (time, index) {
+      return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_TimeBlock__WEBPACK_IMPORTED_MODULE_6__["TimeBlock"], {
+        date: date,
+        setDates: setDates,
+        dates: dates,
+        time: time,
+        timeIndex: index,
+        maxTimes: maxTimes,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 26
+        },
+        __self: this
+      });
+    }));
+  }), !maxTimes && react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_5__["SecondaryButton"], {
+    action: function action() {
+      return send("ADDED_NEW_DATE");
+    },
+    text: "+ Add Another Date",
+    className: "mt5 h-25",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 40
+    },
+    __self: this
+  }));
+}
+TimeBar.propTypes = propTypes;
+TimeBar.defaultProps = defaultProps;
+
+/***/ }),
+
+/***/ "./features/schedule/helpers/actions.js":
+/*!**********************************************!*\
+  !*** ./features/schedule/helpers/actions.js ***!
+  \**********************************************/
+/*! exports provided: createMeeting, selectTime */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMeeting", function() { return createMeeting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectTime", function() { return selectTime; });
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "./node_modules/@babel/runtime-corejs2/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/json/stringify */ "./node_modules/@babel/runtime-corejs2/core-js/json/stringify.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _sideEffects_firebase__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../sideEffects/firebase */ "./sideEffects/firebase.js");
+
+
+
+
+var createMeeting =
+/*#__PURE__*/
+function () {
+  var _ref = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  /*#__PURE__*/
+  _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
+    var payload, newDoc;
+    return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            payload = event.payload;
+            _context.next = 3;
+            return _sideEffects_firebase__WEBPACK_IMPORTED_MODULE_3__["default"].firestore().collection("meetings").add({
+              options: _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default()(payload)
+            }).catch(function (error) {
+              return error;
+            });
+
+          case 3:
+            newDoc = _context.sent;
+            return _context.abrupt("return", newDoc.id);
+
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function createMeeting(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+var selectTime =
+/*#__PURE__*/
+function () {
+  var _ref2 = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  /*#__PURE__*/
+  _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(date, time, docId) {
+    return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            return _context2.abrupt("return", _sideEffects_firebase__WEBPACK_IMPORTED_MODULE_3__["default"].firestore().collection("meetings").doc(docId).update({
+              time: time,
+              date: date
+            }).catch(function (error) {
+              return error;
+            }));
+
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function selectTime(_x2, _x3, _x4) {
+    return _ref2.apply(this, arguments);
+  };
+}();
 
 /***/ }),
 
@@ -501,12 +611,21 @@ var handleSelectDate = function handleSelectDate(dates, date, handleSelect) {
 /*!*****************************************************!*\
   !*** ./features/schedule/helpers/timeBarHelpers.js ***!
   \*****************************************************/
-/*! exports provided: convertToTimeInterval */
+/*! exports provided: convertToTimeInterval, handleNewTime, handleChangeTime, handleClose */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convertToTimeInterval", function() { return convertToTimeInterval; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleNewTime", function() { return handleNewTime; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleChangeTime", function() { return handleChangeTime; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "handleClose", function() { return handleClose; });
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/toConsumableArray */ "./node_modules/@babel/runtime-corejs2/helpers/esm/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "./node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
+
+
+
 var convertToTimeInterval = function convertToTimeInterval(times) {
   var timeA = times[0];
   var timeB = times[1];
@@ -520,6 +639,30 @@ var convertToTimeInterval = function convertToTimeInterval(times) {
   };
 
   return "".concat(TwelveHourFormat(timeA), " to ").concat(TwelveHourFormat(timeB));
+};
+var handleNewTime = function handleNewTime(date, setDates, dates) {
+  return setDates(Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, dates, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, date, [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__["default"])(dates[date]), [[10, 11]]))));
+};
+var handleChangeTime = function handleChangeTime(newTimes, date, setDates, dates, index) {
+  var nextTimes = Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__["default"])(dates[date]);
+
+  nextTimes[index] = newTimes;
+  return setDates(Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, dates, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, date, nextTimes)));
+};
+var handleClose = function handleClose(date, setDates, dates, timeIndex) {
+  // if there is only one time for teh date then deleting it removes the date from the calendar
+  if (dates[date].length === 1) {
+    var nextDates = Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, dates);
+
+    delete nextDates[date];
+    return setDates(nextDates);
+  }
+
+  var nextTimes = dates[date].filter(function (item, index) {
+    return index !== timeIndex;
+  });
+  console.log("nextTimes", nextTimes);
+  return setDates(Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, dates, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, date, nextTimes)));
 };
 
 /***/ }),
@@ -565,6 +708,17 @@ module.exports = __webpack_require__(/*! core-js/library/fn/get-iterator */ "cor
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! core-js/library/fn/is-iterable */ "core-js/library/fn/is-iterable");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs2/core-js/json/stringify.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs2/core-js/json/stringify.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! core-js/library/fn/json/stringify */ "core-js/library/fn/json/stringify");
 
 /***/ }),
 
@@ -623,6 +777,28 @@ module.exports = __webpack_require__(/*! core-js/library/fn/object/keys */ "core
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs2/core-js/object/values.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs2/core-js/object/values.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! core-js/library/fn/object/values */ "core-js/library/fn/object/values");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs2/core-js/promise.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs2/core-js/promise.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! core-js/library/fn/promise */ "core-js/library/fn/promise");
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/esm/arrayWithHoles.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/esm/arrayWithHoles.js ***!
@@ -663,6 +839,58 @@ function _arrayWithoutHoles(arr) {
 
     return arr2;
   }
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _asyncToGenerator; });
+/* harmony import */ var _core_js_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../core-js/promise */ "./node_modules/@babel/runtime-corejs2/core-js/promise.js");
+/* harmony import */ var _core_js_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_core_js_promise__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    _core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new _core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
 }
 
 /***/ }),
@@ -879,6 +1107,18 @@ function _toConsumableArray(arr) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs2/regenerator/index.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs2/regenerator/index.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "regenerator-runtime");
+
+
+/***/ }),
+
 /***/ "./pages/index.jsx":
 /*!*************************!*\
   !*** ./pages/index.jsx ***!
@@ -891,19 +1131,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return index; });
 /* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
 /* harmony import */ var _babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime-corejs2/helpers/esm/slicedToArray.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _xstate_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @xstate/react */ "@xstate/react");
-/* harmony import */ var _xstate_react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_xstate_react__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var xstate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! xstate */ "xstate");
-/* harmony import */ var xstate__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(xstate__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Layout */ "./components/Layout.jsx");
-/* harmony import */ var _features_schedule_components_Calendar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../features/schedule/components/Calendar */ "./features/schedule/components/Calendar.jsx");
-/* harmony import */ var _features_schedule_components_TimeBar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../features/schedule/components/TimeBar */ "./features/schedule/components/TimeBar.jsx");
-/* harmony import */ var _static_svg_NextStep_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../static/svg/NextStep.jsx */ "./static/svg/NextStep.jsx");
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/regenerator */ "./node_modules/@babel/runtime-corejs2/regenerator/index.js");
+/* harmony import */ var _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _xstate_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @xstate/react */ "@xstate/react");
+/* harmony import */ var _xstate_react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_xstate_react__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! next/router */ "next/router");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var xstate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! xstate */ "xstate");
+/* harmony import */ var xstate__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(xstate__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/Layout */ "./components/Layout.jsx");
+/* harmony import */ var _features_schedule_components_Calendar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../features/schedule/components/Calendar */ "./features/schedule/components/Calendar.jsx");
+/* harmony import */ var _features_schedule_components_TimeBar__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../features/schedule/components/TimeBar */ "./features/schedule/components/TimeBar/index.jsx");
+/* harmony import */ var _features_schedule_helpers_actions__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../features/schedule/helpers/actions */ "./features/schedule/helpers/actions.js");
+/* harmony import */ var _sideEffects_firebase__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../sideEffects/firebase */ "./sideEffects/firebase.js");
+/* harmony import */ var _static_svg_NextStep_jsx__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../static/svg/NextStep.jsx */ "./static/svg/NextStep.jsx");
 
 
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/pages/index.jsx";
 
 
 
@@ -912,9 +1158,14 @@ var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/pages/index.jsx";
 
 
 
-var scheduleMachine = Object(xstate__WEBPACK_IMPORTED_MODULE_4__["Machine"])({
+
+
+
+
+
+var scheduleMachine = Object(xstate__WEBPACK_IMPORTED_MODULE_7__["Machine"])({
   id: "schedule",
-  initial: "times",
+  initial: "calendar",
   states: {
     calendar: {
       on: {
@@ -923,8 +1174,23 @@ var scheduleMachine = Object(xstate__WEBPACK_IMPORTED_MODULE_4__["Machine"])({
     },
     times: {
       on: {
-        CONFIRMED_TIMES: "ready",
+        CONFIRMED_TIMES: "loading",
         ADDED_NEW_DATE: "calendar"
+      }
+    },
+    loading: {
+      invoke: {
+        id: "createMeeting",
+        src: function src(context, event) {
+          return Object(_features_schedule_helpers_actions__WEBPACK_IMPORTED_MODULE_11__["createMeeting"])(event);
+        },
+        onDone: {
+          target: "ready" // The resolved data is placed into a 'done.invoke.<id>' event, under the data property http://bit.ly/2Ft2WR8
+
+        },
+        onError: {
+          target: "failure"
+        }
       }
     },
     ready: {
@@ -934,85 +1200,157 @@ var scheduleMachine = Object(xstate__WEBPACK_IMPORTED_MODULE_4__["Machine"])({
     },
     confirmed: {
       type: "final"
+    },
+    failure: {
+      type: "final"
     }
   }
 });
 var propTypes = {};
 var defaultProps = {};
-function index() {
+
+var getInitialProps =
+/*#__PURE__*/
+function () {
+  var _ref = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  /*#__PURE__*/
+  _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.mark(function _callee() {
+    var meetings;
+    return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return _sideEffects_firebase__WEBPACK_IMPORTED_MODULE_12__["default"].firestore().collection("meetings").get().then(function (collection) {
+              return collection.docs.map(function (doc) {
+                return doc.data();
+              });
+            }).catch(function (error) {
+              return error;
+            });
+
+          case 2:
+            meetings = _context.sent;
+            return _context.abrupt("return", {
+              meetings: meetings
+            });
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function getInitialProps() {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+function index(_ref2) {
+  var meetings = _ref2.meetings;
   var tomorrow = new Date(new Date(new Date().setDate(new Date().getDate() + 1)).setHours(0, 0, 0, 0));
 
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_2__["useState"])(Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, tomorrow, [[13, 14]])),
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_4__["useState"])(Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, tomorrow, [[13, 14]])),
       _useState2 = Object(_babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState, 2),
       dates = _useState2[0],
       setDates = _useState2[1];
 
-  var _useMachine = Object(_xstate_react__WEBPACK_IMPORTED_MODULE_3__["useMachine"])(scheduleMachine),
+  var _useMachine = Object(_xstate_react__WEBPACK_IMPORTED_MODULE_5__["useMachine"])(scheduleMachine),
       _useMachine2 = Object(_babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useMachine, 2),
       current = _useMachine2[0],
       send = _useMachine2[1];
 
-  return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 46
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("section", {
-    className: "vh-100 vw-100 flex flex-column items-center justify-around pa0 ma0",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 47
-    },
-    __self: this
-  }, current.value === "calendar" && react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_2___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("h1", {
-    className: "f1",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 50
-    },
-    __self: this
-  }, "Pick up to 3 dates to meet..."), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_features_schedule_components_Calendar__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("section", {
+    className: "vh-100 vw-100 flex flex-column items-center justify-around pa0 ma0"
+  }, current.value === "calendar" && react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_4___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("h1", {
+    className: "f1"
+  }, "Pick up to 3 dates to meet..."), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_features_schedule_components_Calendar__WEBPACK_IMPORTED_MODULE_9__["default"], {
     handleSelect: setDates,
-    dates: dates,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 51
-    },
-    __self: this
-  }), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_static_svg_NextStep_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    dates: dates
+  }), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_static_svg_NextStep_jsx__WEBPACK_IMPORTED_MODULE_13__["default"], {
     action: function action() {
       return send("CONFIRMED_DATES");
     },
-    className: "pointer grow",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 52
-    },
-    __self: this
-  })), current.value === "times" && react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_2___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_features_schedule_components_TimeBar__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    className: "pointer grow"
+  })), current.value === "times" && react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_4___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_features_schedule_components_TimeBar__WEBPACK_IMPORTED_MODULE_10__["default"], {
     dates: dates,
     send: send,
-    setDates: setDates,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 61
-    },
-    __self: this
-  }), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_static_svg_NextStep_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    setDates: setDates
+  }), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_static_svg_NextStep_jsx__WEBPACK_IMPORTED_MODULE_13__["default"], {
     action: function action() {
-      return send("CONFIRMED_TIMES");
+      return send({
+        type: "CONFIRMED_TIMES",
+        payload: dates
+      });
     },
-    className: "pointer grow gray",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 62
-    },
-    __self: this
-  }))));
+    className: "pointer grow gray"
+  })), current.value === "ready" && next_router__WEBPACK_IMPORTED_MODULE_6___default.a.push("/meet/".concat(current.event.data))));
 }
 index.propTypes = propTypes;
 index.defaultProps = defaultProps;
+index.getInitialProps = getInitialProps;
+
+/***/ }),
+
+/***/ "./sideEffects/firebase.js":
+/*!*********************************!*\
+  !*** ./sideEffects/firebase.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! firebase/app */ "firebase/app");
+/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var firebase_firestore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/firestore */ "firebase/firestore");
+/* harmony import */ var firebase_firestore__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(firebase_firestore__WEBPACK_IMPORTED_MODULE_1__);
+
+
+var config = {
+  apiKey: "AIzaSyD0_c1V4vvrHVwVD941n_KLnbj55f0c5gI",
+  authDomain: "decision-dev.firebaseapp.com",
+  databaseURL: "https://decision-dev.firebaseio.com",
+  projectId: "decision-dev",
+  storageBucket: "decision-dev.appspot.com",
+  messagingSenderId: "1006893299756",
+  appId: "1:1006893299756:web:0581850d4e51ba77"
+};
+
+if (!firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.apps.length) {
+  firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.initializeApp(config);
+} else {
+  firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.app();
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a); // export default async function loadDb() {
+//   const firebase = await import("firebase/app");
+//   await import("@firebase/firestore");
+//   try {
+//     // if (!firebase.apps.length) {
+//     firebase.initializeApp({
+//       apiKey: "AIzaSyD0_c1V4vvrHVwVD941n_KLnbj55f0c5gI",
+//       authDomain: "decision-dev.firebaseapp.com",
+//       databaseURL: "https://decision-dev.firebaseio.com",
+//       projectId: "decision-dev",
+//       storageBucket: "decision-dev.appspot.com",
+//       messagingSenderId: "1006893299756",
+//       appId: "1:1006893299756:web:0581850d4e51ba77"
+//     });
+//     // } else {
+//     //   firebase.app();
+//     // }
+//   } catch (err) {
+//     // we skip the "already exists" message which is
+//     // not an actual error when we're hot-reloading
+//     if (!/already exists/.test(err.message)) {
+//       console.error("Firebase initialization error", err.stack);
+//     }
+//   }
+//   return firebase.firestore();
+// }
 
 /***/ }),
 
@@ -1034,7 +1372,7 @@ var propTypes = {};
 var defaultProps = {};
 function Add(_ref) {
   var className = _ref.className,
-      onClick = _ref.onClick;
+      action = _ref.action;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, {
     __source: {
       fileName: _jsxFileName,
@@ -1048,11 +1386,11 @@ function Add(_ref) {
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    "stroke-width": "2",
-    "stroke-linecap": "round",
-    "stroke-linejoin": "round",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
     className: className,
-    onClick: onClick,
+    onClick: action,
     __source: {
       fileName: _jsxFileName,
       lineNumber: 10
@@ -1094,6 +1432,84 @@ Add.defaultProps = defaultProps;
 
 /***/ }),
 
+/***/ "./static/svg/Close.jsx":
+/*!******************************!*\
+  !*** ./static/svg/Close.jsx ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Close; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/static/svg/Close.jsx";
+
+var propTypes = {};
+var defaultProps = {};
+function Close(_ref) {
+  var className = _ref.className,
+      action = _ref.action;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 9
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: "24",
+    height: "24",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    className: className,
+    onClick: action,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 10
+    },
+    __self: this
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("circle", {
+    cx: "12",
+    cy: "12",
+    r: "10",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 23
+    },
+    __self: this
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("line", {
+    x1: "15",
+    y1: "9",
+    x2: "9",
+    y2: "15",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 24
+    },
+    __self: this
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("line", {
+    x1: "9",
+    y1: "9",
+    x2: "15",
+    y2: "15",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 25
+    },
+    __self: this
+  })));
+}
+Close.propTypes = propTypes;
+Close.defaultProps = defaultProps;
+
+/***/ }),
+
 /***/ "./static/svg/NextStep.jsx":
 /*!*********************************!*\
   !*** ./static/svg/NextStep.jsx ***!
@@ -1126,9 +1542,9 @@ function NextStep(_ref) {
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    "stroke-width": "2",
-    "stroke-linecap": "round",
-    "stroke-linejoin": "round",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
     className: className,
     onClick: action,
     __source: {
@@ -1258,6 +1674,17 @@ module.exports = require("core-js/library/fn/is-iterable");
 
 /***/ }),
 
+/***/ "core-js/library/fn/json/stringify":
+/*!****************************************************!*\
+  !*** external "core-js/library/fn/json/stringify" ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("core-js/library/fn/json/stringify");
+
+/***/ }),
+
 /***/ "core-js/library/fn/object/define-property":
 /*!************************************************************!*\
   !*** external "core-js/library/fn/object/define-property" ***!
@@ -1313,6 +1740,28 @@ module.exports = require("core-js/library/fn/object/keys");
 
 /***/ }),
 
+/***/ "core-js/library/fn/object/values":
+/*!***************************************************!*\
+  !*** external "core-js/library/fn/object/values" ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("core-js/library/fn/object/values");
+
+/***/ }),
+
+/***/ "core-js/library/fn/promise":
+/*!*********************************************!*\
+  !*** external "core-js/library/fn/promise" ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("core-js/library/fn/promise");
+
+/***/ }),
+
 /***/ "date-fns":
 /*!***************************!*\
   !*** external "date-fns" ***!
@@ -1324,6 +1773,28 @@ module.exports = require("date-fns");
 
 /***/ }),
 
+/***/ "firebase/app":
+/*!*******************************!*\
+  !*** external "firebase/app" ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("firebase/app");
+
+/***/ }),
+
+/***/ "firebase/firestore":
+/*!*************************************!*\
+  !*** external "firebase/firestore" ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("firebase/firestore");
+
+/***/ }),
+
 /***/ "grommet":
 /*!**************************!*\
   !*** external "grommet" ***!
@@ -1332,6 +1803,17 @@ module.exports = require("date-fns");
 /***/ (function(module, exports) {
 
 module.exports = require("grommet");
+
+/***/ }),
+
+/***/ "next/router":
+/*!******************************!*\
+  !*** external "next/router" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("next/router");
 
 /***/ }),
 
@@ -1354,6 +1836,17 @@ module.exports = require("prop-types");
 /***/ (function(module, exports) {
 
 module.exports = require("react");
+
+/***/ }),
+
+/***/ "regenerator-runtime":
+/*!**************************************!*\
+  !*** external "regenerator-runtime" ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("regenerator-runtime");
 
 /***/ }),
 
