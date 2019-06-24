@@ -37,7 +37,7 @@ const Meet = ({ match }) => {
   const [loaded, setLoaded] = React.useState(false);
 
   return (
-    <section>
+    <section className="vh-100">
       <div className="flex flex-column items-between justify-center h-100">
         {loaded && confirmed ? (
           <h1 className="f1 tc">Confirmed</h1>
@@ -97,12 +97,13 @@ const TimeBox = ({ date, time, setSelected, selected }) => {
       onClick={() => setSelected({ date, time })}
     >
       <div className="tc">
-        <h1 className="f4 black-70">{format(new Date(date), "do MMMM")}</h1>
+        <h1 className="f4 black-70">{format(new Date(date), "Do MMMM")}</h1>
         <hr className="mw3 bb bw1 b--black-10" />
       </div>
       <p className="lh-copy measure center f3 ">
         {convertToTimeInterval(time)}
       </p>
+      <p className="lh-copy measure center f6 gray tc ">+ 5:30 GMT</p>
     </article>
   );
 };

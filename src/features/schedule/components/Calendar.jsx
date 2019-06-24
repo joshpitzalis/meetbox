@@ -5,7 +5,9 @@ import { handleSelectDate } from "../helpers/calendarHelpers";
 
 const propTypes = {
   handleSelect: PropTypes.func.isRequired,
-  dates: PropTypes.arrayOf(PropTypes.string).isRequired
+  dates: PropTypes.objectOf(
+    PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+  ).isRequired
 };
 
 const defaultProps = {};

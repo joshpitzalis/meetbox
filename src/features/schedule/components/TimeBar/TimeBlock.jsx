@@ -17,10 +17,12 @@ export const TimeBlock = ({
   timeIndex,
   maxTimes
 }) => {
+  const [position, setPosition] = React.useState(time);
+
   return (
     <>
       <h3 className="tc mt5 relative top-2">
-        {format(new Date(date), "do MMMM")}{" "}
+        {format(new Date(date), "Do MMMM")}{" "}
         <span className="f2 pl3">{convertToTimeInterval(time)}</span>
       </h3>
       <div className="h3 ma3 flex">
@@ -67,14 +69,17 @@ export const TimeBlock = ({
             })}
           </div>
           <RangeSelector
-            values={time}
+            values={position}
             min={0}
             max={24}
             step={1}
             color="#7D52D8"
             className="relative  bottom-2 pt1"
-            onChange={newTimes =>
-              handleChangeTime(newTimes, date, setDates, dates, timeIndex)
+            onChange={newTimes => {
+              setPosition(newTimes);
+            }}
+            onMouseUp={() =>
+              handleChangeTime(position, date, setDates, dates, timeIndex)
             }
             round="small"
           />

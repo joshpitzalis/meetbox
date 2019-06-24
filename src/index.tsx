@@ -10,10 +10,15 @@ import "./styles/index.css";
 const Routes: React.FunctionComponent = () => (
   <Grommet plain>
     <BrowserRouter>
-      <main className="sans-serif">
-        <Route exact path="/" component={App} />
-        <Route exact path="/meet/:meetId" component={Meetings} />
-      </main>
+      <>
+        <main className="sans-serif">
+          <Route exact path="/" component={App} />
+          <Route exact path="/meet/:meetId" component={Meetings} />
+        </main>
+        <footer>
+          <small className="sans-serif tc">Version 0.0.1</small>
+        </footer>
+      </>
     </BrowserRouter>
   </Grommet>
 );

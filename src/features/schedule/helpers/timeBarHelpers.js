@@ -16,6 +16,7 @@ export const handleNewTime = (date, setDates, dates) =>
   setDates({ ...dates, [date]: [...dates[date], [10, 11]] });
 
 export const handleChangeTime = (newTimes, date, setDates, dates, index) => {
+  console.log({ newTimes, date, setDates, dates, index });
   const nextTimes = [...dates[date]];
   nextTimes[index] = newTimes;
   return setDates({

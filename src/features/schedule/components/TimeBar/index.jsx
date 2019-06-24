@@ -3,12 +3,14 @@ import React from "react";
 import { SecondaryButton } from "../../../../components/Buttons";
 import { TimeBlock } from "./TimeBlock";
 const propTypes = {
-  dates: PropTypes.arrayOf(PropTypes.string).isRequired,
+  dates: PropTypes.objectOf(
+    PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+  ).isRequired,
   send: PropTypes.func.isRequired
 };
 const defaultProps = {};
 
-export default function TimeBar({ dates, send, setDates }) {
+const TimeBar = ({ dates, send, setDates }) => {
   const maxTimes =
     dates &&
     // Object.values(dates) &&
@@ -19,22 +21,21 @@ export default function TimeBar({ dates, send, setDates }) {
     <section className="w-100 h-75 tc">
       {!maxTimes && <h1 className="f1">Select up to 3 times...</h1>}
       {dates &&
-        Object.entries(dates).map(([date, times], dateIndex) => {
-          return (
-            <div key={+new Date()}>
-              {times.map((time, index) => (
-                <TimeBlock
-                  date={date}
-                  setDates={setDates}
-                  dates={dates}
-                  time={time}
-                  timeIndex={index}
-                  maxTimes={maxTimes}
-                />
-              ))}
-            </div>
-          );
-        })}
+        Object.entries(dates).map(([date, times], dateIndex) => (
+          <div key={Math.random().toString(36)}>
+            {times.map((time, index) => (
+              <TimeBlock
+                date={date}
+                setDates={setDates}
+                dates={dates}
+                time={time}
+                timeIndex={index}
+                maxTimes={maxTimes}
+                key={Math.random().toString(36)}
+              />
+            ))}
+          </div>
+        ))}
 
       {!maxTimes && (
         <SecondaryButton
@@ -45,7 +46,9 @@ export default function TimeBar({ dates, send, setDates }) {
       )}
     </section>
   );
-}
+};
 
 TimeBar.propTypes = propTypes;
 TimeBar.defaultProps = defaultProps;
+
+export default TimeBar;
