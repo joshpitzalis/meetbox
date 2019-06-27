@@ -8,7 +8,6 @@ import TimeBar from "../features/schedule/components/TimeBar";
 import { createMeeting } from "../features/schedule/helpers/actions";
 import firebase from "../sideEffects/firebase";
 import Next from "../static/svg/NextStep.jsx";
-
 const scheduleMachine = Machine({
   id: "schedule",
   initial: "calendar",
@@ -71,6 +70,7 @@ export default function index({ meetings }) {
 
   const [current, send] = useMachine(scheduleMachine);
 
+  console.log({ data: current.event.data, state: current.value });
   return (
     <Layout>
       <section className="vh-100 vw-100 flex flex-column items-center justify-around pa0 ma0">

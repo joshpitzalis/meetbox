@@ -2,12 +2,15 @@ import firebase from "../../../sideEffects/firebase";
 
 export const createMeeting = async event => {
   const { payload } = event;
-  const newDoc = await firebase
+  const options = JSON.stringify(payload);
+  console.log({ options });
+  const doc = firebase
     .firestore()
     .collection("meetings")
-    .add({ options: JSON.stringify(payload) })
-    .catch(error => error);
-  return newDoc.id;
+    .doc();
+
+  await doc.set({ options });
+  return doc.id;
 };
 
 export const selectTime = async (date, time, docId) =>

@@ -24,7 +24,7 @@ const getInitialProps = async url => {
 };
 
 export default function index({ meetings, url }) {
-  const options = Object.entries(JSON.parse(meetings.options));
+  const options = meetings && Object.entries(JSON.parse(meetings.options));
   const slug = url.query.slug;
 
   const [selected, setSelected] = React.useState(false);

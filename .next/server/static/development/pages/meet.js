@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -148,7 +148,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _static_tachyons_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_static_tachyons_css__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _static_typeface_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../static/typeface.css */ "./static/typeface.css");
 /* harmony import */ var _static_typeface_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_static_typeface_css__WEBPACK_IMPORTED_MODULE_4__);
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/components/Layout.jsx";
 
 
 
@@ -160,19 +159,9 @@ var propTypes = {
 function Layout(_ref) {
   var children = _ref.children;
   return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("main", {
-    className: "pa0 ma0",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: this
+    className: "pa0 ma0"
   }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_0__["Grommet"], {
-    plain: true,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 11
-    },
-    __self: this
+    plain: true
   }, children));
 }
 Layout.propTypes = propTypes;
@@ -206,24 +195,26 @@ function () {
   var _ref = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
   /*#__PURE__*/
   _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
-    var payload, newDoc;
+    var payload, options, doc;
     return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             payload = event.payload;
-            _context.next = 3;
-            return _sideEffects_firebase__WEBPACK_IMPORTED_MODULE_3__["default"].firestore().collection("meetings").add({
-              options: _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default()(payload)
-            }).catch(function (error) {
-              return error;
+            options = _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default()(payload);
+            console.log({
+              options: options
+            });
+            doc = _sideEffects_firebase__WEBPACK_IMPORTED_MODULE_3__["default"].firestore().collection("meetings").doc();
+            _context.next = 6;
+            return doc.set({
+              options: options
             });
 
-          case 3:
-            newDoc = _context.sent;
-            return _context.abrupt("return", newDoc.id);
+          case 6:
+            return _context.abrupt("return", doc.id);
 
-          case 5:
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -849,7 +840,7 @@ function index(_ref2) {
   var meetings = _ref2.meetings,
       url = _ref2.url;
 
-  var options = _babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_1___default()(JSON.parse(meetings.options));
+  var options = meetings && _babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_1___default()(JSON.parse(meetings.options));
 
   var slug = url.query.slug;
 
@@ -1013,14 +1004,14 @@ if (!firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.apps.length) {
 
 /***/ }),
 
-/***/ 5:
+/***/ 4:
 /*!************************************!*\
   !*** multi ./pages/meet/index.jsx ***!
   \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/joshpitzalis/Desktop/meetbox/pages/meet/index.jsx */"./pages/meet/index.jsx");
+module.exports = __webpack_require__(/*! /Users/joshpitzalis/Desktop/agenda/pages/meet/index.jsx */"./pages/meet/index.jsx");
 
 
 /***/ }),

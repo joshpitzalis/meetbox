@@ -148,7 +148,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _static_tachyons_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_static_tachyons_css__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _static_typeface_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../static/typeface.css */ "./static/typeface.css");
 /* harmony import */ var _static_typeface_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_static_typeface_css__WEBPACK_IMPORTED_MODULE_4__);
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/components/Layout.jsx";
 
 
 
@@ -160,19 +159,9 @@ var propTypes = {
 function Layout(_ref) {
   var children = _ref.children;
   return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("main", {
-    className: "pa0 ma0",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: this
+    className: "pa0 ma0"
   }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_0__["Grommet"], {
-    plain: true,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 11
-    },
-    __self: this
+    plain: true
   }, children));
 }
 Layout.propTypes = propTypes;
@@ -199,7 +188,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _helpers_calendarHelpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/calendarHelpers */ "./features/schedule/helpers/calendarHelpers.js");
 
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/features/schedule/components/Calendar.jsx";
 
 
 
@@ -213,12 +201,7 @@ function calendar(_ref) {
   var handleSelect = _ref.handleSelect,
       dates = _ref.dates;
   return react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement("section", {
-    className: "center ma4",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 15
-    },
-    __self: this
+    className: "center ma4"
   }, react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_1__["Calendar"], {
     onSelect: function onSelect(date) {
       return Object(_helpers_calendarHelpers__WEBPACK_IMPORTED_MODULE_4__["handleSelectDate"])(dates, date, handleSelect);
@@ -226,12 +209,7 @@ function calendar(_ref) {
     size: "medium",
     showAdjacentDays: true,
     animate: true,
-    dates: _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(dates),
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 16
-    },
-    __self: this
+    dates: _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(dates)
   }));
 }
 calendar.propTypes = propTypes;
@@ -258,7 +236,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _static_svg_Add__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../static/svg/Add */ "./static/svg/Add.jsx");
 /* harmony import */ var _static_svg_Close__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../static/svg/Close */ "./static/svg/Close.jsx");
 /* harmony import */ var _helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../helpers/timeBarHelpers */ "./features/schedule/helpers/timeBarHelpers.js");
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/features/schedule/components/TimeBar/TimeBlock.jsx";
 
 
 
@@ -273,100 +250,45 @@ var TimeBlock = function TimeBlock(_ref) {
       timeIndex = _ref.timeIndex,
       maxTimes = _ref.maxTimes;
   return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_2___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("h3", {
-    className: "tc mt5 relative top-2",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 23
-    },
-    __self: this
+    className: "tc mt5 relative top-2"
   }, Object(date_fns__WEBPACK_IMPORTED_MODULE_0__["format"])(new Date(date), "do MMMM"), " ", react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("span", {
-    className: "f2 pl3",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 25
-    },
-    __self: this
+    className: "f2 pl3"
   }, Object(_helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__["convertToTimeInterval"])(time))), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
-    className: "h3 ma3 flex",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 27
-    },
-    __self: this
+    className: "h3 ma3 flex"
   }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
-    className: "w-100 pt0",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 28
-    },
-    __self: this
+    className: "w-100 pt0"
   }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
-    className: "flex justify-around relative top-2",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 29
-    },
-    __self: this
+    className: "flex justify-around relative top-2"
   }, new Array(25).fill("").map(function (value, index) {
     if (index === 0 && maxTimes) {
       return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
         key: index,
-        className: "bn flex items-center justify-center w-100 z-1",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 33
-        },
-        __self: this
+        className: "bn flex items-center justify-center w-100 z-1"
       }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_static_svg_Close__WEBPACK_IMPORTED_MODULE_4__["default"], {
         className: "grow pb2 pointer gray",
         action: function action() {
           return Object(_helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__["handleClose"])(date, setDates, dates, timeIndex);
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 37
-        },
-        __self: this
+        }
       }));
     }
 
     if (index === 0) {
       return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
         key: index,
-        className: "bn flex items-center justify-center w-100 z-1",
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 48
-        },
-        __self: this
+        className: "bn flex items-center justify-center w-100 z-1"
       }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_static_svg_Add__WEBPACK_IMPORTED_MODULE_3__["default"], {
         className: "grow pb2 pointer gray",
         action: function action() {
           return Object(_helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__["handleNewTime"])(date, setDates, dates);
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 52
-        },
-        __self: this
+        }
       }));
     }
 
     return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
       key: index,
-      className: "bn tc w-100 ".concat((index <= 5 || index >= 20) && "bg-light-gray"),
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 60
-      },
-      __self: this
+      className: "bn tc w-100 ".concat((index <= 5 || index >= 20) && "bg-light-gray")
     }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("p", {
-      className: "code pb2 tc",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 65
-      },
-      __self: this
+      className: "code pb2 tc"
     }, index));
   })), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_1__["RangeSelector"], {
     values: time,
@@ -378,12 +300,7 @@ var TimeBlock = function TimeBlock(_ref) {
     onChange: function onChange(newTimes) {
       return Object(_helpers_timeBarHelpers__WEBPACK_IMPORTED_MODULE_5__["handleChangeTime"])(newTimes, date, setDates, dates, timeIndex);
     },
-    round: "small",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 70
-    },
-    __self: this
+    round: "small"
   }))));
 };
 
@@ -413,7 +330,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/features/schedule/components/TimeBar/index.jsx";
 
 
 
@@ -432,31 +348,16 @@ function TimeBar(_ref) {
     return flat.concat(toFlatten);
   }, []).length >= 3;
   return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("section", {
-    className: "w-100 h-75 tc",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 19
-    },
-    __self: this
+    className: "w-100 h-75 tc"
   }, !maxTimes && react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("h1", {
-    className: "f1",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 20
-    },
-    __self: this
+    className: "f1"
   }, "Select up to 3 times..."), dates && _babel_runtime_corejs2_core_js_object_entries__WEBPACK_IMPORTED_MODULE_1___default()(dates).map(function (_ref2, dateIndex) {
     var _ref3 = Object(_babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_ref2, 2),
         date = _ref3[0],
         times = _ref3[1];
 
     return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
-      key: date + dateIndex,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 24
-      },
-      __self: this
+      key: date + dateIndex
     }, times.map(function (time, index) {
       return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_TimeBlock__WEBPACK_IMPORTED_MODULE_6__["TimeBlock"], {
         date: date,
@@ -464,12 +365,7 @@ function TimeBar(_ref) {
         dates: dates,
         time: time,
         timeIndex: index,
-        maxTimes: maxTimes,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 26
-        },
-        __self: this
+        maxTimes: maxTimes
       });
     }));
   }), !maxTimes && react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_components_Buttons__WEBPACK_IMPORTED_MODULE_5__["SecondaryButton"], {
@@ -477,12 +373,7 @@ function TimeBar(_ref) {
       return send("ADDED_NEW_DATE");
     },
     text: "+ Add Another Date",
-    className: "mt5 h-25",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 40
-    },
-    __self: this
+    className: "mt5 h-25"
   }));
 }
 TimeBar.propTypes = propTypes;
@@ -517,24 +408,26 @@ function () {
   var _ref = Object(_babel_runtime_corejs2_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(
   /*#__PURE__*/
   _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
-    var payload, newDoc;
+    var payload, options, doc;
     return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             payload = event.payload;
-            _context.next = 3;
-            return _sideEffects_firebase__WEBPACK_IMPORTED_MODULE_3__["default"].firestore().collection("meetings").add({
-              options: _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default()(payload)
-            }).catch(function (error) {
-              return error;
+            options = _babel_runtime_corejs2_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default()(payload);
+            console.log({
+              options: options
+            });
+            doc = _sideEffects_firebase__WEBPACK_IMPORTED_MODULE_3__["default"].firestore().collection("meetings").doc();
+            _context.next = 6;
+            return doc.set({
+              options: options
             });
 
-          case 3:
-            newDoc = _context.sent;
-            return _context.abrupt("return", newDoc.id);
+          case 6:
+            return _context.abrupt("return", doc.id);
 
-          case 5:
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -1262,6 +1155,10 @@ function index(_ref2) {
       current = _useMachine2[0],
       send = _useMachine2[1];
 
+  console.log({
+    data: current.event.data,
+    state: current.value
+  });
   return react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_8__["default"], null, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("section", {
     className: "vh-100 vw-100 flex flex-column items-center justify-around pa0 ma0"
   }, current.value === "calendar" && react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_4___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("h1", {
@@ -1366,20 +1263,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Add; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/static/svg/Add.jsx";
 
 var propTypes = {};
 var defaultProps = {};
 function Add(_ref) {
   var className = _ref.className,
       action = _ref.action;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 9
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "24",
     height: "24",
@@ -1390,41 +1280,21 @@ function Add(_ref) {
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: className,
-    onClick: action,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: this
+    onClick: action
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("circle", {
     cx: "12",
     cy: "12",
-    r: "10",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 23
-    },
-    __self: this
+    r: "10"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("line", {
     x1: "12",
     y1: "8",
     x2: "12",
-    y2: "16",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 24
-    },
-    __self: this
+    y2: "16"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("line", {
     x1: "8",
     y1: "12",
     x2: "16",
-    y2: "12",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 25
-    },
-    __self: this
+    y2: "12"
   })));
 }
 Add.propTypes = propTypes;
@@ -1444,20 +1314,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Close; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/static/svg/Close.jsx";
 
 var propTypes = {};
 var defaultProps = {};
 function Close(_ref) {
   var className = _ref.className,
       action = _ref.action;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 9
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "24",
     height: "24",
@@ -1468,41 +1331,21 @@ function Close(_ref) {
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: className,
-    onClick: action,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: this
+    onClick: action
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("circle", {
     cx: "12",
     cy: "12",
-    r: "10",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 23
-    },
-    __self: this
+    r: "10"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("line", {
     x1: "15",
     y1: "9",
     x2: "9",
-    y2: "15",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 24
-    },
-    __self: this
+    y2: "15"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("line", {
     x1: "9",
     y1: "9",
     x2: "15",
-    y2: "15",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 25
-    },
-    __self: this
+    y2: "15"
   })));
 }
 Close.propTypes = propTypes;
@@ -1522,20 +1365,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return NextStep; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-var _jsxFileName = "/Users/joshpitzalis/Desktop/meetbox/static/svg/NextStep.jsx";
 
 var propTypes = {};
 var defaultProps = {};
 function NextStep(_ref) {
   var className = _ref.className,
       action = _ref.action;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 9
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "32",
     height: "32",
@@ -1546,38 +1382,18 @@ function NextStep(_ref) {
     strokeLinecap: "round",
     strokeLinejoin: "round",
     className: className,
-    onClick: action,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: this
+    onClick: action
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("circle", {
     cx: "12",
     cy: "12",
-    r: "10",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 23
-    },
-    __self: this
+    r: "10"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("polyline", {
-    points: "12 16 16 12 12 8",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 24
-    },
-    __self: this
+    points: "12 16 16 12 12 8"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("line", {
     x1: "8",
     y1: "12",
     x2: "16",
-    y2: "12",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 25
-    },
-    __self: this
+    y2: "12"
   })));
 }
 NextStep.propTypes = propTypes;
@@ -1614,7 +1430,7 @@ NextStep.defaultProps = defaultProps;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/joshpitzalis/Desktop/meetbox/pages/index.jsx */"./pages/index.jsx");
+module.exports = __webpack_require__(/*! /Users/joshpitzalis/Desktop/agenda/pages/index.jsx */"./pages/index.jsx");
 
 
 /***/ }),
