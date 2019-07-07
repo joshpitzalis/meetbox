@@ -13,26 +13,9 @@ const createAgenda = event => {
     .firestore()
     .collection("meetings")
     .doc();
-  console.log("doc.id", doc.id);
+
   return Router.push(`/meeting/${doc.id}`);
 };
-
-// export const createMeeting = async event => {
-//   const { payload } = event;
-//   const options = {
-//     options: JSON.stringify(payload)
-//   };
-
-//   const doc = firebase
-//     .firestore()
-//     .collection("meetings")
-//     .doc();
-
-//   await doc.set({
-//     ...options
-//   });
-//   return doc.id;
-// };
 
 const propTypes = {};
 
@@ -40,9 +23,9 @@ const defaultProps = {};
 
 const agendaMachine = Machine({
   id: "agenda",
-  initial: "temporary",
+  initial: "draft",
   states: {
-    temporary: {
+    draft: {
       on: { AGENDA_CREATED: "creatingAgendaPage" }
     },
     creatingAgendaPage: {
@@ -60,47 +43,29 @@ const agendaMachine = Machine({
     },
     created: {
       on: {
-        CONFIRMED_TIMES: "temporary",
-        ADDED_NEW_DATE: "temporary"
+        CONFIRMED_TIMES: "draft",
+        ADDED_NEW_DATE: "draft"
       }
     },
     failure: { type: "final" }
-
-    // loading: {
-    //   invoke: {
-    //     id: "createMeeting",
-    //     src: (context, event) => createMeeting(event),
-    //     onDone: {
-    //       target: "ready"
-    //       // The resolved data is placed into a 'done.invoke.<id>' event, under the data property http://bit.ly/2Ft2WR8
-    //     },
-    //     onError: {
-    //       target: "failure"
-    //     }
-    //   }
-    // },
-    // ready: {
-    //   on: { SELECTED_A_DATE: "confirmed" }
-    // },
-    // confirmed: {
-    //   type: "final"
-    // },
   }
 });
 
 export default function index() {
   const [items, setItems] = useState([{ id: 0 }]);
   const [current, send] = useMachine(agendaMachine);
-  const handleCreateAgenda = () => send({ type: "AGENDA_CREATED" });
 
   return (
     <Layout>
-      {(current.value === "temporary" || current.value === "created") && (
+      {(current.value === "draft" || current.value === "created") && (
         <section className="flex  vh-100 w-100">
           <aside className=" flex flex-column justify-around">
             <button>Add people</button>
             <h1 className="ph4 title">Agenda</h1>
-            <button onClick={handleCreateAgenda} className="pointer">
+            <button
+              onClick={() => send({ type: "AGENDA_CREATED" })}
+              className="pointer"
+            >
               Create Agenda
             </button>
           </aside>
