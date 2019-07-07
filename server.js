@@ -10,9 +10,13 @@ app
   .then(() => {
     const server = express();
 
-    server.get("/meet/:slug", (req, res) => {
-      return app.render(req, res, "/meet", { slug: req.params.slug });
+    server.get("/meeting/:slug", (req, res) => {
+      return app.render(req, res, "/meeting", { slug: req.params.slug });
     });
+
+    // server.get("/meet/:slug", (req, res) => {
+    //   return app.render(req, res, "/meet", { slug: req.params.slug });
+    // });
 
     server.get("*", (req, res) => {
       return handle(req, res);
