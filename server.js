@@ -11,7 +11,9 @@ app
     const server = express();
 
     server.get("/meeting/:slug", (req, res) => {
-      return app.render(req, res, "/meeting", { slug: req.params.slug });
+      const actualPage = "/";
+      const queryParams = { slug: req.params.slug };
+      return app.render(req, res, actualPage, queryParams);
     });
 
     // server.get("/meet/:slug", (req, res) => {
