@@ -4,23 +4,22 @@ import { PrimaryButton } from "../../components/Buttons";
 import Layout from "../../components/Layout";
 import { selectTime } from "../../features/schedule/helpers/actions";
 import { convertToTimeInterval } from "../../features/schedule/helpers/timeBarHelpers";
-import firebase from "../../sideEffects/firebase";
 
 const propTypes = {};
 
 const defaultProps = {};
 
 const getInitialProps = async url => {
-  const slug = url.query.slug;
-  const meetings = await firebase
-    .firestore()
-    .collection("meetings")
-    .doc(slug)
-    .get()
-    .then(doc => doc.exists && doc.data())
-    .catch(error => error);
-
-  return { meetings };
+  // const slug = url.query.slug;
+  // const meetings = await firebase
+  //   .firestore()
+  //   .collection("meetings")
+  //   .doc(slug)
+  //   .get()
+  //   .then(doc => doc.exists && doc.data())
+  //   .catch(error => error);
+  // return { meetings };
+  return {};
 };
 
 export default function index({ meetings, url }) {
@@ -30,7 +29,7 @@ export default function index({ meetings, url }) {
   const [selected, setSelected] = React.useState(false);
 
   const [confirmed, setConfirm] = React.useState(
-    meetings.date && meetings.time
+    meetings && meetings.date && meetings.time
   );
 
   return (

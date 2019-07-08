@@ -1,19 +1,24 @@
 import { useMachine } from "@xstate/react";
 import { Button, Clock } from "grommet";
-import { Add } from "grommet-icons";
+import { Add, Play, Send, Stop } from "grommet-icons";
 import Router from "next/router";
-import { useState } from "react";
+import { doc } from "rxfire/firestore";
 import { Machine } from "xstate";
 import Layout from "../components/Layout";
-import { AgendaItem } from "../features/agenda/components/AgendaItem";
+import AgendaItem from "../features/agenda/components/AgendaItem";
 import firebase from "../sideEffects/firebase";
 
+const offline = true;
+const meetingId = "1l3wk";
+
 const createAgenda = event => {
+  if (offline) {
+    return Router.push(`/meeting/${meetingId}`);
+  }
   const doc = firebase
     .firestore()
     .collection("meetings")
     .doc();
-
   return Router.push(`/meeting/${doc.id}`);
 };
 
@@ -23,72 +28,165 @@ const defaultProps = {};
 
 const agendaMachine = Machine({
   id: "agenda",
-  initial: "draft",
+
+  initial: "loading",
   states: {
-    draft: {
-      on: { AGENDA_CREATED: "creatingAgendaPage" }
+    loading: {
+      on: {
+        NEW_AGENDA_CREATED: "creatingAgenda",
+        REDIRECTED_TO_EXISTING_AGENDA: "draft"
+      }
     },
-    creatingAgendaPage: {
+
+    creatingAgenda: {
       invoke: {
         id: "createAgenda",
         src: (context, event) => createAgenda(event),
         onDone: {
-          target: "created"
+          target: "draft"
           // The resolved data is placed into a 'done.invoke.<id>' event, under the data property http://bit.ly/2Ft2WR8
         },
         onError: {
-          target: "failure"
+          target: "loading"
         }
       }
     },
-    created: {
+    draft: {
       on: {
-        CONFIRMED_TIMES: "draft",
-        ADDED_NEW_DATE: "draft"
+        SAVED_DRAFT: "confirmed"
       }
     },
-    failure: { type: "final" }
+    confirmed: {
+      on: {
+        STARTED: "active"
+      }
+    },
+    active: {
+      on: {
+        ENDED: "complete"
+      }
+    },
+    complete: { type: "final" }
   }
 });
 
-export default function index() {
-  const [items, setItems] = useState([{ id: 0 }]);
+const useStreamMeeting = id => {
+  const stream$ = doc(firebase.firestore().doc(`meetings/${id}`));
+  const [meeting, updateMeeting] = React.useState();
+  React.useEffect(() => {
+    const stream = stream$.subscribe(snapshot =>
+      updateMeeting(snapshot.data())
+    );
+    return () => stream.unsubscribe();
+  }, []);
+  return meeting;
+};
+
+// const getInitialProps = async url => {
+//   const slug = url.query.slug;
+//   const meetings = await firebase
+//     .firestore()
+//     .collection("meetings")
+//     .doc(slug)
+//     .get()
+//     .then(doc => doc.exists && doc.data())
+//     .catch(error => error);
+//   return { meetings };
+// };
+
+export default function index({ url }) {
   const [current, send] = useMachine(agendaMachine);
+  const { slug } = url.query;
+  React.useEffect(() => {
+    if (!slug) {
+      send("NEW_AGENDA_CREATED");
+    }
+    send("REDIRECTED_TO_EXISTING_AGENDA");
+  }, [slug]);
+
+  const meeting = useStreamMeeting(meetingId);
+
+  const [listOfMeetings, setMeetings] = React.useState(
+    offline ? [] : meeting && Object.values(meeting.items)
+  );
+
+  const handleAddMeeting = () => {
+    const timestamp = +new Date();
+
+    if (offline) {
+      const newMeetings = [
+        ...listOfMeetings,
+        {
+          [`items.${timestamp}.id`]: timestamp
+        }
+      ];
+
+      return setMeetings(newMeetings);
+    }
+
+    firebase
+      .firestore()
+      .doc(`meetings/${meetingId}`)
+      .update({
+        [`items.${timestamp}.id`]: timestamp
+      })
+      .catch(error => console.error(error));
+  };
 
   return (
     <Layout>
-      {(current.value === "draft" || current.value === "created") && (
-        <section className="flex  vh-100 w-100">
-          <aside className=" flex flex-column justify-around">
-            <button>Add people</button>
-            <h1 className="ph4 title">Agenda</h1>
-            <button
-              onClick={() => send({ type: "AGENDA_CREATED" })}
-              className="pointer"
-            >
-              Create Agenda
-            </button>
-          </aside>
-          <div className="flex-grow-1 w-100 flex flex-column">
-            {items.map((item, index) => (
-              <AgendaItem index={index} key={item.id} />
-            ))}
-            <div className="pa5   tc flex items-center justify-center grow">
-              <Button
-                icon={<Add />}
-                primary
-                label="Add Agenda Item"
-                onClick={() => setItems([...items, { id: +new Date() }])}
-              />
-            </div>
-          </div>
-        </section>
-      )}
-
-      {current.value === "creatingAgendaPage" && (
+      {(current.value === "loading" || current.value === "creatingAgenda") && (
         <div className="vh-100 vw-100 flex items-center justify-center">
           <Clock type="digital" />
         </div>
+      )}
+
+      {(current.value === "draft" ||
+        current.value === "confirmed" ||
+        current.value === "active" ||
+        current.value === "complete") && (
+        <section className="flex  vh-100 w-100 ">
+          <aside className=" flex flex-column justify-around items-center fixed vh-100 bg-white">
+            {current.value === "confirmed" ? (
+              <Play
+                onClick={() => send({ type: "STARTED" })}
+                className="pointer"
+              />
+            ) : current.value === "active" ? (
+              <Stop className="pointer " onClick={() => send("ENDED")} />
+            ) : (
+              <span />
+            )}
+            <h1 className="ph4 title">Meetbox</h1>
+            {current.value === "draft" ? (
+              <Send className="pointer " onClick={() => send("SAVED_DRAFT")} />
+            ) : (
+              <span />
+            )}
+          </aside>
+          <div className="flex-grow-1 w-100 flex flex-column">
+            {listOfMeetings.map((props, index) => (
+              <AgendaItem
+                {...props}
+                index={index}
+                meetingId={meetingId}
+                state={current.value}
+              />
+            ))}
+            {(current.value === "draft" || current.value === "active") && (
+              <div className="pa5 tc w-100">
+                <Button
+                  icon={<Add />}
+                  className="pointer grow"
+                  size="large"
+                  primary
+                  label="Add Agenda Item"
+                  onClick={handleAddMeeting}
+                />
+              </div>
+            )}
+          </div>
+        </section>
       )}
 
       {current.value === "failure" && (
