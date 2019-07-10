@@ -72,6 +72,8 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
               </div>
             </div>
           )}
+
+          {/* there should also be a tasks section */}
         </>
       )}
 
