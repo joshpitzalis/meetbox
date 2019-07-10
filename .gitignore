@@ -1,3 +1,13 @@
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build
+
+# Dependency directories
+node_modules
+
+# next.js build output
+.next
+next
+
 # Logs
 logs
 *.log
@@ -16,12 +26,6 @@ pids
 # Coverage directory used by tools like istanbul
 coverage
 *.lcov
-
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/
-
-# Dependency directories
-node_modules/
 
 
 # Optional npm cache directory
@@ -42,6 +46,4 @@ node_modules/
 .env.test
 
 
-# next.js build output
-.next
-next
+
