@@ -3,18 +3,29 @@ import { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 import { PrepItem } from "./PrepItem";
 
+const offline = true;
+
 interface IProps {
   meetingId: number;
   id: number;
-  prep?: { [key: string]: { name: string; id: string } };
+  prep?: [{ name: string; id: string }];
+  status?: string;
 }
 
-export const Prerequisites: React.SFC<IProps> = ({ meetingId, id, prep }) => {
-  const [editMode, setEditMode] = useState(false);
-  const prepItems = prep && Object.values(prep);
+export const Prerequisites: React.SFC<IProps> = ({
+  meetingId,
+  id,
+  prep,
+  status
+}) => {
+  const [editMode, setEditMode] = useState(!!status);
+
+  const [prepItems, setPrepItems] = useState(
+    offline ? [{ id: "1", name: "kk" }] : prep && Object.values(prep)
+  );
   const [value, resetForm] = useState({ name: "" });
   return (
-    <div className="ml5 ma3 flex-grow-1 measure">
+    <div className={` flex-grow-1 measure ${!status && "ml5 ma3"}`}>
       {prepItems &&
         prepItems.map(item => (
           <PrepItem
@@ -23,65 +34,79 @@ export const Prerequisites: React.SFC<IProps> = ({ meetingId, id, prep }) => {
             editMode={editMode}
             meetingId={meetingId}
             itemId={id}
+            status={status}
           />
         ))}
-
-      {editMode ? (
-        <div className="ma3 pt4 pl2">
-          <Form
-            value={value}
-            onSubmit={data => {
-              const { value } = data;
-              const prepId = +new Date();
-              const { name } = value;
-              resetForm({ name: "" });
-              firebase
-                .firestore()
-                .doc(`meetings/${meetingId}`)
-                .update({
-                  [`items.${id}.prep.${prepId}`]: {
-                    id: prepId,
-                    name
+      {!status && (
+        <>
+          {editMode ? (
+            <div className="ma3 pt4 pl2">
+              <Form
+                value={value}
+                onSubmit={data => {
+                  const { value } = data;
+                  const prepId: string = `${+new Date()}`;
+                  const { name } = value;
+                  resetForm({ name: "" });
+                  if (offline) {
+                    return setPrepItems([
+                      ...prepItems,
+                      {
+                        id: prepId,
+                        name
+                      }
+                    ]);
                   }
-                })
-                .catch(error => console.error(error));
-            }}
-          >
-            <FormField
-              name="name"
-              label="Preparation"
-              placeholder="Describe any prep you need people to do for this agenda item."
-              required
-            />
 
-            <div className="w-100 flex items-center">
-              <Button type="submit" label="Add" className="pointer" />
-              <span className="w3 tc">
-                <Button
-                  type="button"
-                  label="Close"
-                  plain
-                  onClick={() => setEditMode(false)}
-                  className="pointer"
+                  firebase
+                    .firestore()
+                    .doc(`meetings/${meetingId}`)
+                    .update({
+                      [`items.${id}.prep.${prepId}`]: {
+                        id: prepId,
+                        name
+                      }
+                    })
+                    .catch(error => console.error(error));
+                }}
+              >
+                <FormField
+                  name="name"
+                  label="Preparation"
+                  placeholder="Describe any prep you need people to do for this agenda item."
+                  required
                 />
-              </span>
+
+                <div className="w-100 flex items-center">
+                  <Button type="submit" label="Add" className="pointer" />
+                  <span className="w3 tc">
+                    <Button
+                      type="button"
+                      label="Close"
+                      plain
+                      onClick={() => setEditMode(false)}
+                      className="pointer"
+                    />
+                  </span>
+                </div>
+              </Form>
             </div>
-          </Form>
-        </div>
-      ) : (
-        <div className="tc o-50 w-100">
-          <Button
-            type="button"
-            label={
-              prepItems && prepItems.length > 0
-                ? "Click to add more prep."
-                : "Click here to add prep."
-            }
-            plain
-            onClick={() => setEditMode(true)}
-            className="h3"
-          />
-        </div>
+          ) : (
+            <div className="tc o-50 w-100">
+              <Button
+                type="button"
+                label={
+                  prepItems && prepItems.length > 0
+                    ? "Click to add more prep."
+                    : "Click here to add prep."
+                }
+                plain
+                onClick={() => setEditMode(true)}
+                className="h3"
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

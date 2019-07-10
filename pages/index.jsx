@@ -8,7 +8,7 @@ import Layout from "../components/Layout";
 import AgendaItem from "../features/agenda/components/AgendaItem";
 import firebase from "../sideEffects/firebase";
 
-const offline = false;
+const offline = true;
 const meetingId = "1l3wk";
 
 const createAgenda = event => {
@@ -112,12 +112,12 @@ export default function index(props) {
 
   console.log("meetingIdA", meetingId);
 
-  // React.useEffect(() => {
-  //   if (!meetingId) {
-  //     send("NEW_AGENDA_CREATED");
-  //   }
-  //   // send("REDIRECTED_TO_EXISTING_AGENDA");
-  // }, [meetingId]);
+  React.useEffect(() => {
+    if (!meetingId) {
+      send("NEW_AGENDA_CREATED");
+    }
+    send("REDIRECTED_TO_EXISTING_AGENDA");
+  }, [meetingId]);
 
   const meeting = useStreamMeeting(meetingId);
 

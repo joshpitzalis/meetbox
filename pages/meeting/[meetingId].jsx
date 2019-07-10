@@ -8,7 +8,7 @@ import Layout from "../../components/Layout";
 import AgendaItem from "../../features/agenda/components/AgendaItem";
 import firebase from "../../sideEffects/firebase";
 
-const offline = false;
+const offline = true;
 const meetingId = "1l3wk";
 
 const createAgenda = event => {
@@ -28,28 +28,8 @@ const defaultProps = {};
 
 const agendaMachine = Machine({
   id: "agenda",
-
-  initial: "loading",
+  initial: "active",
   states: {
-    loading: {
-      on: {
-        NEW_AGENDA_CREATED: "creatingAgenda",
-        REDIRECTED_TO_EXISTING_AGENDA: "draft"
-      }
-    },
-    creatingAgenda: {
-      invoke: {
-        id: "createAgenda",
-        src: (context, event) => createAgenda(event),
-        onDone: {
-          target: "draft"
-          // The resolved data is placed into a 'done.invoke.<id>' event, under the data property http://bit.ly/2Ft2WR8
-        },
-        onError: {
-          target: "loading"
-        }
-      }
-    },
     draft: {
       on: {
         SAVED_DRAFT: "confirmed"
@@ -100,9 +80,8 @@ const useStreamMeeting = id => {
 export default function index() {
   const [current, send] = useMachine(agendaMachine);
   const router = useRouter();
-  console.log("queryB", router.query.meetingId);
 
-  const meeting = useStreamMeeting(meetingId);
+  const meeting = useStreamMeeting(router.query.meetingId);
 
   const [listOfMeetings, setMeetings] = React.useState(
     offline ? [] : meeting && Object.values(meeting.items)
@@ -130,6 +109,8 @@ export default function index() {
       })
       .catch(error => console.error(error));
   };
+
+  console.log("current.value", current.value);
 
   return (
     <Layout>

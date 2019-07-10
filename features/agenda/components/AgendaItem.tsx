@@ -1,4 +1,4 @@
-import { Button } from "grommet";
+import { Button, TextArea } from "grommet";
 import { Add, Close } from "grommet-icons";
 import { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
@@ -42,16 +42,36 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
           </div>
         </div>
       ) : (
-        <>
+        <div className="flex justify-between items-centre w-100">
           <dl className="fl fn-l w-50 dib-l w-auto-l lh-title mr5-l pa3">
             <dd className="f3 fw6 ml0 ttu">5</dd>
             <dd className="f6 fw4 ml0 ttu">min</dd>
           </dl>
-          <AgendaItemName name={name} id={id} meetingId={meetingId} />
-
+          <div className={`flex flex-column item-start measure-wide`}>
+            <AgendaItemName name={name} id={id} meetingId={meetingId} />
+            {state === "active" && (
+              <Prerequisites
+                meetingId={meetingId}
+                id={id}
+                prep={prep}
+                status="locked"
+              />
+            )}
+          </div>
           {(state === "draft" || state === "confirmed") && (
             <Prerequisites meetingId={meetingId} id={id} prep={prep} />
           )}
+
+          {(state === "active" || state === "complete") && (
+            <Minutes setShowNotes={setShowNotes} />
+          )}
+
+          {/* there should also be a tasks section */}
+
+          {(state === "active" || state === "complete") && (
+            <p className="measure">task list</p>
+          )}
+
           {(state === "draft" || state === "active") && (
             <Button
               icon={<Close />}
@@ -59,24 +79,7 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
               className="pointer grow"
             />
           )}
-          {(state === "active" || state === "complete") && (
-            <div
-              className="ml5 ma3 w5 h3 pointer"
-              onClick={() => setShowNotes(true)}
-            >
-              <div className="ma3">
-                <Button
-                  icon={<Add />}
-                  label="Add Notes, Tasks, Votes Or Decisions"
-                  onClick={() => console.log([{ id: +new Date() }])}
-                  plain
-                />
-              </div>
-            </div>
-          )}
-
-          {/* there should also be a tasks section */}
-        </>
+        </div>
       )}
 
       <style jsx>
@@ -127,3 +130,23 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
 };
 
 export default AgendaItem;
+
+function Minutes({ setShowNotes }) {
+  const [editable, setEditable] = useState(false);
+  return (
+    <div className="ma3 h5 pointer measure" onClick={() => setShowNotes(true)}>
+      {editable ? (
+        <TextArea resize="vertical" className="w-100 bg-white" fill={true} />
+      ) : (
+        <div className="ma3">
+          <Button
+            icon={<Add />}
+            label="Add Notes, Tasks, Votes Or Decisions"
+            onClick={() => setEditable(true)}
+            plain
+          />
+        </div>
+      )}
+    </div>
+  );
+}

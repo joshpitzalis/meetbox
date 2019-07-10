@@ -1,13 +1,29 @@
 import { Button, RadioButton } from "grommet";
 import { Close } from "grommet-icons";
-import { useState } from "react";
+import { SFC, useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 
-export function PrepItem({ name, id, editMode, meetingId, itemId }) {
+interface IProps {
+  name: string;
+  id: string;
+  editMode: boolean;
+  meetingId: number;
+  itemId: number;
+  status?: string;
+}
+
+export const PrepItem: SFC<IProps> = ({
+  name,
+  id,
+  editMode,
+  meetingId,
+  itemId,
+  status
+}) => {
   const [completed, markComplete] = useState(false);
   return (
     <div className="ma3">
-      {editMode ? (
+      {editMode && !status ? (
         <Button
           icon={<Close />}
           type="button"
@@ -35,4 +51,4 @@ export function PrepItem({ name, id, editMode, meetingId, itemId }) {
       )}
     </div>
   );
-}
+};
