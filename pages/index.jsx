@@ -1,14 +1,14 @@
 import { useMachine } from "@xstate/react";
 import { Button, Clock } from "grommet";
 import { Add, Play, Send, Stop } from "grommet-icons";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { doc } from "rxfire/firestore";
 import { Machine } from "xstate";
 import Layout from "../components/Layout";
 import AgendaItem from "../features/agenda/components/AgendaItem";
 import firebase from "../sideEffects/firebase";
 
-const offline = true;
+const offline = false;
 const meetingId = "1l3wk";
 
 const createAgenda = event => {
@@ -19,7 +19,11 @@ const createAgenda = event => {
     .firestore()
     .collection("meetings")
     .doc();
-  return Router.push(`/meeting/${doc.id}`);
+  // return Router.push(`/meeting/${doc.id}`);
+  return Router.push({
+    pathname: `/meeting/${doc.id}`,
+    query: { meetingId: doc.id }
+  });
 };
 
 const propTypes = {};
@@ -37,7 +41,6 @@ const agendaMachine = Machine({
         REDIRECTED_TO_EXISTING_AGENDA: "draft"
       }
     },
-
     creatingAgenda: {
       invoke: {
         id: "createAgenda",
@@ -82,27 +85,39 @@ const useStreamMeeting = id => {
   return meeting;
 };
 
-// const getInitialProps = async url => {
-//   const slug = url.query.slug;
-//   const meetings = await firebase
-//     .firestore()
-//     .collection("meetings")
-//     .doc(slug)
-//     .get()
-//     .then(doc => doc.exists && doc.data())
-//     .catch(error => error);
-//   return { meetings };
+// const getInitialProps = async () => {
+//   // const slug = url.query.slug;
+//   // const meetings = await firebase
+//   //   .firestore()
+//   //   .collection("meetings")
+//   //   .doc(slug)
+//   //   .get()
+//   //   .then(doc => doc.exists && doc.data())
+//   //   .catch(error => error);
+//   // return { meetings };
+
+//   const router = useRouter();
+
+//   const { meetingId } = router.query;
+
+//   return { meetingId };
 // };
 
-export default function index({ url }) {
+export default function index(props) {
   const [current, send] = useMachine(agendaMachine);
-  const { slug } = url.query;
-  React.useEffect(() => {
-    if (!slug) {
-      send("NEW_AGENDA_CREATED");
-    }
-    send("REDIRECTED_TO_EXISTING_AGENDA");
-  }, [slug]);
+
+  const router = useRouter();
+
+  const { meetingId } = router.query;
+
+  console.log("meetingIdA", meetingId);
+
+  // React.useEffect(() => {
+  //   if (!meetingId) {
+  //     send("NEW_AGENDA_CREATED");
+  //   }
+  //   // send("REDIRECTED_TO_EXISTING_AGENDA");
+  // }, [meetingId]);
 
   const meeting = useStreamMeeting(meetingId);
 

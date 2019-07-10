@@ -1,6 +1,7 @@
 {
   "devFiles": [
-    "static/development/dll/dll_599a58a60c43245180de.js"
+    "static/development/dll/dll_7e982eef452f4c592b13.js",
+    "static/development/dll/dll_7e982eef452f4c592b13.js.map"
   ],
   "pages": {
     "/": [
@@ -21,6 +22,16 @@
       "static/runtime/webpack.js",
       "static/css/styles.chunk.css",
       "static/chunks/styles.js",
+      "static/runtime/main.js"
+    ],
+    "/meeting/[meetingId]": [
+      "static/runtime/webpack.js",
+      "static/css/styles.chunk.css",
+      "static/chunks/styles.js",
+      "static/runtime/main.js"
+    ],
+    "/next/dist/pages/_error": [
+      "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]
   }
