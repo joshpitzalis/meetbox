@@ -6,7 +6,7 @@ import { AgendaItemName } from "./AgendaItemName";
 import { Minutes } from "./Minutes";
 import { Prerequisites } from "./Prerequisites";
 
-const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
+const AgendaItem = ({ id, name, prep, index, meetingId, state, minutes }) => {
   const deleteItem = (itemId: number, meetingId: number) =>
     firebase
       .firestore()
@@ -44,42 +44,60 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
           </div>
         </div>
       ) : (
-        <div className="flex justify-between items-centre w-100">
-          <dl className="fl fn-l w-50 dib-l w-auto-l lh-title mr5-l pa3">
+        <div className="flex  w-100">
+          <div className={`flex justify-between items-centre ma3 flex-grow-1`}>
+            {/* <dl className="fl fn-l w-50 dib-l w-auto-l lh-title mr5-l pa3">
             <dd className="f3 fw6 ml0 ttu">5</dd>
             <dd className="f6 fw4 ml0 ttu">min</dd>
-          </dl>
-          <div className={`flex flex-column item-start measure-wide`}>
-            <AgendaItemName name={name} id={id} meetingId={meetingId} />
-            {state === "active" && (
-              <Prerequisites
-                meetingId={meetingId}
+          </dl> */}
+            <div
+              className={`flex flex-column item-start  ${
+                state === "active" ? "w-25" : "w-50"
+              }`}
+            >
+              <AgendaItemName
+                name={name}
                 id={id}
-                prep={prep}
-                status="locked"
+                meetingId={meetingId}
+                state={state}
+              />
+              {state === "active" && (
+                <>
+                  <p className="mt3 mh2">Preparations</p>
+                  <Prerequisites
+                    meetingId={meetingId}
+                    id={id}
+                    prep={prep}
+                    status="locked"
+                  />
+                </>
+              )}
+            </div>
+            {(state === "draft" || state === "confirmed") && (
+              <Prerequisites meetingId={meetingId} id={id} prep={prep} />
+            )}
+
+            {(state === "active" || state === "complete") && (
+              <Minutes
+                firebase={firebase}
+                itemId={id}
+                meetingId={meetingId}
+                minutes={minutes}
               />
             )}
+
+            {(state === "active" || state === "complete") && (
+              <p className="w-25">task list</p>
+            )}
           </div>
-          {(state === "draft" || state === "confirmed") && (
-            <Prerequisites meetingId={meetingId} id={id} prep={prep} />
-          )}
-
-          {(state === "active" || state === "complete") && (
-            <Minutes firebase={firebase} itemId={id} meetingId={meetingId} />
-          )}
-
-          {/* there should also be a tasks section */}
-
-          {(state === "active" || state === "complete") && (
-            <p className="measure">task list</p>
-          )}
-
           {(state === "draft" || state === "active") && (
-            <Button
-              icon={<Close />}
-              onClick={() => setConfirm(true)}
-              className="pointer grow"
-            />
+            <div className="bg-light-red flex items-center">
+              <Button
+                icon={<Close color="white" />}
+                onClick={() => setConfirm(true)}
+                className="pointer grow"
+              />
+            </div>
           )}
         </div>
       )}

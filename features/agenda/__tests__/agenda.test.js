@@ -40,3 +40,7 @@ test("anyone can create a task", () => {
 test("anyone can complete a task", () => {
   expect(true).toBeFalsy();
 });
+
+test("you shouldn't be able to add a blank agenda item to the agenda, add validation before submitting", () => {
+  expect(true).toBeFalsy();
+});

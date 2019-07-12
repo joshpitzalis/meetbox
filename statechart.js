@@ -1,31 +1,9 @@
 import { Machine } from "xstate";
 import { createAgenda } from "./features/agenda/agendaHelpers";
-// const agendaMachine = Machine({
-//   id: "agenda",
-//   initial: "active",
-//   states: {
-//     draft: {
-//       on: {
-//         SAVED_DRAFT: "confirmed"
-//       }
-//     },
-//     confirmed: {
-//       on: {
-//         STARTED: "active"
-//       }
-//     },
-//     active: {
-//       on: {
-//         ENDED: "complete"
-//       }
-//     },
-//     complete: { type: "final" }
-//   }
-// });
 
 export default Machine({
   id: "agenda",
-  initial: "loading",
+  initial: "active",
   states: {
     loading: {
       on: {

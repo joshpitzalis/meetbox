@@ -20,7 +20,7 @@ export const PrepItem: SFC<IProps> = ({
   itemId,
   status
 }) => {
-  const [completed, markComplete] = useState(false);
+  const [complete, markComplete] = useState(false);
   return (
     <div className="ma3">
       {editMode && !status ? (
@@ -44,7 +44,7 @@ export const PrepItem: SFC<IProps> = ({
         <RadioButton
           name={name}
           key={id}
-          checked={completed}
+          checked={complete}
           label={name}
           onChange={() => markComplete(true)}
         />

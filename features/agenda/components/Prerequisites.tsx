@@ -3,8 +3,6 @@ import { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 import { PrepItem } from "./PrepItem";
 
-const offline = true;
-
 interface IProps {
   meetingId: number;
   id: number;
@@ -20,17 +18,15 @@ export const Prerequisites: React.SFC<IProps> = ({
 }) => {
   const [editMode, setEditMode] = useState(!!status);
 
-  const [prepItems, setPrepItems] = useState(
-    offline ? [{ id: "1", name: "kk" }] : prep && Object.values(prep)
-  );
   const [value, resetForm] = useState({ name: "" });
+
   return (
-    <div className={` flex-grow-1 measure ${!status && "ml5 ma3"}`}>
-      {prepItems &&
-        prepItems.map(item => (
+    <div className={` flex-grow-1  ${!status && "ml5 ma3"} w-50`}>
+      {prep &&
+        Object.values(prep).map(item => (
           <PrepItem
-            name={item.name}
-            id={item.id}
+            {...item}
+            key={item.id}
             editMode={editMode}
             meetingId={meetingId}
             itemId={id}
@@ -45,19 +41,9 @@ export const Prerequisites: React.SFC<IProps> = ({
                 value={value}
                 onSubmit={data => {
                   const { value } = data;
-                  const prepId: string = `${+new Date()}`;
+                  const prepId: number = +new Date();
                   const { name } = value;
                   resetForm({ name: "" });
-                  if (offline) {
-                    return setPrepItems([
-                      ...prepItems,
-                      {
-                        id: prepId,
-                        name
-                      }
-                    ]);
-                  }
-
                   firebase
                     .firestore()
                     .doc(`meetings/${meetingId}`)
@@ -96,7 +82,7 @@ export const Prerequisites: React.SFC<IProps> = ({
               <Button
                 type="button"
                 label={
-                  prepItems && prepItems.length > 0
+                  prep && Object.values(prep).length > 0
                     ? "Click to add more prep."
                     : "Click here to add prep."
                 }

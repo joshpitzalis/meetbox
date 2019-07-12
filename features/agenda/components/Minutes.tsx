@@ -1,42 +1,54 @@
-import { Button, TextArea } from "grommet";
-import { Add } from "grommet-icons";
+import { TextArea } from "grommet";
 import { useState } from "react";
-import { from } from "rxjs";
-import { debounceTime } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { debounceTime, tap } from "rxjs/operators";
 
-export const Minutes = ({ firebase, itemId, meetingId }) => {
-  const [editable, setEditable] = useState(false);
-  const [value, setValue] = useState("");
+const textInput$ = new Subject();
+
+export const Minutes = ({ firebase, itemId, meetingId, minutes }) => {
+  console.log({ minutes });
+
+  const [value, setValue] = useState(minutes);
+  const [saved, setSaved] = useState(true);
   const handleTextUpdate = e => {
-    // debounce then save to firebase
-    from(e.target.value)
-      .pipe(debounceTime(1000))
-      .subscribe(val => console.log("val", val));
-
     setValue(e.target.value);
+    textInput$.next(e.target.value);
+    setSaved(false);
+    textInput$
+      .pipe(
+        debounceTime(2000),
+        tap(
+          text =>
+            firebase
+              .firestore()
+              .doc(`meetings/${meetingId}`)
+              .update({
+                [`items.${itemId}.minutes`]: text
+              })
+          // .then(() => {
+          //   console.log("saved");
+          //   setSaved(true);
+          // })
+          // .catch(error => console.error(error))
+        )
+      )
+      .subscribe(text => {
+        console.log(text);
+        setSaved(true);
+      });
   };
   return (
-    <div className="ma3 h5 pointer measure">
-      {editable ? (
-        <TextArea
-          data-testid="editableMinutes"
-          resize="vertical"
-          className="w-100 bg-white"
-          fill={true}
-          onChange={handleTextUpdate}
-          value={value}
-        />
-      ) : (
-        <div className="ma3">
-          <Button
-            icon={<Add />}
-            label="Add Notes, Tasks, Votes Or Decisions"
-            onClick={() => setEditable(true)}
-            plain
-            data-testid="minutesButton"
-          />
-        </div>
-      )}
+    <div className="ma3 h5 pointer w-50">
+      <TextArea
+        data-testid="editableMinutes"
+        className="w-100 bg-white"
+        placeholder="Enter your minutes here..."
+        fill={true}
+        onChange={handleTextUpdate}
+        style={{ backgroundColor: "white" }}
+        value={value}
+      />
+      <small className="o-50">{`${saved ? "saved" : "Saving..."}`}</small>
     </div>
   );
 };

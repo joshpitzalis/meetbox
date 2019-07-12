@@ -3,8 +3,8 @@ import { Edit } from "grommet-icons";
 import { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 
-export function AgendaItemName({ name, id, meetingId }) {
-  const [editMode, toggleEditMode] = useState(true);
+export function AgendaItemName({ name, id, meetingId, state }) {
+  const [editMode, toggleEditMode] = useState(state === "draft");
   const [title, setTitle] = useState("");
 
   const handleSubmit = data => {

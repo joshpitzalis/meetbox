@@ -78,10 +78,10 @@ const Index = () => {
               meeting.items &&
               Object.values(meeting.items).map((props, index) => (
                 <AgendaItem
-                  key={props.meetingId}
+                  key={props.id}
                   {...props}
+                  meetingId={meetingId}
                   index={index}
-                  meetingId={props.meetingId}
                   state={current.value}
                 />
               ))}
@@ -95,6 +95,11 @@ const Index = () => {
                   label="Add Agenda Item"
                   onClick={() => handleAddMeeting(meetingId)}
                 />
+                <div className="pv3 flex items-center justify-center">
+                  <small className="o-50">When you are done click on the</small>
+                  <Send className="ph1" />
+                  <small className="o-50">icon to the left finalise.</small>
+                </div>
               </div>
             )}
           </div>

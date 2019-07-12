@@ -17,10 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _static_tachyons_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../static/tachyons.css */ "./static/tachyons.css");
 /* harmony import */ var _static_tachyons_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_static_tachyons_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _static_typeface_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../static/typeface.css */ "./static/typeface.css");
-/* harmony import */ var _static_typeface_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_static_typeface_css__WEBPACK_IMPORTED_MODULE_4__);
 var _jsxFileName = "/Users/joshpitzalis/Desktop/agenda/components/Layout.jsx";
-
 
 
 
@@ -31,17 +28,17 @@ var propTypes = {
 function Layout(_ref) {
   var children = _ref.children;
   return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("main", {
-    className: "pa0 ma0",
+    className: "pa0 ma0 sans-serif",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 11
+      lineNumber: 10
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_0__["Grommet"], {
     plain: true,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 12
+      lineNumber: 11
     },
     __self: this
   }, children));
@@ -90,16 +87,13 @@ function () {
 
           case 4:
             return _context.abrupt("return", next_router__WEBPACK_IMPORTED_MODULE_2___default.a.push({
-              pathname: "/meeting/".concat(doc.id),
-              query: {
-                meetingId: doc.id
-              }
+              pathname: "/meeting/".concat(doc.id)
             }));
 
           case 7:
             _context.prev = 7;
             _context.t0 = _context["catch"](0);
-            console.log({
+            console.error({
               error: _context.t0
             });
 
@@ -72933,32 +72927,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var xstate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xstate */ "./node_modules/xstate/es/index.js");
 /* harmony import */ var _features_agenda_agendaHelpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/agenda/agendaHelpers */ "./features/agenda/agendaHelpers.js");
 
- // const agendaMachine = Machine({
-//   id: "agenda",
-//   initial: "active",
-//   states: {
-//     draft: {
-//       on: {
-//         SAVED_DRAFT: "confirmed"
-//       }
-//     },
-//     confirmed: {
-//       on: {
-//         STARTED: "active"
-//       }
-//     },
-//     active: {
-//       on: {
-//         ENDED: "complete"
-//       }
-//     },
-//     complete: { type: "final" }
-//   }
-// });
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(xstate__WEBPACK_IMPORTED_MODULE_0__["Machine"])({
   id: "agenda",
-  initial: "loading",
+  initial: "active",
   states: {
     loading: {
       on: {
