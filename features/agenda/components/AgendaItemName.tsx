@@ -4,7 +4,7 @@ import { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 
 export function AgendaItemName({ name, id, meetingId, state }) {
-  const [editMode, toggleEditMode] = useState(state === "draft");
+  const [editMode, toggleEditMode] = useState(true);
   const [title, setTitle] = useState("");
 
   const handleSubmit = data => {
@@ -20,8 +20,8 @@ export function AgendaItemName({ name, id, meetingId, state }) {
   };
 
   return (
-    <div className="measure-wide flex-grow-1">
-      {editMode ? (
+    <div className="flex-grow-1">
+      {editMode && state === "draft" ? (
         <Form
           onSubmit={(data: React.FormEvent<HTMLFormElement>) =>
             handleSubmit(data)
@@ -39,7 +39,7 @@ export function AgendaItemName({ name, id, meetingId, state }) {
           <Button type="submit" label="Save Description" />
         </Form>
       ) : (
-        <div className="flex items-center measure">
+        <div className="flex items-center measure flex-grow-1">
           <Edit
             className="dim ma3 pointer"
             onClick={() => toggleEditMode(true)}

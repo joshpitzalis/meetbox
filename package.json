@@ -44,7 +44,8 @@
     "start": "next",
     "test": "jest --watchAll",
     "build": "next build && next export -o build",
-    "bundle": "npm run analyze:browser"
+    "bundle": "npm run analyze:browser",
+    "deploy": "firebase deploy --only hosting"
   },
   "keywords": [],
   "author": "",

@@ -5,9 +5,7 @@ import { debounceTime, tap } from "rxjs/operators";
 
 const textInput$ = new Subject();
 
-export const Minutes = ({ firebase, itemId, meetingId, minutes }) => {
-  console.log({ minutes });
-
+export const Minutes = ({ firebase, itemId, meetingId, minutes, state }) => {
   const [value, setValue] = useState(minutes);
   const [saved, setSaved] = useState(true);
   const handleTextUpdate = e => {
@@ -32,23 +30,27 @@ export const Minutes = ({ firebase, itemId, meetingId, minutes }) => {
           // .catch(error => console.error(error))
         )
       )
-      .subscribe(text => {
-        console.log(text);
-        setSaved(true);
-      });
+      .subscribe(text => setSaved(true));
   };
   return (
     <div className="ma3 h5 pointer w-50">
-      <TextArea
-        data-testid="editableMinutes"
-        className="w-100 bg-white"
-        placeholder="Enter your minutes here..."
-        fill={true}
-        onChange={handleTextUpdate}
-        style={{ backgroundColor: "white" }}
-        value={value}
-      />
-      <small className="o-50">{`${saved ? "saved" : "Saving..."}`}</small>
+      {state === "completed" && <p>Minutes</p>}
+      {state === "active" ? (
+        <>
+          <TextArea
+            data-testid="editableMinutes"
+            className="w-100 bg-white"
+            placeholder="Enter your minutes here..."
+            fill={true}
+            onChange={handleTextUpdate}
+            style={{ backgroundColor: "white" }}
+            value={value}
+          />
+          <small className="o-50">{`${saved ? "saved" : "Saving..."}`}</small>
+        </>
+      ) : (
+        <p className="measure">{value}</p>
+      )}
     </div>
   );
 };

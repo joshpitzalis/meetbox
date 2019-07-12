@@ -1,9 +1,9 @@
 import { Machine } from "xstate";
-import { createAgenda } from "./features/agenda/agendaHelpers";
+import { createAgenda } from "../features/agenda/agendaHelpers";
 
 export default Machine({
   id: "agenda",
-  initial: "active",
+  initial: "loading",
   states: {
     loading: {
       on: {

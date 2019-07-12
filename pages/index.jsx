@@ -1,26 +1,25 @@
 import { useMachine } from "@xstate/react";
-import { Clock } from "grommet";
-import { useRouter } from "next/router";
+import { Button } from "grommet";
+import { useState } from "react";
 import Layout from "../components/Layout";
-import agendaMachine from "../statechart";
+import stateMachine from "../static/statechart";
 
 export default function index(props) {
-  const [current, send] = useMachine(agendaMachine);
+  const [current, send] = useMachine(stateMachine);
+  const [sent, setSent] = useState(false);
 
-  const router = useRouter();
-
-  const { meetingId } = router.query;
-
-  React.useEffect(() => {
-    if (!meetingId) {
-      send("NEW_AGENDA_CREATED");
-    }
-  }, [meetingId]);
-
+  console.log("state", current.value);
   return (
     <Layout>
       <div className="vh-100 vw-100 flex items-center justify-center">
-        <Clock type="digital" />
+        <Button
+          autoFocus
+          label={sent ? "Creating..." : "Create A New Agenda"}
+          onClick={() => {
+            setSent(true);
+            send("NEW_AGENDA_CREATED");
+          }}
+        />
       </div>
     </Layout>
   );

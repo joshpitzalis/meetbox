@@ -52,7 +52,8 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state, minutes }) => {
           </dl> */}
             <div
               className={`flex flex-column item-start  ${
-                state === "active" ? "w-25" : "w-50"
+                // state === "active" ? "w-25" : "w-50"
+                "w-50"
               }`}
             >
               <AgendaItemName
@@ -68,13 +69,18 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state, minutes }) => {
                     meetingId={meetingId}
                     id={id}
                     prep={prep}
-                    status="locked"
+                    state={state}
                   />
                 </>
               )}
             </div>
             {(state === "draft" || state === "confirmed") && (
-              <Prerequisites meetingId={meetingId} id={id} prep={prep} />
+              <Prerequisites
+                meetingId={meetingId}
+                id={id}
+                prep={prep}
+                state={state}
+              />
             )}
 
             {(state === "active" || state === "complete") && (
@@ -83,12 +89,13 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state, minutes }) => {
                 itemId={id}
                 meetingId={meetingId}
                 minutes={minutes}
+                state={state}
               />
             )}
 
-            {(state === "active" || state === "complete") && (
+            {/* {(state === "active" || state === "complete") && (
               <p className="w-25">task list</p>
-            )}
+            )} */}
           </div>
           {(state === "draft" || state === "active") && (
             <div className="bg-light-red flex items-center">

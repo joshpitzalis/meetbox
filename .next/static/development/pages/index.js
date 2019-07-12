@@ -11,39 +11,32 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Layout; });
 /* harmony import */ var grommet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grommet */ "./node_modules/grommet/es6/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _static_tachyons_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../static/tachyons.css */ "./static/tachyons.css");
-/* harmony import */ var _static_tachyons_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_static_tachyons_css__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _static_tachyons_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../static/tachyons.css */ "./static/tachyons.css");
+/* harmony import */ var _static_tachyons_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_static_tachyons_css__WEBPACK_IMPORTED_MODULE_2__);
 var _jsxFileName = "/Users/joshpitzalis/Desktop/agenda/components/Layout.jsx";
 
 
 
-
-var propTypes = {
-  children: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array.isRequired
-};
 function Layout(_ref) {
   var children = _ref.children;
-  return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("main", {
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("main", {
     className: "pa0 ma0 sans-serif",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 10
+      lineNumber: 7
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_0__["Grommet"], {
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_0__["Grommet"], {
     plain: true,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 11
+      lineNumber: 8
     },
     __self: this
   }, children));
 }
-Layout.propTypes = propTypes;
 
 /***/ }),
 
@@ -86,9 +79,7 @@ function () {
             });
 
           case 4:
-            return _context.abrupt("return", next_router__WEBPACK_IMPORTED_MODULE_2___default.a.push({
-              pathname: "/meeting/".concat(doc.id)
-            }));
+            return _context.abrupt("return", next_router__WEBPACK_IMPORTED_MODULE_2___default.a.push("/meeting/".concat(doc.id)));
 
           case 7:
             _context.prev = 7;
@@ -72806,10 +72797,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _xstate_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @xstate/react */ "./node_modules/@xstate/react/lib/index.js");
 /* harmony import */ var _xstate_react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_xstate_react__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var grommet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! grommet */ "./node_modules/grommet/es6/index.js");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! next/router */ "./node_modules/next/dist/client/router.js");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Layout */ "./components/Layout.jsx");
-/* harmony import */ var _statechart__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../statechart */ "./statechart.js");
+/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Layout */ "./components/Layout.jsx");
+/* harmony import */ var _static_statechart__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../static/statechart */ "./static/statechart.js");
 
 var _jsxFileName = "/Users/joshpitzalis/Desktop/agenda/pages/index.jsx";
 
@@ -72819,36 +72808,40 @@ var _jsxFileName = "/Users/joshpitzalis/Desktop/agenda/pages/index.jsx";
 
 
 function index(props) {
-  var _useMachine = Object(_xstate_react__WEBPACK_IMPORTED_MODULE_2__["useMachine"])(_statechart__WEBPACK_IMPORTED_MODULE_6__["default"]),
+  var _useMachine = Object(_xstate_react__WEBPACK_IMPORTED_MODULE_2__["useMachine"])(_static_statechart__WEBPACK_IMPORTED_MODULE_5__["default"]),
       _useMachine2 = Object(_babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useMachine, 2),
       current = _useMachine2[0],
       send = _useMachine2[1];
 
-  var router = Object(next_router__WEBPACK_IMPORTED_MODULE_4__["useRouter"])();
-  var meetingId = router.query.meetingId;
-  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
-    if (!meetingId) {
-      send("NEW_AGENDA_CREATED");
-    }
-  }, [meetingId]);
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState2 = Object(_babel_runtime_corejs2_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_0__["default"])(_useState, 2),
+      sent = _useState2[0],
+      setSent = _useState2[1];
+
+  console.log("state", current.value);
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_Layout__WEBPACK_IMPORTED_MODULE_4__["default"], {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 21
+      lineNumber: 13
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "vh-100 vw-100 flex items-center justify-center",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 22
+      lineNumber: 14
     },
     __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_3__["Clock"], {
-    type: "digital",
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(grommet__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+    autoFocus: true,
+    label: sent ? "Creating..." : "Create A New Agenda",
+    onClick: function onClick() {
+      setSent(true);
+      send("NEW_AGENDA_CREATED");
+    },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 23
+      lineNumber: 15
     },
     __self: this
   })));
@@ -72915,22 +72908,22 @@ if (!firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.apps.length) {
 
 /***/ }),
 
-/***/ "./statechart.js":
-/*!***********************!*\
-  !*** ./statechart.js ***!
-  \***********************/
+/***/ "./static/statechart.js":
+/*!******************************!*\
+  !*** ./static/statechart.js ***!
+  \******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var xstate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! xstate */ "./node_modules/xstate/es/index.js");
-/* harmony import */ var _features_agenda_agendaHelpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/agenda/agendaHelpers */ "./features/agenda/agendaHelpers.js");
+/* harmony import */ var _features_agenda_agendaHelpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../features/agenda/agendaHelpers */ "./features/agenda/agendaHelpers.js");
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(xstate__WEBPACK_IMPORTED_MODULE_0__["Machine"])({
   id: "agenda",
-  initial: "active",
+  initial: "loading",
   states: {
     loading: {
       on: {

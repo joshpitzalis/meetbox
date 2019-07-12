@@ -17,13 +17,12 @@ export const PrepItem: SFC<IProps> = ({
   id,
   editMode,
   meetingId,
-  itemId,
-  status
+  itemId
 }) => {
   const [complete, markComplete] = useState(false);
   return (
     <div className="ma3">
-      {editMode && !status ? (
+      {editMode ? (
         <Button
           icon={<Close />}
           type="button"
