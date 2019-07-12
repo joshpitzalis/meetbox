@@ -8,16 +8,16 @@ import AgendaItem from "../../features/agenda/components/AgendaItem";
 import firebase from "../../sideEffects/firebase";
 import agendaMachine from "../../statechart";
 
-const useStreamMeeting = id => {
-  const stream$ = doc(firebase.firestore().doc(`meetings/${id}`));
+const useStreamMeeting = meetingId => {
+  const stream$ = doc(firebase.firestore().doc(`meetings/${meetingId}`));
   const [meeting, updateMeeting] = React.useState();
   React.useEffect(() => {
     const stream = stream$.subscribe(snapshot =>
       updateMeeting(snapshot.data())
     );
     return () => stream.unsubscribe();
-  }, []);
-  console.log("meeting", meeting);
+  }, [meetingId]);
+
   return meeting;
 };
 
@@ -36,10 +36,7 @@ const Index = () => {
 
   const meeting = useStreamMeeting(meetingId);
 
-  console.warn("current.value existing", current.value);
-  console.log("meeting", meeting);
-
-  const handleAddMeeting = () => {
+  const handleAddMeeting = meetingId => {
     const timestamp = +new Date();
 
     return firebase
@@ -96,7 +93,7 @@ const Index = () => {
                   size="large"
                   primary
                   label="Add Agenda Item"
-                  onClick={handleAddMeeting}
+                  onClick={() => handleAddMeeting(meetingId)}
                 />
               </div>
             )}
