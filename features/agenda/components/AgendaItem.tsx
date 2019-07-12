@@ -1,14 +1,13 @@
-import { Button, TextArea } from "grommet";
-import { Add, Close } from "grommet-icons";
+import { Button } from "grommet";
+import { Close } from "grommet-icons";
 import { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 import { AgendaItemName } from "./AgendaItemName";
+import { Minutes } from "./Minutes";
 import { Prerequisites } from "./Prerequisites";
 
 const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
-  const [showNotes, setShowNotes] = useState(false);
-
-  const deleteItem = (itemId, meetingId) =>
+  const deleteItem = (itemId: number, meetingId: number) =>
     firebase
       .firestore()
       .doc(`meetings/${meetingId}`)
@@ -19,7 +18,10 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
 
   const [confirm, setConfirm] = useState(false);
   return (
-    <div className={`flex items-center item${index} pl6 near-black`}>
+    <div
+      data-testid="agendaItem"
+      className={`flex items-center item${index} pl6 near-black`}
+    >
       {confirm ? (
         <div className="h5 flex flex-column items-center justify-center w-100">
           <p className="f3">You sure you want to delete this item ?</p>
@@ -63,7 +65,7 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
           )}
 
           {(state === "active" || state === "complete") && (
-            <Minutes setShowNotes={setShowNotes} />
+            <Minutes firebase={firebase} itemId={id} meetingId={meetingId} />
           )}
 
           {/* there should also be a tasks section */}
@@ -130,23 +132,3 @@ const AgendaItem = ({ id, name, prep, index, meetingId, state }) => {
 };
 
 export default AgendaItem;
-
-function Minutes({ setShowNotes }) {
-  const [editable, setEditable] = useState(false);
-  return (
-    <div className="ma3 h5 pointer measure" onClick={() => setShowNotes(true)}>
-      {editable ? (
-        <TextArea resize="vertical" className="w-100 bg-white" fill={true} />
-      ) : (
-        <div className="ma3">
-          <Button
-            icon={<Add />}
-            label="Add Notes, Tasks, Votes Or Decisions"
-            onClick={() => setEditable(true)}
-            plain
-          />
-        </div>
-      )}
-    </div>
-  );
-}

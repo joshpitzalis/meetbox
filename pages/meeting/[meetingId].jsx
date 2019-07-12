@@ -1,53 +1,12 @@
 import { useMachine } from "@xstate/react";
-import { Button, Clock } from "grommet";
+import { Button } from "grommet";
 import { Add, Play, Send, Stop } from "grommet-icons";
 import { useRouter } from "next/router";
 import { doc } from "rxfire/firestore";
-import { Machine } from "xstate";
 import Layout from "../../components/Layout";
 import AgendaItem from "../../features/agenda/components/AgendaItem";
 import firebase from "../../sideEffects/firebase";
-
-const offline = true;
-const meetingId = "1l3wk";
-
-const createAgenda = event => {
-  if (offline) {
-    return Router.push(`/meeting/${meetingId}`);
-  }
-  const doc = firebase
-    .firestore()
-    .collection("meetings")
-    .doc();
-  return Router.push(`/meeting/${doc.id}`);
-};
-
-const propTypes = {};
-
-const defaultProps = {};
-
-const agendaMachine = Machine({
-  id: "agenda",
-  initial: "active",
-  states: {
-    draft: {
-      on: {
-        SAVED_DRAFT: "confirmed"
-      }
-    },
-    confirmed: {
-      on: {
-        STARTED: "active"
-      }
-    },
-    active: {
-      on: {
-        ENDED: "complete"
-      }
-    },
-    complete: { type: "final" }
-  }
-});
+import agendaMachine from "../../statechart";
 
 const useStreamMeeting = id => {
   const stream$ = doc(firebase.firestore().doc(`meetings/${id}`));
@@ -58,68 +17,42 @@ const useStreamMeeting = id => {
     );
     return () => stream.unsubscribe();
   }, []);
+  console.log("meeting", meeting);
   return meeting;
 };
 
-// const getInitialProps = async ({ query }) => {
-//   // const slug = url.query.slug;
-//   // const meetings = await firebase
-//   //   .firestore()
-//   //   .collection("meetings")
-//   //   .doc(slug)
-//   //   .get()
-//   //   .then(doc => doc.exists && doc.data())
-//   //   .catch(error => error);
-//   // return { meetings };
-
-//   const { meetingId } = query;
-
-//   return { query };
-// };
-
-export default function index() {
+const Index = () => {
   const [current, send] = useMachine(agendaMachine);
+
   const router = useRouter();
 
-  const meeting = useStreamMeeting(router.query.meetingId);
+  const meetingId = router.query.meetingId;
 
-  const [listOfMeetings, setMeetings] = React.useState(
-    offline ? [] : meeting && Object.values(meeting.items)
-  );
+  React.useEffect(() => {
+    if (meetingId) {
+      send("REDIRECTED_TO_EXISTING_AGENDA");
+    }
+  }, [meetingId]);
+
+  const meeting = useStreamMeeting(meetingId);
+
+  console.warn("current.value existing", current.value);
+  console.log("meeting", meeting);
 
   const handleAddMeeting = () => {
     const timestamp = +new Date();
 
-    if (offline) {
-      const newMeetings = [
-        ...listOfMeetings,
-        {
-          [`items.${timestamp}.id`]: timestamp
-        }
-      ];
-
-      return setMeetings(newMeetings);
-    }
-
-    firebase
+    return firebase
       .firestore()
       .doc(`meetings/${meetingId}`)
       .update({
         [`items.${timestamp}.id`]: timestamp
       })
-      .catch(error => console.error(error));
+      .catch(error => console.error({ error }));
   };
-
-  console.log("current.value", current.value);
 
   return (
     <Layout>
-      {(current.value === "loading" || current.value === "creatingAgenda") && (
-        <div className="vh-100 vw-100 flex items-center justify-center">
-          <Clock type="digital" />
-        </div>
-      )}
-
       {(current.value === "draft" ||
         current.value === "confirmed" ||
         current.value === "active" ||
@@ -144,14 +77,17 @@ export default function index() {
             )}
           </aside>
           <div className="flex-grow-1 w-100 flex flex-column">
-            {listOfMeetings.map((props, index) => (
-              <AgendaItem
-                {...props}
-                index={index}
-                meetingId={meetingId}
-                state={current.value}
-              />
-            ))}
+            {meeting &&
+              meeting.items &&
+              Object.values(meeting.items).map((props, index) => (
+                <AgendaItem
+                  key={props.meetingId}
+                  {...props}
+                  index={index}
+                  meetingId={props.meetingId}
+                  state={current.value}
+                />
+              ))}
             {(current.value === "draft" || current.value === "active") && (
               <div className="pa5 tc w-100">
                 <Button
@@ -195,7 +131,6 @@ export default function index() {
       </style>
     </Layout>
   );
-}
+};
 
-index.propTypes = propTypes;
-index.defaultProps = defaultProps;
+export default Index;
