@@ -1,1 +1,8 @@
 @import "./tachyons.css";
+@import "./palette.css";
+
+.button:hover .tooltip {
+  display: block;
+  bottom: 70px;
+  left: 70px;
+}
