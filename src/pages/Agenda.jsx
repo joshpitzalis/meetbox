@@ -2,60 +2,53 @@ import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
 import { Add, Send } from "grommet-icons";
 import React, { useEffect } from "react";
-import { doc } from "rxfire/firestore";
 import Sidebar from "../components/Sidebar";
+import {
+  handleAddMeeting,
+  useStreamMeeting
+} from "../features/agenda/agendaHelpers";
 import AgendaItem from "../features/agenda/components/AgendaItem";
-import firebase from "../sideEffects/firebase";
 import stateMachine from "../statechart";
-
-const useStreamMeeting = meetingId => {
-  const stream$ = doc(firebase.firestore().doc(`meetings/${meetingId}`));
-  const [meeting, updateMeeting] = React.useState();
-  React.useEffect(() => {
-    const stream = stream$.subscribe(snapshot =>
-      updateMeeting(snapshot.data())
-    );
-    return () => stream.unsubscribe();
-  }, [meetingId]);
-
-  return meeting;
-};
 
 const Agenda = ({ match, history }) => {
   const [current, send] = useMachine(stateMachine);
-
   const meetingId = match.params.meetingId;
-  console.log("meetingId", meetingId);
-
-  useEffect(() => {
-    if (meetingId) {
-      send("REDIRECTED_TO_EXISTING_AGENDA");
-    }
-    send({ type: "NEW_AGENDA_CREATED", payload: history });
-  }, [meetingId]);
-
   const meeting = useStreamMeeting(meetingId);
 
-  const handleAddMeeting = meetingId => {
-    const timestamp = +new Date();
+  useEffect(() => {
+    if (meetingId && meeting && meeting.status === "complete") {
+      send("REDIRECTED_TO_COMPLETE_AGENDA");
+    }
 
-    return firebase
-      .firestore()
-      .doc(`meetings/${meetingId}`)
-      .update({
-        [`items.${timestamp}.id`]: timestamp
-      })
-      .catch(error => console.error({ error }));
-  };
+    if (meetingId && meeting && meeting.status === "active") {
+      send("REDIRECTED_TO_ACTIVE_AGENDA");
+    }
 
-  // console.log("state", current.value);
+    if (meetingId && meeting && meeting.status === "confirmed") {
+      send("REDIRECTED_TO_CONFIRMED_AGENDA");
+    }
+
+    if (meetingId && meeting && meeting.status === "draft") {
+      send("REDIRECTED_TO_EXISTING_AGENDA");
+    }
+
+    if (!meetingId) {
+      send({ type: "NEW_AGENDA_CREATED", payload: history });
+    }
+  }, [meetingId, meeting]);
 
   return (
     <>
-      {(current.value === "draft" ||
-        current.value === "confirmed" ||
-        current.value === "active" ||
-        current.value === "complete") && (
+      {(current.matches("loading") || current.matches("creatingAgenda")) && (
+        <div className="vh-100 vw-100 flex items-center justify-center">
+          <p>Loading...</p>
+        </div>
+      )}
+
+      {(current.matches("draft") ||
+        current.matches("confirmed") ||
+        current.matches("active") ||
+        current.matches("complete")) && (
         <section className="flex vh-100 w-100 ">
           <Sidebar send={send} state={current.value} />
           <div className="flex-grow-1 w-100 flex flex-column">
@@ -70,7 +63,7 @@ const Agenda = ({ match, history }) => {
                   state={current.value}
                 />
               ))}
-            {(current.value === "draft" || current.value === "active") && (
+            {(current.matches("draft") || current.matches("active")) && (
               <div className="pa5 tc w-100">
                 <Button
                   icon={<Add />}
@@ -91,12 +84,6 @@ const Agenda = ({ match, history }) => {
             )}
           </div>
         </section>
-      )}
-
-      {current.value === "failure" && (
-        <div className="vh-100 vw-100 flex items-center justify-center">
-          FAILURE
-        </div>
       )}
     </>
   );

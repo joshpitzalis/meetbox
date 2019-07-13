@@ -44,3 +44,15 @@ test("anyone can complete a task", () => {
 test("you shouldn't be able to add a blank agenda item to the agenda, add validation before submitting", () => {
   expect(true).toBeFalsy();
 });
+
+test("create task", () => {
+  expect(true).toBeFalsy();
+});
+
+test("update task", () => {
+  expect(true).toBeFalsy();
+});
+
+test("delete task", () => {
+  expect(true).toBeFalsy();
+});

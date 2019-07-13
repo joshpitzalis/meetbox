@@ -1,56 +1,41 @@
-import { Button, Form, FormField, RadioButton } from "grommet";
+import { Button, CheckBox, Form, FormField } from "grommet";
 import { Close } from "grommet-icons";
 import React, { useState } from "react";
-import firebase from "../../../sideEffects/firebase";
 
-// interface IProps {
-//   meetingId: number;
-//   id: number;
-//   prep?: [{ name: string, id: string }];
-//   state?: string;
-// }
-
-// export const Prerequisites: React.SFC<IProps> = ({
-//   meetingId,
-//   id,
-//   prep,
-//   state
-// }) => {
-
-export const Prerequisites = ({ meetingId, id, prep, state }) => {
+export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
   const [editMode, setEditMode] = useState(false);
-
   const [value, resetForm] = useState({ name: "" });
-
   return (
-    <div className={`${state === "active" ? "w-100" : "w-25 center"}`}>
-      {prep &&
-        Object.values(prep).map(item => (
-          <PrepItem
-            {...item}
-            key={item.id}
+    <div className="w-25">
+      <p>Task list</p>
+      {tasks &&
+        Object.values(tasks).map(task => (
+          <Task
+            {...task}
+            key={task.taskId}
             editMode={editMode}
+            itemId={itemId}
+            firebase={firebase}
             meetingId={meetingId}
-            itemId={id}
           />
         ))}
-
       {editMode ? (
-        <div className="ma3 pt4 pl2">
+        <div className="pt4 pl2">
           <Form
             value={value}
             onSubmit={data => {
               const { value } = data;
-              const prepId = +new Date();
+              const taskId = +new Date();
               const { name } = value;
               resetForm({ name: "" });
               firebase
                 .firestore()
                 .doc(`meetings/${meetingId}`)
                 .update({
-                  [`items.${id}.prep.${prepId}`]: {
-                    id: prepId,
-                    name
+                  [`items.${itemId}.tasks.${taskId}`]: {
+                    taskId,
+                    name,
+                    complete: false
                   }
                 })
                 .catch(error => console.error(error));
@@ -78,14 +63,14 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
           </Form>
         </div>
       ) : (
-        <div className="tc o-50 w-100">
-          {state === "draft" && (
+        <div className=" o-50 w-100">
+          {state === "active" && (
             <Button
               type="button"
               label={
-                prep && Object.values(prep).length > 0
-                  ? "Click to add more prep."
-                  : "Click here to add prep."
+                tasks && Object.values(tasks).length > 0
+                  ? "Click to add more tasks."
+                  : "Click here to add a task."
               }
               plain
               onClick={() => setEditMode(true)}
@@ -96,29 +81,20 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
       )}
     </div>
   );
-};
+}
 
-// interface IProps {
-//   name: string;
-//   id: string;
-//   editMode: boolean;
-//   meetingId: number;
-//   itemId: number;
-//   status?: string;
-// }
-
-// export const PrepItem: SFC<IProps> = ({
-//   name,
-//   id,
-//   editMode,
-//   meetingId,
-//   itemId
-// }) => {
-
-export const PrepItem = ({ name, id, editMode, meetingId, itemId }) => {
-  const [complete, markComplete] = useState(false);
+export function Task({
+  taskId,
+  name,
+  complete,
+  editMode,
+  itemId,
+  meetingId,
+  firebase
+}) {
+  const [checked, setChecked] = React.useState(complete);
   return (
-    <div className="ma3">
+    <>
       {editMode ? (
         <Button
           icon={<Close />}
@@ -130,21 +106,28 @@ export const PrepItem = ({ name, id, editMode, meetingId, itemId }) => {
               .firestore()
               .doc(`meetings/${meetingId}`)
               .update({
-                [`items.${itemId}.prep.${id}`]: firebase.firestore.FieldValue.delete()
+                [`items.${itemId}.tasks.${taskId}`]: firebase.firestore.FieldValue.delete()
               })
               .catch(error => console.error(error))
           }
           className="dim"
         />
       ) : (
-        <RadioButton
-          name={name}
-          key={id}
+        <CheckBox
           checked={complete}
           label={name}
-          onChange={() => markComplete(true)}
+          onChange={event =>
+            firebase
+              .firestore()
+              .doc(`meetings/${meetingId}`)
+              .update({
+                [`items.${itemId}.tasks.${taskId}.complete`]: event.target
+                  .checked
+              })
+              .catch(error => console.error(error))
+          }
         />
       )}
-    </div>
+    </>
   );
-};
+}

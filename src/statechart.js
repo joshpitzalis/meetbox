@@ -8,7 +8,10 @@ export default Machine({
     loading: {
       on: {
         NEW_AGENDA_CREATED: "creatingAgenda",
-        REDIRECTED_TO_EXISTING_AGENDA: "draft"
+        REDIRECTED_TO_EXISTING_AGENDA: "draft",
+        REDIRECTED_TO_CONFIRMED_AGENDA: "confirmed",
+        REDIRECTED_TO_ACTIVE_AGENDA: "active",
+        REDIRECTED_TO_COMPLETE_AGENDA: "complete"
       }
     },
     creatingAgenda: {
@@ -20,7 +23,7 @@ export default Machine({
           // The resolved data is placed into a 'done.invoke.<id>' event, under the data property http://bit.ly/2Ft2WR8
         },
         onError: {
-          target: "error"
+          target: "loading"
         }
       }
     },
@@ -39,7 +42,6 @@ export default Machine({
         ENDED: "complete"
       }
     },
-    complete: { type: "final" },
-    error: { type: "final" }
+    complete: { type: "final" }
   }
 });
