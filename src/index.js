@@ -10,7 +10,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Grommet plain>
-        <main className="pa0 ma0 sans-serif">
+        <main className={`pa0 ma0 sans-serif`}>
           <Route exact path="/" component={Agenda} />
           <Route path="/meeting/:meetingId" component={Agenda} />
         </main>

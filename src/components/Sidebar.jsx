@@ -2,9 +2,8 @@ import { Play, Send, Stop } from "grommet-icons";
 import React from "react";
 
 const Sidebar = ({ send, state, firebase, meetingId }) => {
-  const [dialogue, toggleDialogue] = React.useState(false);
   return (
-    <aside className="flex flex-column justify-around items-center fixed vh-100 bg-white">
+    <aside className="flex flex-column justify-around items-center fixed h-100 bg-white ">
       {state === "confirmed" ? (
         <Play
           onClick={() => {
@@ -55,16 +54,10 @@ const Sidebar = ({ send, state, firebase, meetingId }) => {
         Meetbox <span className="f6">0.0.1</span>
       </h1>
       {state === "draft" ? (
-        <Send className="pointer " onClick={() => toggleDialogue(true)} />
-      ) : (
-        <span />
-      )}
-
-      {dialogue && (
-        <dialog>
-          <h3>I'm a dialog</h3>
-
-          <p>Look at me.</p>
+        <div className="button">
+          <p className="dn absolute tooltip w5">
+            If you'd like to share it before finalising just share the url.
+          </p>
           <Send
             className="pointer "
             onClick={() => {
@@ -78,7 +71,9 @@ const Sidebar = ({ send, state, firebase, meetingId }) => {
                 .catch(console.error);
             }}
           />
-        </dialog>
+        </div>
+      ) : (
+        <span />
       )}
     </aside>
   );
