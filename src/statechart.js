@@ -1,6 +1,5 @@
 import { Machine } from "xstate";
 import { createAgenda } from "./features/agenda/agendaHelpers";
-
 export default Machine({
   id: "agenda",
   initial: "loading",
@@ -42,6 +41,9 @@ export default Machine({
         ENDED: "complete"
       }
     },
-    complete: { type: "final" }
+    complete: {
+      entry: ["updateCompleteStatus"],
+      type: "final"
+    }
   }
 });

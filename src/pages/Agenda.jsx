@@ -8,6 +8,7 @@ import {
   useStreamMeeting
 } from "../features/agenda/agendaHelpers";
 import AgendaItem from "../features/agenda/components/AgendaItem";
+import firebase from "../sideEffects/firebase";
 import stateMachine from "../statechart";
 
 const Agenda = ({ match, history }) => {
@@ -50,7 +51,12 @@ const Agenda = ({ match, history }) => {
         current.matches("active") ||
         current.matches("complete")) && (
         <section className="flex vh-100 w-100 ">
-          <Sidebar send={send} state={current.value} />
+          <Sidebar
+            send={send}
+            state={current.value}
+            meetingId={meetingId}
+            firebase={firebase}
+          />
           <div className="flex-grow-1 w-100 flex flex-column">
             {meeting &&
               meeting.items &&
@@ -61,6 +67,7 @@ const Agenda = ({ match, history }) => {
                   meetingId={meetingId}
                   index={index}
                   state={current.value}
+                  firebase={firebase}
                 />
               ))}
             {(current.matches("draft") || current.matches("active")) && (

@@ -2,48 +2,21 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 const config = {
-  apiKey: "AIzaSyD0_c1V4vvrHVwVD941n_KLnbj55f0c5gI",
-  authDomain: "decision-dev.firebaseapp.com",
-  databaseURL: "https://decision-dev.firebaseio.com",
-  projectId: "decision-dev",
-  storageBucket: "decision-dev.appspot.com",
-  messagingSenderId: "1006893299756",
-  appId: "1:1006893299756:web:0581850d4e51ba77"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DB_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER,
+  appId: process.env.REACT_APP_APP_ID
 };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(config);
-} else {
-  firebase.app();
-}
+firebase.initializeApp(config);
+
+// if (!firebase.apps.length) {
+//   firebase.initializeApp(config);
+// } else {
+//   firebase.app();
+// }
 
 export default firebase;
-
-// export default async function loadDb() {
-//   const firebase = await import("firebase/app");
-//   await import("@firebase/firestore");
-
-//   try {
-//     // if (!firebase.apps.length) {
-//     firebase.initializeApp({
-//       apiKey: "AIzaSyD0_c1V4vvrHVwVD941n_KLnbj55f0c5gI",
-//       authDomain: "decision-dev.firebaseapp.com",
-//       databaseURL: "https://decision-dev.firebaseio.com",
-//       projectId: "decision-dev",
-//       storageBucket: "decision-dev.appspot.com",
-//       messagingSenderId: "1006893299756",
-//       appId: "1:1006893299756:web:0581850d4e51ba77"
-//     });
-//     // } else {
-//     //   firebase.app();
-//     // }
-//   } catch (err) {
-//     // we skip the "already exists" message which is
-//     // not an actual error when we're hot-reloading
-//     if (!/already exists/.test(err.message)) {
-//       console.error("Firebase initialization error", err.stack);
-//     }
-//   }
-
-//   return firebase.firestore();
-// }

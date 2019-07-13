@@ -92,7 +92,6 @@ export function Task({
   meetingId,
   firebase
 }) {
-  const [checked, setChecked] = React.useState(complete);
   return (
     <>
       {editMode ? (

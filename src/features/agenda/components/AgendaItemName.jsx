@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 import { Prerequisites } from "./Prerequisites";
 export function AgendaItemName({ name, id, meetingId, state, prep }) {
-  const [editMode, toggleEditMode] = useState(false);
+  const [editMode, toggleEditMode] = useState(state === "draft");
   const [title, setTitle] = useState("");
 
   const handleSubmit = data => {
@@ -26,7 +26,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
       }`}
     >
       <div className="">
-        {editMode || state === "draft" ? (
+        {editMode ? (
           <Form
             // onSubmit={(data: React.FormEvent<HTMLFormElement>) =>
             //   handleSubmit(data)
