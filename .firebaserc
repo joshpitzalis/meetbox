@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "decision-dev"
+    "default": "decision-dev",
+    "prod": "meetbox-prod"
   }
 }
