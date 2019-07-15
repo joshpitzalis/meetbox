@@ -32,7 +32,7 @@ export const Minutes = ({ firebase, itemId, meetingId, minutes, state }) => {
       .subscribe(text => setSaved(true));
   };
   return (
-    <div className="ma3 h5 pointer w-50">
+    <div className="ma3 h5 pointer w-50" data-testid="editableMinutes">
       {state === "completed" && <p>Minutes</p>}
       {state === "active" ? (
         <>

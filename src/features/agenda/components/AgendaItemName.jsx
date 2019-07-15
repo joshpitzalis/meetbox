@@ -19,6 +19,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
       .catch(error => console.error(error));
   };
 
+  console.log("state", state);
   return (
     <div
       className={`flex flex-column justify-start item-start  ${
@@ -46,7 +47,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
           </Form>
         ) : (
           <div className="flex items-center measure flex-grow-1">
-            {state !== "complete" && (
+            {(state === "draft" || state === "active") && (
               <Edit
                 className="dim ma3 pointer"
                 onClick={() => toggleEditMode(true)}

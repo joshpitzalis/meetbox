@@ -43,7 +43,7 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
           >
             <FormField
               name="name"
-              label="Preparation"
+              label="New Task"
               placeholder="Describe any prep you need people to do for this agenda item."
               required
             />

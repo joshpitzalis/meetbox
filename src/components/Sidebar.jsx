@@ -2,6 +2,14 @@ import { Play, Send, Stop } from "grommet-icons";
 import React from "react";
 
 const Sidebar = ({ send, state, firebase, meetingId }) => {
+  React.useEffect(() => {
+    var config = {
+      selector: "h1",
+      account: "JAMlBJ"
+    };
+
+    window.Headway.init(config);
+  }, []);
   return (
     <aside className="flex flex-column justify-around items-center fixed h-100 bg-white ">
       {state === "confirmed" ? (
@@ -35,8 +43,9 @@ const Sidebar = ({ send, state, firebase, meetingId }) => {
       ) : (
         <span />
       )}
+
       <h1
-        className="ph4"
+        className="ph4 flex"
         style={{
           writingMode: "vertical-rl",
           transform: "rotate(180deg)",
@@ -51,8 +60,12 @@ const Sidebar = ({ send, state, firebase, meetingId }) => {
           color: " #363d87"
         }}
       >
-        Meetbox <span className="f6">0.0.1</span>
+        Meetbox
+        <span id="HW_badge_cont" className="pointer">
+          <span id="HW_badge">1</span>
+        </span>
       </h1>
+
       {state === "draft" ? (
         <div className="button">
           <p className="dn absolute tooltip w5">

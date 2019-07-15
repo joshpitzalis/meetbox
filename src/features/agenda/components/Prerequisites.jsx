@@ -141,7 +141,17 @@ export const PrepItem = ({ name, id, editMode, meetingId, itemId }) => {
           name={name}
           key={id}
           checked={complete}
-          label={name}
+          label={
+            <p
+              className="w-80"
+              style={{
+                wordWrap: "break-word",
+                textOverflow: "ellipsis"
+              }}
+            >
+              {name}
+            </p>
+          }
           onChange={() => markComplete(true)}
         />
       )}
