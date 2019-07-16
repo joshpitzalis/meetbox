@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 import { Prerequisites } from "./Prerequisites";
 export function AgendaItemName({ name, id, meetingId, state, prep }) {
-  const [editMode, toggleEditMode] = useState(state === "draft");
+  const [editMode, toggleEditMode] = useState(state.matches("draft"));
   const [title, setTitle] = useState("");
 
   const handleSubmit = data => {
@@ -19,11 +19,10 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
       .catch(error => console.error(error));
   };
 
-  console.log("state", state);
   return (
     <div
       className={`flex flex-column justify-start item-start  ${
-        state === "active" ? "w-25" : "w-50"
+        state.matches("active") ? "w-25" : "w-50"
       }`}
     >
       <div className="">
@@ -47,7 +46,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
           </Form>
         ) : (
           <div className="flex items-center measure flex-grow-1">
-            {(state === "draft" || state === "active") && (
+            {(state.matches("active") || state.matches("draft")) && (
               <Edit
                 className="dim ma3 pointer"
                 onClick={() => toggleEditMode(true)}
@@ -57,7 +56,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
           </div>
         )}
       </div>
-      {state === "active" && (
+      {state.matches("active") && (
         <>
           {prep && <p className="mt3 mh2">Preparations</p>}
           <Prerequisites

@@ -1,6 +1,6 @@
 import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
-import { Add, Send } from "grommet-icons";
+import { Add, FormNextLink } from "grommet-icons";
 import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import {
@@ -66,7 +66,7 @@ const Agenda = ({ match, history }) => {
                   {...props}
                   meetingId={meetingId}
                   index={index}
-                  state={current.value}
+                  state={current}
                   firebase={firebase}
                 />
               ))}
@@ -84,8 +84,8 @@ const Agenda = ({ match, history }) => {
                   <small className="o-50">
                     When you are done, click on the
                   </small>
-                  <Send className="ph1" />
-                  <small className="o-50"> to finalise.</small>
+                  <FormNextLink className="ph1" color="#D4D4D4" />
+                  <small className="o-50"> icon on the left to finalise.</small>
                 </div>
               </div>
             )}

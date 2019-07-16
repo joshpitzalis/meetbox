@@ -23,7 +23,7 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
   const [value, resetForm] = useState({ name: "" });
 
   return (
-    <div className={`${state === "active" ? "w-100" : "w-25 center"}`}>
+    <div className={`${state.matches("active") ? "w-100" : "w-25 center"}`}>
       {prep &&
         Object.values(prep).map(item => (
           <PrepItem
@@ -79,7 +79,7 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
         </div>
       ) : (
         <div className="tc o-50 w-100">
-          {state === "draft" && (
+          {state.matches("draft") && (
             <Button
               type="button"
               label={

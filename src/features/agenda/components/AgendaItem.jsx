@@ -47,7 +47,7 @@ const AgendaItem = ({
               prep={prep}
             />
 
-            {(state === "draft" || state === "confirmed") && (
+            {(state.matches("draft") || state.matches("confirmed")) && (
               <Prerequisites
                 meetingId={meetingId}
                 id={id}
@@ -56,7 +56,7 @@ const AgendaItem = ({
               />
             )}
 
-            {(state === "active" || state === "complete") && (
+            {(state.matches("active") || state.matches("complete")) && (
               <Minutes
                 firebase={firebase}
                 itemId={id}
@@ -66,7 +66,7 @@ const AgendaItem = ({
               />
             )}
 
-            {(state === "active" || state === "complete") && (
+            {(state.matches("active") || state.matches("complete")) && (
               <TaskList
                 firebase={firebase}
                 itemId={id}
@@ -76,7 +76,7 @@ const AgendaItem = ({
               />
             )}
           </div>
-          {(state === "draft" || state === "active") && (
+          {(state.matches("active") || state.matches("draft")) && (
             <div className="bg-light-red flex items-center">
               <Button
                 icon={<Close color="white" />}
