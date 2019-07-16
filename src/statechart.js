@@ -28,9 +28,20 @@ export default Machine({
     },
     draft: {
       on: {
-        SAVED_DRAFT: "confirmed"
+        SAVED_DRAFT: "confirmed",
+        SAVED_TO_CAL: "confirmed"
+      },
+      initial: "loggedOut",
+      states: {
+        loggedOut: {
+          on: {
+            CALENDAR_CONNECTED: "loggedIn"
+          }
+        },
+        loggedIn: {}
       }
     },
+
     confirmed: {
       on: {
         STARTED: "active"

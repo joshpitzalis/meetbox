@@ -53,7 +53,7 @@ const Agenda = ({ match, history }) => {
         <section className="flex vh-100 w-100 ">
           <Sidebar
             send={send}
-            state={current.value}
+            state={current}
             meetingId={meetingId}
             firebase={firebase}
           />

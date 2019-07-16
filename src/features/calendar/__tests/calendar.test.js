@@ -4,7 +4,7 @@ import { App } from "../../../Routes";
 
 afterEach(cleanup);
 
-test("When the app load it loads gapi", () => {
+test("When the app load it initializes gapi", () => {
   const props = {
     initClient: jest.fn()
   };
