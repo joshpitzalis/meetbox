@@ -12,8 +12,8 @@ const login = async (gapi, send) => {
   // const credential = auth.GoogleAuthProvider.credential(token);
 
   console.log({ googleUser, token });
-
-  getCalendar(gapi);
+  await insertEvent(gapi);
+  await getCalendar(gapi);
 };
 
 const logout = () => {
@@ -39,7 +39,7 @@ const hoursFromNow = n =>
   new Date(Date.now() + n * 1000 * 60 * 60).toISOString();
 
 const insertEvent = async gapi => {
-  const insert = await gapi.client.calendar.events.insert({
+  await gapi.client.calendar.events.insert({
     calendarId: "primary",
     start: {
       dateTime: hoursFromNow(2),
@@ -50,10 +50,23 @@ const insertEvent = async gapi => {
       timeZone: "America/Los_Angeles"
     },
     summary: "Have Fun!!!",
-    description: "Do some cool stuff and have a fun time doing it"
+    description: "Do some cool stuff and have a fun time doing it",
+    sendUpdates: "all",
+    attendees: [
+      {
+        // id: string,
+        email: "pittman.joshua@gmail.com"
+        // displayName: string,
+        // organizer: boolean,
+        // self: boolean,
+        // resource: boolean,
+        // optional: boolean,
+        // responseStatus: string,
+        // comment: string,
+        // additionalGuests: integer
+      }
+    ]
   });
-
-  await this.getCalendar();
 };
 
 const Sidebar = ({ send, state, firebase, meetingId }) => {
