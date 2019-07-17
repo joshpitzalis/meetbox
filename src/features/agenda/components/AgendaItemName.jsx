@@ -32,6 +32,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
             //   handleSubmit(data)
             // }
             onSubmit={data => handleSubmit(data)}
+            data-testid="itemNameForm"
           >
             <FormField
               name="name"

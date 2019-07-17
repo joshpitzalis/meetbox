@@ -39,6 +39,7 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
         <div className="ma3 pt4 pl2">
           <Form
             value={value}
+            data-testid="prepForm"
             onSubmit={data => {
               const { value } = data;
               const prepId = +new Date();
@@ -59,7 +60,7 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
             <FormField
               name="name"
               label="Preparation"
-              placeholder="Describe any prep you need people to do for this agenda item."
+              placeholder="Something you want people to do before the meeting"
               required
             />
 

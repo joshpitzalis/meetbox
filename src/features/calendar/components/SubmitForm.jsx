@@ -54,31 +54,33 @@ const handleSubmit = async ({
     setError({ ...error, title: "You need a title." });
     return;
   }
-  if (!timezone) {
+  if (!timezone && state.matches("draft.loggedIn")) {
     setError({ ...error, timezone: "Select a timezone." });
     return;
   }
-  if (!dateTime) {
+  if (!dateTime && state.matches("draft.loggedIn")) {
     setError({
       ...error,
       dateTime: "Set a date and time for the meeting."
     });
     return;
   }
-  const payload = {
-    summary,
-    start: {
-      dateTime: new Date(dateTime).toISOString(),
-      timezone
-    },
-    end: {
-      dateTime: hourFrom(dateTime),
-      timezone
-    },
-    attendees
-  };
+
   try {
     if (state.matches("draft.loggedIn")) {
+      const payload = {
+        summary,
+        start: {
+          dateTime: new Date(dateTime).toISOString(),
+          timezone
+        },
+        end: {
+          dateTime: hourFrom(dateTime),
+          timezone
+        },
+        attendees
+      };
+
       await insertEvent(window.gapi, payload);
     }
     await firebase
@@ -111,7 +113,10 @@ const SubmitForm = ({
   const [error, setError] = React.useState({});
 
   return (
-    <div className="w-full max-w-xs flex flex-col justify-around h-full">
+    <div
+      className="w-full max-w-xs flex flex-col justify-around h-full"
+      data-testid="agendaSubmitForm"
+    >
       {state.matches("draft.loggedOut") && (
         <div>
           <p className="text-center text-gray-500 text-sm">
@@ -147,112 +152,114 @@ const SubmitForm = ({
           )}
         </div>
 
-        <div className="mb3">
-          {error.timezone ? (
-            <p className="text-red-500 text-xs italic">{error.timezone}</p>
-          ) : (
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="timezone"
-            >
-              {timezone ? `Timezone: ${timezone}` : "Confirm Your Timezone"}
-            </label>
-          )}
-
-          <WorldMap
-            className="h-auto"
-            id="timezone"
-            color={error.timezone ? "red" : "neutral-1"}
-            onSelectPlace={async ([lat, lon]) => {
-              const timezone = await tzlookup(lat, lon);
-              setTimezone(timezone);
-            }}
-            selectColor="accent-2"
-            onClick={() => setError({})}
-          />
-        </div>
-
-        <div className="pb-5 mb-6 bb">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="startDate"
-          >
-            Start Date & Time
-          </label>
-
-          <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
-                ${error.dateTime && "border-red-500"}`}
-            id="startDate"
-            type="datetime-local"
-            onChange={e => {
-              const datestamp = e.currentTarget.value;
-              setDateTime(datestamp);
-              setError({});
-            }}
-          />
-          {error.dateTime && (
-            <p className="text-red-500 text-xs italic">{error.dateTime}</p>
-          )}
-        </div>
-
         {state.matches("draft.loggedIn") && (
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              if (!email) {
-                return;
-              }
-              setAttendees([
-                ...attendees,
-                {
-                  email
-                }
-              ]);
-              setEmail("");
-            }}
-          >
-            <div className="mb-4">
+          <>
+            <div className="mb3">
+              {error.timezone ? (
+                <p className="text-red-500 text-xs italic">{error.timezone}</p>
+              ) : (
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="timezone"
+                >
+                  {timezone ? `Timezone: ${timezone}` : "Confirm Your Timezone"}
+                </label>
+              )}
+
+              <WorldMap
+                className="h-auto"
+                id="timezone"
+                color={error.timezone ? "red" : "neutral-1"}
+                onSelectPlace={async ([lat, lon]) => {
+                  const timezone = await tzlookup(lat, lon);
+                  setTimezone(timezone);
+                }}
+                selectColor="accent-2"
+                onClick={() => setError({})}
+              />
+            </div>
+
+            <div className="pb-5 mb-6 bb">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="email"
+                htmlFor="startDate"
               >
-                Invitee Email Address
+                Start Date & Time
               </label>
 
               <input
-                className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                id="email"
-                type="email"
-                value={email}
-                placeholder="attendee@email.com"
-                onChange={e => setEmail(e.target.value)}
+                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
+                ${error.dateTime && "border-red-500"}`}
+                id="startDate"
+                type="datetime-local"
+                onChange={e => {
+                  const datestamp = e.currentTarget.value;
+                  setDateTime(datestamp);
+                  setError({});
+                }}
               />
-
-              {attendees && attendees.length > 0 ? (
-                <ul className="h-16 overflow-y-auto">
-                  {attendees.map(({ email }) => (
-                    <li key={email}>
-                      <FormClose
-                        className="ph-4 cursor-pointer"
-                        onClick={() =>
-                          setAttendees(
-                            attendees.filter(person => person.email !== email)
-                          )
-                        }
-                      />
-                      {email}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-600 text-xs italic pt-3">
-                  Gmail users will get a calendar invite, everyone else gets an
-                  email invite.{" "}
-                </p>
+              {error.dateTime && (
+                <p className="text-red-500 text-xs italic">{error.dateTime}</p>
               )}
             </div>
-          </form>
+
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                if (!email) {
+                  return;
+                }
+                setAttendees([
+                  ...attendees,
+                  {
+                    email
+                  }
+                ]);
+                setEmail("");
+              }}
+            >
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="email"
+                >
+                  Invitee Email Address
+                </label>
+
+                <input
+                  className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                  id="email"
+                  type="email"
+                  value={email}
+                  placeholder="attendee@email.com"
+                  onChange={e => setEmail(e.target.value)}
+                />
+
+                {attendees && attendees.length > 0 ? (
+                  <ul className="h-16 overflow-y-auto">
+                    {attendees.map(({ email }) => (
+                      <li key={email}>
+                        <FormClose
+                          className="ph-4 cursor-pointer"
+                          onClick={() =>
+                            setAttendees(
+                              attendees.filter(person => person.email !== email)
+                            )
+                          }
+                        />
+                        {email}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-600 text-xs italic pt-3">
+                    Gmail users will get a calendar invite, everyone else gets
+                    an email invite.{" "}
+                  </p>
+                )}
+              </div>
+            </form>
+          </>
         )}
 
         <div className="flex items-center justify-between">
@@ -283,7 +290,7 @@ const SubmitForm = ({
             }
           >
             {state.matches("draft.loggedOut")
-              ? "Finalise"
+              ? "Finalise Agenda"
               : Object.keys(error).length > 0
               ? "Complete the form first"
               : "Send"}

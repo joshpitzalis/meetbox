@@ -75,18 +75,19 @@ const Agenda = ({ match, history }) => {
               <div className="pa5 tc w-100">
                 <Button
                   icon={<Add />}
-                  className="pointer grow"
+                  className="pointer dim"
                   size="large"
                   primary
-                  label="Add Agenda Item"
+                  label="Add An Agenda Item"
                   onClick={() => handleAddMeeting(meetingId)}
                 />
                 <div className="pv3 flex items-center justify-center">
-                  <small className="o-50">
-                    When you are done, click on the
-                  </small>
+                  <small className="o-50">When you're done, click the</small>
                   <FormNextLink className="ph1" color="#D4D4D4" />
-                  <small className="o-50"> icon on the left to finalise.</small>
+                  <small className="o-50">
+                    {" "}
+                    icon in the bottom left corner to finalise.
+                  </small>
                 </div>
               </div>
             )}

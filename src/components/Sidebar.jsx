@@ -23,6 +23,7 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
       >
         {state.matches("confirmed") ? (
           <Play
+            data-testid="playButton"
             onClick={() => {
               send("STARTED");
               firebase
@@ -38,6 +39,7 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
         ) : state.matches("active") ? (
           <Stop
             className="pointer "
+            data-testid="stopButton"
             onClick={() => {
               send("ENDED");
               firebase
@@ -91,6 +93,7 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
                 size="large"
                 className="pointer"
                 onClick={() => setExpanded(true)}
+                data-testid="saveAgenda"
               />
             )}
           </div>
