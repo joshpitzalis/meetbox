@@ -56,6 +56,7 @@ const Agenda = ({ match, history }) => {
             state={current}
             meetingId={meetingId}
             firebase={firebase}
+            title={meeting && meeting.summary}
           />
           <div className="flex-grow-1 w-100 flex flex-column">
             {meeting &&
