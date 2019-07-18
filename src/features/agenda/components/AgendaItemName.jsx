@@ -22,8 +22,8 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
 
   return (
     <div
-      className={`flex flex-column justify-start item-start  ${
-        state.matches("active") ? "w-25" : "w-50"
+      className={`flex flex-column justify-start item-start w-100 ${
+        state.matches("active") ? "w-25-ns" : "w-50-ns"
       }`}
     >
       <div className="">

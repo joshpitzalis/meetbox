@@ -7536,6 +7536,13 @@ video {
   background-color: #2b6cb0;
 }
 
+@media screen and (min-width: 30em) {
+  .rotate-ns {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+}
+
 @media (min-width: 640px) {
   .sm\:appearance-none {
     -webkit-appearance: none;

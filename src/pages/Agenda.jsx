@@ -50,7 +50,7 @@ const Agenda = ({ match, history }) => {
         current.matches("confirmed") ||
         current.matches("active") ||
         current.matches("complete")) && (
-        <section className="flex vh-100 w-100 ">
+        <section className="flex flex-wrap flex-column-ns flex-row vh-100-ns h-auto w-100">
           <Sidebar
             send={send}
             state={current}
@@ -81,7 +81,7 @@ const Agenda = ({ match, history }) => {
                   label="Add An Agenda Item"
                   onClick={() => handleAddMeeting(meetingId)}
                 />
-                <div className="pv3 flex items-center justify-center">
+                <div className="pv3 flex-ns items-center justify-center dn ">
                   <small className="o-50">When you're done, click the</small>
                   <FormNextLink className="ph1" color="#D4D4D4" />
                   <small className="o-50">

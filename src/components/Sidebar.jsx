@@ -12,14 +12,20 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
     window.Headway && window.Headway.init(config);
   }, []);
 
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(true);
   const [summary, setSummary] = React.useState(title);
   return (
-    <div className={`flex ${expanded && "w-50 shadow-1 z-1"}`}>
+    <div
+      className={`flex flex-column flex-row-ns fixed-ns vh-100-ns  ${
+        expanded ? "shadow-1 z-1 vh-100 pr4 bg-white" : "w-100"
+      }`}
+    >
       <aside
-        className={`flex flex-column justify-around h-100 bg-white ${
-          expanded ? " items-start " : "items-center fixed"
-        }`}
+        className={`
+         flex flex-row md:flex-col lg:flex-col flex-column-ns
+         justify-around h-100-ns bg-white w-100 w-auto-ns 
+         ${expanded ? "items-start" : "items-center "}
+         `}
       >
         {state.matches("confirmed") ? (
           <Play
@@ -52,14 +58,12 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
             }}
           />
         ) : (
-          <span />
+          <span className="w3" />
         )}
 
         <h1
-          className="ph4 flex"
+          className="ph4 rotate-ns flex items-center "
           style={{
-            writingMode: "vertical-rl",
-            transform: "rotate(180deg)",
             textAlign: "center",
             fontSize: "23px",
             textTransform: "uppercase",
@@ -77,21 +81,20 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
             <span id="HW_badge" />
           </span>
         </h1>
-
         {state.matches("draft") ? (
           <div>
             {expanded ? (
               <FormPreviousLink
                 color="#D4D4D4"
                 size="large"
-                className="pointer ml3"
+                className="pointer ma3"
                 onClick={() => setExpanded(false)}
               />
             ) : (
               <FormNextLink
                 color="#D4D4D4"
                 size="large"
-                className="pointer"
+                className="pointer ma3"
                 onClick={() => setExpanded(true)}
                 data-testid="saveAgenda"
               />

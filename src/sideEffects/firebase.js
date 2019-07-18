@@ -13,4 +13,16 @@ const config = {
 
 firebase.initializeApp(config);
 
+firebase
+  .firestore()
+  .enablePersistence()
+  .then(() => console.log("offline mode active"))
+  .catch(function(err) {
+    if (err.code == "failed-precondition") {
+      console.log("too many tabs open for offline mode to work");
+    } else if (err.code == "unimplemented") {
+      console.log("current browser does not support offline mode");
+    }
+  });
+
 export default firebase;

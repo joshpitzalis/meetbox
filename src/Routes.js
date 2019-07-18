@@ -18,7 +18,9 @@ export const App = ({ initClient }) => {
           {/* <Route exact path="/" component={Landing} /> */}
           <Route exact path="/" component={Agenda} />
           <Route path="/meeting/:meetingId" component={Agenda} />
-          <small>Version 0.1.0</small>
+          <div className="w-100 tc white">
+            <small>Version 0.2.0</small>
+          </div>
         </main>
       </Grommet>
     </BrowserRouter>
