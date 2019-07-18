@@ -7512,6 +7512,30 @@ video {
 
 @import "./palette.css";
 
+@media screen and (min-width: 60em) {
+  .text-8xl {
+    font-size: 6rem;
+  }
+}
+
+.btn {
+  font-weight: 700;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  border-radius: 0.25rem;
+}
+
+.btn-blue {
+  background-color: #4299e1;
+  color: #fff;
+}
+
+.btn-blue:hover {
+  background-color: #2b6cb0;
+}
+
 @media (min-width: 640px) {
   .sm\:appearance-none {
     -webkit-appearance: none;

@@ -3,6 +3,7 @@ import { Edit } from "grommet-icons";
 import React, { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 import { Prerequisites } from "./Prerequisites";
+
 export function AgendaItemName({ name, id, meetingId, state, prep }) {
   const [editMode, toggleEditMode] = useState(state.matches("draft"));
   const [title, setTitle] = useState("");
@@ -26,7 +27,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
       }`}
     >
       <div className="">
-        {editMode ? (
+        {editMode && (state.matches("draft") || state.matches("active")) ? (
           <Form
             // onSubmit={(data: React.FormEvent<HTMLFormElement>) =>
             //   handleSubmit(data)
@@ -42,6 +43,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
               required
               value={title || name}
               onChange={e => setTitle(e.target.value)}
+              data-testid="editableItemName"
             />
             <Button type="submit" label="Save Description" />
           </Form>
@@ -51,6 +53,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
               <Edit
                 className="dim ma3 pointer"
                 onClick={() => toggleEditMode(true)}
+                data-testid="editTitle"
               />
             )}
             <h2 className="pointer">{title || name}</h2>

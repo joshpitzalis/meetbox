@@ -1,3 +1,5 @@
+import { lorem } from "faker";
+
 describe("happy Path", () => {
   // let testAgenda = "";
   let testAgenda = "/meeting/SBRBAkiHCEmtXFJEWSBU";
@@ -11,12 +13,17 @@ describe("happy Path", () => {
       });
   });
 
-  it("lets me submit an agenda, activate it, then complete it", () => {
-    const itemName = "test item";
-    const prepName = "test prep";
-    const meetingName = "test meeting";
+  it("lets me submit an agenda, activate it, edit it during a meeting, then complete it", () => {
+    const itemName = "example item name";
+    const prepName = "example prep item";
+    const meetingName = "test meeting name";
+    const updatedMeetingName = "updated meeting name";
+
+    const note = lorem.sentence();
+    const task = lorem.words();
 
     cy.visit(testAgenda)
+      // create an agenda in draft mode
       .getByText(/Add An Agenda Item/i)
       .click()
       .queryByTestId("agendaItem")
@@ -36,6 +43,7 @@ describe("happy Path", () => {
       .type(prepName)
       .getByTestId("prepForm")
       .submit()
+      // save agenda
       .getByTestId("saveAgenda")
       .click()
       .getByTestId("agendaSubmitForm")
@@ -47,13 +55,45 @@ describe("happy Path", () => {
       .type(meetingName)
       .getByText(/Finalise Agenda/i)
       .click()
+      // agenda confirmed
+      .getByTestId("playButton")
+      // try editing once agenda confirmed
+      .getByText(itemName)
+      .getByText(prepName)
+      .getByText(meetingName)
+      .queryByTestId("editTitle")
+      .should("not.exist")
+      .queryByTestId("prepForm")
+      .should("not.exist")
+      // meeting starts
       .getByTestId("playButton")
       .click()
       .getByTestId("stopButton")
+      // try editing during a meeting
+      .queryAllByTestId("editTitle")
+      .first()
       .click()
-      .queryByTestId("stopButton")
-      .should("not.exist");
-  });
+      .getByTestId("editableItemName")
+      .clear()
+      .type(updatedMeetingName)
+      .getAllByTestId("itemNameForm");
 
-  it.skip("try editing in saved, then edit i active, then try edit in complete", () => {});
+    // tk add minutes
+    // tk add tasks
+    lorem
+
+      .first()
+      .submit()
+      .getByTestId("stopButton")
+      .click()
+      // end the meeting
+      .queryByTestId("stopButton")
+      .should("not.exist")
+      .getByText(updatedMeetingName)
+      // try editing after a meeting has ended
+      .queryByTestId("editTitle")
+      .should("not.exist");
+
+    // tk check off a task
+  });
 });

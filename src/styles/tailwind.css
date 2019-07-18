@@ -4,3 +4,18 @@
 
 @import "./tachyons.css";
 @import "./palette.css";
+
+@media screen and (min-width: 60em) {
+  .text-8xl {
+    font-size: 6rem;
+  }
+}
+.btn {
+  @apply font-bold py-4 px-6 rounded;
+}
+.btn-blue {
+  @apply bg-blue-500 text-white;
+}
+.btn-blue:hover {
+  @apply bg-blue-700;
+}

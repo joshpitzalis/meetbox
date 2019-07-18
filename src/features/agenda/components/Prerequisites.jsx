@@ -32,10 +32,11 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
             editMode={editMode}
             meetingId={meetingId}
             itemId={id}
+            state={state}
           />
         ))}
 
-      {editMode ? (
+      {editMode && (state.matches("draft") || state.matches("active")) ? (
         <div className="ma3 pt4 pl2">
           <Form
             value={value}
@@ -116,11 +117,11 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
 //   itemId
 // }) => {
 
-export const PrepItem = ({ name, id, editMode, meetingId, itemId }) => {
+export const PrepItem = ({ name, id, editMode, meetingId, itemId, state }) => {
   const [complete, markComplete] = useState(false);
   return (
     <div className="ma3">
-      {editMode ? (
+      {editMode && (state.matches("draft") || state.matches("active")) ? (
         <Button
           icon={<Close />}
           type="button"
