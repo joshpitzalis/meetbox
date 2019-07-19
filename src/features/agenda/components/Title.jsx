@@ -90,13 +90,13 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
                 data-testid="editTitle"
               />
             )}
-            <h2 className="pointer">{title || name}</h2>
+            <h2 className="pointer f2">{title || name}</h2>
           </div>
         )}
       </div>
       {state.matches("active") && (
         <>
-          {prep && <p className="mt3 mh2">Preparations</p>}
+          {prep && <p className="ma3 mt4">Preparations</p>}
           <Prerequisites
             meetingId={meetingId}
             id={id}

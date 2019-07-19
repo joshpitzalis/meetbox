@@ -3,38 +3,40 @@ import { Button } from "grommet";
 import { Add, Save } from "grommet-icons";
 import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import { handleAddMeeting, useStreamMeeting } from "../features/agenda/agendaHelpers";
+import {
+  handleAddMeeting,
+  useStreamMeeting
+} from "../features/agenda/agendaHelpers";
 import AgendaItem from "../features/agenda/components/AgendaItem";
 import firebase from "../sideEffects/firebase";
 import stateMachine from "../statechart";
 
-const Agenda = ({ match, history }) => {
+const Agenda = ({ match }) => {
   const [current, send] = useMachine(stateMachine);
   const meetingId = match.params.meetingId;
   const meeting = useStreamMeeting(meetingId);
 
   useEffect(() => {
-    if (meetingId && meeting && meeting.status === "complete") {
-      send("REDIRECTED_TO_COMPLETE_AGENDA");
-    }
+    if (meetingId && meeting) {
+      if (meeting.status === "complete") {
+        send("REDIRECTED_TO_COMPLETE_AGENDA");
+      }
 
-    if (meetingId && meeting && meeting.status === "active") {
-      send("REDIRECTED_TO_ACTIVE_AGENDA");
-    }
+      if (meeting.status === "active") {
+        send("REDIRECTED_TO_ACTIVE_AGENDA");
+      }
 
-    if (meetingId && meeting && meeting.status === "confirmed") {
-      send("REDIRECTED_TO_CONFIRMED_AGENDA");
-    }
+      if (meeting.status === "confirmed") {
+        send("REDIRECTED_TO_CONFIRMED_AGENDA");
+      }
 
-    if (meetingId && meeting && meeting.status === "draft") {
-      send("REDIRECTED_TO_EXISTING_AGENDA");
-    }
-
-    if (!meetingId) {
-      send({ type: "NEW_AGENDA_CREATED", payload: history });
+      if (meeting.status === "draft") {
+        send("REDIRECTED_TO_EXISTING_AGENDA");
+      }
     }
   }, [meetingId, meeting]);
 
+  console.log("current.value", current.value);
   return (
     <>
       {(current.matches("loading") || current.matches("creatingAgenda")) && (

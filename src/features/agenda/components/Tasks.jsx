@@ -17,9 +17,10 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
             itemId={itemId}
             firebase={firebase}
             meetingId={meetingId}
+            state={state}
           />
         ))}
-      {editMode ? (
+      {editMode && state.matches("active") ? (
         <div className="pt4 pl2">
           <Form
             value={value}
@@ -40,6 +41,7 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
                 })
                 .catch(error => console.error(error));
             }}
+            data-testid="taskEditBox"
           >
             <FormField
               name="name"
@@ -64,7 +66,7 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
         </div>
       ) : (
         <div className=" o-50 w-100">
-          {state === "active" && (
+          {state.matches("active") && (
             <Button
               type="button"
               label={
@@ -75,6 +77,7 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
               plain
               onClick={() => setEditMode(true)}
               className="h3"
+              data-testid="editTask"
             />
           )}
         </div>
@@ -90,11 +93,12 @@ export function Task({
   editMode,
   itemId,
   meetingId,
-  firebase
+  firebase,
+  state
 }) {
   return (
     <>
-      {editMode ? (
+      {editMode && state.matches("active") ? (
         <Button
           icon={<Close />}
           type="button"

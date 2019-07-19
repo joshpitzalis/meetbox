@@ -28,7 +28,7 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
         state.matches("active") ? "w-100" : "w-25-ns w-100 center"
       }`}
     >
-      <ol className="list-decimal h-100 flex items-center pl4">
+      <ol className="list-decimal h-auto flex items-center pl4">
         {prep &&
           Object.values(prep).map(item => (
             <PrepItem

@@ -3,9 +3,9 @@ import { createAgenda } from "./features/agenda/agendaHelpers";
 
 export default Machine({
   id: "agenda",
-  initial: "loading",
+  initial: "idle",
   states: {
-    loading: {
+    idle: {
       on: {
         NEW_AGENDA_CREATED: "creatingAgenda",
         REDIRECTED_TO_EXISTING_AGENDA: "draft",
