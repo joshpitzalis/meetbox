@@ -1,10 +1,9 @@
 import { Button, Form, FormField } from "grommet";
 import { Edit } from "grommet-icons";
 import React, { useState } from "react";
-import firebase from "../../../sideEffects/firebase";
-import { Prerequisites } from "./Prerequisites";
+import { Prerequisites } from "./Prep";
 
-export function AgendaItemName({ name, id, meetingId, state, prep }) {
+export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
   const [editMode, toggleEditMode] = useState(state.matches("draft"));
   const [title, setTitle] = useState("");
 
@@ -20,13 +19,45 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
       .catch(error => console.error(error));
   };
 
+  const toggleLockInput = (meetingId, inputId, value) =>
+    firebase
+      .database()
+      .ref("meetings/" + meetingId)
+      .set({
+        [inputId]: value
+      });
+
+  const checkLocked = (meetingId, inputId) =>
+    new Promise((resolve, reject) =>
+      firebase
+        .database()
+        .ref(`meetings/${meetingId}/${inputId}`)
+        .once("value")
+        .then(snap => resolve(snap.val()))
+        .catch(error => reject(error))
+    );
+
+  const [locked, setLocked] = React.useState(false);
+
+  const checkLocked$ = (meetingId, inputId) =>
+    firebase
+      .database()
+      .ref(`meetings/${meetingId}/${inputId}`)
+      .on("value", snap => setLocked(snap.val()));
+
+  React.useEffect(() => {
+    const stream$ = checkLocked$(meetingId, "qwe123");
+    return () => stream$.off();
+  }, []);
+
   return (
     <div
-      className={`flex flex-column justify-start item-start w-100 ${
+      className={`flex flex-column justify-start item-start ${
         state.matches("active") ? "w-25-ns" : "w-50-ns"
-      }`}
+      }
+      `}
     >
-      <div className="">
+      <div>
         {editMode && (state.matches("draft") || state.matches("active")) ? (
           <Form
             // onSubmit={(data: React.FormEvent<HTMLFormElement>) =>
@@ -44,6 +75,9 @@ export function AgendaItemName({ name, id, meetingId, state, prep }) {
               value={title || name}
               onChange={e => setTitle(e.target.value)}
               data-testid="editableItemName"
+              // onFocus={() => toggleLockInput(meetingId, "qwe123", true)}
+              // disabled={locked}
+              // onBlur={() => toggleLockInput(meetingId, "qwe123", false)}
             />
             <Button type="submit" label="Save Description" />
           </Form>

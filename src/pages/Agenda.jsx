@@ -1,12 +1,9 @@
 import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
-import { Add, FormNextLink } from "grommet-icons";
+import { Add, Save } from "grommet-icons";
 import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import {
-  handleAddMeeting,
-  useStreamMeeting
-} from "../features/agenda/agendaHelpers";
+import { handleAddMeeting, useStreamMeeting } from "../features/agenda/agendaHelpers";
 import AgendaItem from "../features/agenda/components/AgendaItem";
 import firebase from "../sideEffects/firebase";
 import stateMachine from "../statechart";
@@ -50,13 +47,14 @@ const Agenda = ({ match, history }) => {
         current.matches("confirmed") ||
         current.matches("active") ||
         current.matches("complete")) && (
-        <section className="flex flex-wrap flex-column-ns flex-row vh-100-ns h-auto w-100">
+        <section className="flex flex-wrap flex-column-ns flex-row vh-100-ns h-auto">
           <Sidebar
             send={send}
             state={current}
             meetingId={meetingId}
             firebase={firebase}
             title={meeting && meeting.summary}
+            match={match}
           />
           <div className="flex-grow-1 w-100 flex flex-column">
             {meeting &&
@@ -83,7 +81,7 @@ const Agenda = ({ match, history }) => {
                 />
                 <div className="pv3 flex-ns items-center justify-center dn ">
                   <small className="o-50">When you're done, click the</small>
-                  <FormNextLink className="ph1" color="#D4D4D4" />
+                  <Save className="ph1" color="#D4D4D4" />
                   <small className="o-50">
                     {" "}
                     icon in the bottom left corner to finalise.

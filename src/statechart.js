@@ -1,5 +1,6 @@
 import { Machine } from "xstate";
 import { createAgenda } from "./features/agenda/agendaHelpers";
+
 export default Machine({
   id: "agenda",
   initial: "loading",
@@ -35,10 +36,26 @@ export default Machine({
       states: {
         loggedOut: {
           on: {
-            CALENDAR_CONNECTED: "loggedIn"
+            CALENDAR_CONNECTED: "loggedIn",
+            URL_ONLY: "linkOnly"
           }
         },
-        loggedIn: {}
+        linkOnly: {
+          on: {
+            FINALISED: "confirm",
+            RETURNED: "loggedOut"
+          }
+        },
+        confirm: {
+          on: {
+            RETURNED: "loggedOut"
+          }
+        },
+        loggedIn: {
+          on: {
+            RETURNED: "loggedOut"
+          }
+        }
       }
     },
 

@@ -3,11 +3,11 @@ import { Close } from "grommet-icons";
 import React, { useState } from "react";
 import firebase from "../../../sideEffects/firebase";
 import { deleteItem } from "../agendaHelpers";
-import { AgendaItemName } from "./AgendaItemName";
 import { ConfirmDelete } from "./ConfirmDelete";
 import { Minutes } from "./Minutes";
-import { Prerequisites } from "./Prerequisites";
-import { TaskList } from "./TaskList";
+import { Prerequisites } from "./Prep";
+import { TaskList } from "./Tasks";
+import { AgendaItemName } from "./Title";
 
 const AgendaItem = ({
   id,
@@ -33,10 +33,8 @@ const AgendaItem = ({
           setConfirm={setConfirm}
         />
       ) : (
-        <div className="flex   w-100 pl3 pl6-ns">
-          <div
-            className={`flex flex-wrap justify-between items-centre ma3 flex-grow-1`}
-          >
+        <div className="flex w-100 pl3 pl6-ns">
+          <div className={`flex justify-between items-centre ma3 flex-grow-1`}>
             {/* <dl className="fl fn-l w-50 dib-l w-auto-l lh-title mr5-l pa3">
             <dd className="f3 fw6 ml0 ttu">5</dd>
             <dd className="f6 fw4 ml0 ttu">min</dd>
@@ -47,6 +45,7 @@ const AgendaItem = ({
               meetingId={meetingId}
               state={state}
               prep={prep}
+              firebase={firebase}
             />
 
             {(state.matches("draft") || state.matches("confirmed")) && (

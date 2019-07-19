@@ -1,8 +1,8 @@
-import { FormNextLink, FormPreviousLink, Play, Stop } from "grommet-icons";
+import { FormPreviousLink, Halt, Launch, Save } from "grommet-icons";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
 
-const Sidebar = ({ send, state, firebase, meetingId, title }) => {
+const Sidebar = ({ match, send, state, firebase, meetingId, title }) => {
   React.useEffect(() => {
     var config = {
       selector: "h1",
@@ -12,13 +12,12 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
     window.Headway && window.Headway.init(config);
   }, []);
 
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = React.useState(false);
   const [summary, setSummary] = React.useState(title);
   return (
     <div
-      className={`flex flex-column flex-row-ns fixed-ns vh-100-ns  ${
-        expanded ? "shadow-1 z-1 vh-100 pr4 bg-white" : "w-100"
-      }`}
+      className={`flex flex-column flex-row-ns fixed-ns vh-100-ns ${expanded &&
+        "shadow-1 z-1 vh-100 pr4 bg-white"}`}
     >
       <aside
         className={`
@@ -28,8 +27,8 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
          `}
       >
         {state.matches("confirmed") ? (
-          <Play
-            data-testid="playButton"
+          <div
+            className="flex flex-column items-center pointer grow"
             onClick={() => {
               send("STARTED");
               firebase
@@ -40,12 +39,16 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
                 })
                 .catch(console.error);
             }}
-            className="pointer"
-          />
+          >
+            <Launch data-testid="playButton" color="green" size="large" />
+            <small className="dark-green ttu tc b mt3">
+              Start <br />
+              Meeting
+            </small>
+          </div>
         ) : state.matches("active") ? (
-          <Stop
-            className="pointer "
-            data-testid="stopButton"
+          <div
+            className="flex flex-column items-center pointer grow"
             onClick={() => {
               send("ENDED");
               firebase
@@ -56,7 +59,13 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
                 })
                 .catch(console.error);
             }}
-          />
+          >
+            <Halt data-testid="stopButton" color="red" size="large" />
+            <small className="dark-red ttu tc b mt3">
+              End <br />
+              Meeting
+            </small>
+          </div>
         ) : (
           <span className="w3" />
         )}
@@ -88,16 +97,23 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
                 color="#D4D4D4"
                 size="large"
                 className="pointer ma3"
-                onClick={() => setExpanded(false)}
+                onClick={() => {
+                  send("RETURNED");
+                  setExpanded(false);
+                }}
               />
             ) : (
-              <FormNextLink
-                color="#D4D4D4"
-                size="large"
-                className="pointer ma3"
+              <div
+                className="flex flex-column pointer dim"
                 onClick={() => setExpanded(true)}
                 data-testid="saveAgenda"
-              />
+              >
+                <small className="ttu tc b mt3" style={{ color: "#D4D4D4" }}>
+                  Save <br />
+                  Draft
+                </small>
+                <Save color="#D4D4D4" size="large" className="ma3" />
+              </div>
             )}
           </div>
         ) : (
@@ -114,6 +130,7 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
           setSummary={setSummary}
           firebase={firebase}
           meetingId={meetingId}
+          url={match && match.url}
         />
       )}
     </div>
