@@ -11,6 +11,11 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
   const [editMode, toggleEditMode] = useState(state.matches("draft"));
   const [title, setTitle] = useState(name);
 
+  // this updates the text in real time if the database gets updated, by someone else for example
+  React.useEffect(() => {
+    setTitle(name);
+  }, [name]);
+
   const handleSubmit = data => {
     const { value } = data;
     toggleEditMode(false);
@@ -71,7 +76,9 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
                 data-testid="editTitle"
               />
             )}
-            <h2 className="pointer f2">{title || name}</h2>
+            <h2 className="pointer f2" data-testid="itemName">
+              {title || name}
+            </h2>
           </div>
         )}
       </div>

@@ -10,7 +10,7 @@ import { AgendaItemName } from "../components/Title.jsx";
 
 afterEach(cleanup);
 
-test.only("A realtime update updates the text as you are editing", () => {
+test("A realtime update of the text as you are editing, updates the text you are editing", () => {
   const title = lorem.words();
 
   const props = {
@@ -18,17 +18,40 @@ test.only("A realtime update updates the text as you are editing", () => {
     id: 123,
     meetingId: 456,
     prep: {},
-
     firebase: jest.fn(),
-
     state: {
       value: "draft",
       matches: jest.fn(({ state }) => state === "draft")
     }
   };
 
-  const { getByText } = render(<AgendaItemName {...props} />);
-  getByText(title);
+  const { getByTestId, rerender } = render(<AgendaItemName {...props} />);
 
-  //   expect(false).toBeFalsy();
+  expect(getByTestId("itemName")).toHaveTextContent(title);
+  const nextProps = { ...props, name: "fire" };
+  rerender(<AgendaItemName {...nextProps} />);
+  expect(getByTestId("itemName")).toHaveTextContent("fire");
+});
+
+test.only("Edit box will autosave 2 seconds after you stop typing", () => {
+  const title = lorem.words();
+
+  const props = {
+    name: title,
+    id: 123,
+    meetingId: 456,
+    prep: {},
+    firebase: jest.fn(),
+    state: {
+      value: "draft",
+      matches: jest.fn(({ state }) => state === "draft")
+    }
+  };
+
+  const { getByTestId, rerender } = render(<AgendaItemName {...props} />);
+
+  expect(getByTestId("itemName")).toHaveTextContent(title);
+  const nextProps = { ...props, name: "fire" };
+  rerender(<AgendaItemName {...nextProps} />);
+  expect(getByTestId("itemName")).toHaveTextContent("fire");
 });
