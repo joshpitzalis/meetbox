@@ -7542,6 +7542,10 @@ video {
   }
 }
 
+.textPointer {
+  cursor: text;
+}
+
 @media (min-width: 640px) {
   .sm\:appearance-none {
     -webkit-appearance: none;

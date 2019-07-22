@@ -16,6 +16,20 @@ const Agenda = ({ match }) => {
   const meetingId = match.params.meetingId;
   const meeting = useStreamMeeting(meetingId);
 
+  const [disabled, setDisabled] = React.useState(false);
+
+  React.useEffect(() => {
+    setDisabled(false);
+    const blankItem =
+      meeting &&
+      meeting.items &&
+      Object.values(meeting.items).some(({ name }) => !name);
+
+    if (blankItem) {
+      setDisabled(true);
+    }
+  }, [meeting]);
+
   useEffect(() => {
     if (meetingId && meeting) {
       if (meeting.status === "complete") {
@@ -74,11 +88,12 @@ const Agenda = ({ match }) => {
               <div className="pa5 tc w-100">
                 <Button
                   icon={<Add />}
-                  className="pointer dim"
+                  className={`pointer dim`}
                   size="large"
                   primary
                   label="Add An Agenda Item"
                   onClick={() => handleAddMeeting(meetingId)}
+                  disabled={disabled}
                 />
                 <div className="pv3 flex-ns items-center justify-center dn ">
                   <small className="o-50">When you're done, click the</small>
