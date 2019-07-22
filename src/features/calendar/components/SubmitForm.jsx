@@ -10,7 +10,6 @@ const hourFrom = startTime => {
 };
 
 const login = async (gapi, send) => {
-  console.log("gapi", gapi);
   try {
     const googleAuth = gapi.auth2.getAuthInstance();
     await googleAuth.signIn();
@@ -81,7 +80,7 @@ const handleSubmit = async ({
         attendees
       };
 
-      await insertEvent(window.gapi, payload);
+      await insertEvent(gapi, payload);
     }
     await firebase
       .firestore()
@@ -112,6 +111,8 @@ const SubmitForm = ({
   const [dateTime, setDateTime] = React.useState("");
   const [timezone, setTimezone] = React.useState("");
   const [error, setError] = React.useState({});
+
+  const { gapi } = window;
 
   return (
     <div
@@ -163,27 +164,29 @@ const SubmitForm = ({
             firebase={firebase}
             meetingId={meetingId}
             setExpanded={setExpanded}
-            send
+            send={send}
+            gapi={gapi}
           />
         )}
 
         {state.matches("draft.loggedOut") && (
-          <div className="flex flex-col tl">
+          <div className="flex flex-col items-start tc mt5">
+            <p className="text-gray-500 text-sm mb2 tl">
+              To send out calendar invites...
+            </p>
             <Button
-              className="mt3 pa2 ph4"
+              className=" pv2 "
               plain
               icon={<Google color="plain" />}
               label="Connect to Google"
-              onClick={() => login(window.gapi, send)}
+              onClick={() => login(gapi, send)}
             />
-            <p className="text-gray-500 text-sm">
-              To send out Google Calendar Invites.
-            </p>
+
             <p
               className="text-gray-500 underline  hover:text-blue-800 text-sm mt5 underline pointer"
               onClick={() => send("URL_ONLY")}
             >
-              No Google, just give me a link to share.
+              No Googles, give me a link to share.
             </p>
           </div>
         )}
@@ -223,7 +226,7 @@ const SubmitForm = ({
                     attendees,
                     state,
                     insertEvent,
-                    gapi: window.gapi,
+                    gapi,
                     firebase,
                     meetingId,
                     setExpanded,
@@ -281,7 +284,8 @@ function ConnectedForm({
   firebase,
   meetingId,
   setExpanded,
-  send
+  send,
+  gapi
 }) {
   return (
     <>
@@ -411,7 +415,7 @@ function ConnectedForm({
               attendees,
               state,
               insertEvent,
-              gapi: window.gapi,
+              gapi,
               firebase,
               meetingId,
               setExpanded,

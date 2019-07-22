@@ -8,8 +8,8 @@ import {
   useStreamMeeting
 } from "../features/agenda/agendaHelpers";
 import AgendaItem from "../features/agenda/components/AgendaItem";
-import firebase from "../sideEffects/firebase";
-import stateMachine from "../statechart";
+import firebase from "../utilities/firebase";
+import stateMachine from "../utilities/statechart";
 
 const Agenda = ({ match }) => {
   const [current, send] = useMachine(stateMachine);
@@ -36,7 +36,6 @@ const Agenda = ({ match }) => {
     }
   }, [meetingId, meeting]);
 
-  console.log("current.value", current.value);
   return (
     <>
       {(current.matches("loading") || current.matches("creatingAgenda")) && (

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { doc } from "rxfire/firestore";
-import firebase from "../../sideEffects/firebase";
+import firebase from "../../utilities/firebase";
+
 export const createAgenda = async event => {
   try {
     const doc = firebase

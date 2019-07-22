@@ -1,7 +1,7 @@
 import { Button, Form, FormField } from "grommet";
 import { Close } from "grommet-icons";
 import React, { useState } from "react";
-import firebase from "../../../sideEffects/firebase";
+import firebase from "../../../utilities/firebase";
 
 // interface IProps {
 //   meetingId: number;

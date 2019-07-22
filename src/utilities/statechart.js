@@ -1,5 +1,5 @@
 import { Machine } from "xstate";
-import { createAgenda } from "./features/agenda/agendaHelpers";
+import { createAgenda } from "../features/agenda/agendaHelpers";
 
 export default Machine({
   id: "agenda",
@@ -23,7 +23,7 @@ export default Machine({
           // The resolved data is placed into a 'done.invoke.<id>' event, under the data property http://bit.ly/2Ft2WR8
         },
         onError: {
-          target: "loading"
+          target: "idle"
         }
       }
     },

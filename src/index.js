@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { initClient } from "./features/calendar/calHelpers";
-import { App } from "./Routes";
-import * as serviceWorker from "./serviceWorker";
 import "./styles/index.css";
+import { App } from "./utilities/Routes";
+import * as serviceWorker from "./utilities/serviceWorker";
 
 ReactDOM.render(
   <App initClient={initClient} />,

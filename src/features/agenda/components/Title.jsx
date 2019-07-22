@@ -1,11 +1,15 @@
 import { Button, Form, FormField } from "grommet";
 import { Edit } from "grommet-icons";
 import React, { useState } from "react";
+import { BehaviorSubject } from "rxjs";
+import { debounceTime } from "rxjs/operators";
 import { Prerequisites } from "./Prep";
+
+const clickStream$ = new BehaviorSubject("").pipe(debounceTime(3000));
 
 export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
   const [editMode, toggleEditMode] = useState(state.matches("draft"));
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(name);
 
   const handleSubmit = data => {
     const { value } = data;
@@ -19,35 +23,12 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
       .catch(error => console.error(error));
   };
 
-  const toggleLockInput = (meetingId, inputId, value) =>
-    firebase
-      .database()
-      .ref("meetings/" + meetingId)
-      .set({
-        [inputId]: value
-      });
-
-  const checkLocked = (meetingId, inputId) =>
-    new Promise((resolve, reject) =>
-      firebase
-        .database()
-        .ref(`meetings/${meetingId}/${inputId}`)
-        .once("value")
-        .then(snap => resolve(snap.val()))
-        .catch(error => reject(error))
-    );
-
-  const [locked, setLocked] = React.useState(false);
-
-  const checkLocked$ = (meetingId, inputId) =>
-    firebase
-      .database()
-      .ref(`meetings/${meetingId}/${inputId}`)
-      .on("value", snap => setLocked(snap.val()));
-
   React.useEffect(() => {
-    const stream$ = checkLocked$(meetingId, "qwe123");
-    return () => stream$.off();
+    // listens to typing or toggling edit button
+    // waits for 3 seconds after last interaction
+    // then closes edit mode
+    clickStream$.subscribe(val => toggleEditMode(false));
+    return () => clickStream$.unsubscribe();
   }, []);
 
   return (
@@ -60,9 +41,6 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
       <div>
         {editMode && (state.matches("draft") || state.matches("active")) ? (
           <Form
-            // onSubmit={(data: React.FormEvent<HTMLFormElement>) =>
-            //   handleSubmit(data)
-            // }
             onSubmit={data => handleSubmit(data)}
             data-testid="itemNameForm"
           >
@@ -73,11 +51,11 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
               placeholder="Give your first agenda Item a name"
               required
               value={title || name}
-              onChange={e => setTitle(e.target.value)}
+              onChange={e => {
+                clickStream$.next(e.target.value);
+                setTitle(e.target.value);
+              }}
               data-testid="editableItemName"
-              // onFocus={() => toggleLockInput(meetingId, "qwe123", true)}
-              // disabled={locked}
-              // onBlur={() => toggleLockInput(meetingId, "qwe123", false)}
             />
             <Button type="submit" label="Save Description" />
           </Form>
@@ -86,7 +64,10 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
             {(state.matches("active") || state.matches("draft")) && (
               <Edit
                 className="dim ma3 pointer"
-                onClick={() => toggleEditMode(true)}
+                onClick={() => {
+                  clickStream$.next("");
+                  toggleEditMode(true);
+                }}
                 data-testid="editTitle"
               />
             )}

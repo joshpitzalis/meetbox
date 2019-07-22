@@ -1,7 +1,7 @@
 import { Button } from "grommet";
 import { Close } from "grommet-icons";
 import React, { useState } from "react";
-import firebase from "../../../sideEffects/firebase";
+import firebase from "../../../utilities/firebase";
 import { deleteItem } from "../agendaHelpers";
 import { ConfirmDelete } from "./ConfirmDelete";
 import { Minutes } from "./Minutes";
@@ -20,6 +20,7 @@ const AgendaItem = ({
   tasks
 }) => {
   const [confirm, setConfirm] = useState(false);
+
   return (
     <div
       data-testid="agendaItem"

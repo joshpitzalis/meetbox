@@ -1,10 +1,38 @@
-import { cleanup, fireEvent, render } from "@testing-library/react";
+import { cleanup, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { lorem } from "faker";
 // this adds custom jest matchers from jest-dom
 // import "jest-dom/extend-expect";
 import React from "react";
+import { handleMinutesTextUpdate } from "../agendaSideEffects";
 import { Minutes } from "../components/Minutes.jsx";
 
+jest.mock("../agendaSideEffects", () => {
+  handleMinutesTextUpdate: jest.fn(() => {});
+});
+
 afterEach(cleanup);
+
+test.skip("Editing the minutes section saves the minutes to storage", () => {
+  const note = lorem.sentences();
+
+  const props = {
+    firebase: jest.fn(),
+    itemId: 123,
+    meetingId: "abc",
+    minutes: "",
+    state: {
+      value: "active",
+      matches: jest.fn(() => true)
+    }
+  };
+
+  const { getByPlaceholderText } = render(<Minutes {...props} />);
+  const textbox = getByPlaceholderText(/enter your minutes here.../i);
+  userEvent.type(textbox, note);
+
+  expect(handleMinutesTextUpdate).toHaveBeenCalled();
+});
 
 test("Clicking on the minutes section reveals the editor ", () => {
   const props = {
@@ -13,28 +41,14 @@ test("Clicking on the minutes section reveals the editor ", () => {
     itemId: 123,
     meetingId: 456,
     minutes: "minutes",
-    state: "draft"
+    state: {
+      value: "draft",
+      matches: jest.fn()
+    }
   };
 
   const { getByTestId } = render(<Minutes {...props} />);
   getByTestId("editableMinutes");
-});
-
-xtest("Editing the minutes section saves the minutes to storage", async () => {
-  const props = {
-    firebase: jest.fn(),
-    itemId: 123,
-    meetingId: "abc"
-  };
-
-  const { getByTestId } = render(<Minutes {...props} />);
-  getByTestId("minutesButton");
-  fireEvent.click(getByTestId("minutesButton"));
-  getByTestId("editableMinutes");
-  // type in some text
-  // wait 3 seconds
-  // make sure it gets saved
-  expect(true).toBeFalsy();
 });
 
 xtest("anyone can create a task", () => {

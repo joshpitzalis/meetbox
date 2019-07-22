@@ -1,6 +1,6 @@
 import { useMachine } from "@xstate/react";
 import React from "react";
-import stateMachine from "../statechart";
+import stateMachine from "../utilities/statechart";
 
 const Landing = ({ match, history }) => {
   const [, send] = useMachine(stateMachine);

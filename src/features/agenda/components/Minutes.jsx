@@ -1,36 +1,14 @@
 import { TextArea } from "grommet";
 import React, { useState } from "react";
 import { Subject } from "rxjs";
-import { debounceTime, tap } from "rxjs/operators";
+import { handleMinutesTextUpdate } from "../agendaSideEffects";
+
 const textInput$ = new Subject();
 
 export const Minutes = ({ firebase, itemId, meetingId, minutes, state }) => {
   const [value, setValue] = useState(minutes);
   const [saved, setSaved] = useState(true);
-  const handleTextUpdate = e => {
-    setValue(e.target.value);
-    textInput$.next(e.target.value);
-    setSaved(false);
-    textInput$
-      .pipe(
-        debounceTime(2000),
-        tap(
-          text =>
-            firebase
-              .firestore()
-              .doc(`meetings/${meetingId}`)
-              .update({
-                [`items.${itemId}.minutes`]: text
-              })
-          // .then(() => {
-          //   console.log("saved");
-          //   setSaved(true);
-          // })
-          // .catch(error => console.error(error))
-        )
-      )
-      .subscribe(text => setSaved(true));
-  };
+
   return (
     <div className="ma3 h5 pointer w-50" data-testid="editableMinutes">
       {state.matches("active") ? (
@@ -42,7 +20,17 @@ export const Minutes = ({ firebase, itemId, meetingId, minutes, state }) => {
             placeholder="Enter your minutes here..."
             fill={true}
             plain
-            onChange={handleTextUpdate}
+            onChange={e =>
+              handleMinutesTextUpdate(
+                e,
+                setValue,
+                setSaved,
+                meetingId,
+                itemId,
+                firebase,
+                textInput$
+              )
+            }
             style={{ backgroundColor: "white" }}
             value={value}
           />
