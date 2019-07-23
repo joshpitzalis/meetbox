@@ -14,6 +14,8 @@ const Sidebar = ({ match, send, state, firebase, meetingId, title }) => {
 
   const [expanded, setExpanded] = React.useState(false);
   const [summary, setSummary] = React.useState(title);
+
+  console.log("match && match.url", window.location.href);
   return (
     <div
       className={`flex flex-column flex-row-ns fixed-ns vh-100-ns ${expanded &&
@@ -130,7 +132,12 @@ const Sidebar = ({ match, send, state, firebase, meetingId, title }) => {
           setSummary={setSummary}
           firebase={firebase}
           meetingId={meetingId}
-          url={match && match.url}
+          url={
+            window &&
+            window.location &&
+            window.location.href &&
+            window.location.href
+          }
         />
       )}
     </div>

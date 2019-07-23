@@ -19,7 +19,6 @@ import firebase from "../../../utilities/firebase";
 
 export const Prerequisites = ({ meetingId, id, prep, state }) => {
   const [editMode, setEditMode] = useState(false);
-
   const [value, resetForm] = useState({ name: "" });
 
   return (

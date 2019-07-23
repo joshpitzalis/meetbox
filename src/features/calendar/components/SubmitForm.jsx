@@ -47,7 +47,8 @@ const handleSubmit = async ({
   firebase,
   meetingId,
   setExpanded,
-  send
+  send,
+  description
 }) => {
   if (!summary) {
     setError({ ...error, title: "You need a title." });
@@ -65,9 +66,19 @@ const handleSubmit = async ({
     return;
   }
 
+  if (attendees.length === 0 && state.matches("draft.loggedIn")) {
+    setError({
+      ...error,
+      attendee:
+        "You need to invite atleast one person. Add an email to the input above then press enter to add an attendee."
+    });
+    return;
+  }
+
   try {
     if (state.matches("draft.loggedIn")) {
       const payload = {
+        description,
         summary,
         start: {
           dateTime: new Date(dateTime).toISOString(),
@@ -166,6 +177,7 @@ const SubmitForm = ({
             setExpanded={setExpanded}
             send={send}
             gapi={gapi}
+            description={url}
           />
         )}
 
@@ -234,7 +246,6 @@ const SubmitForm = ({
                   })
                 }
               >
-                {/* Finalise Agenda */}
                 Confirm Finalisation
               </button>
 
@@ -252,9 +263,14 @@ const SubmitForm = ({
                 If you want to share an editable draft before finalising you can
                 share the current URL.
               </p>
-              <p className="text-gray-400 underline text-blue-500 hover:text-blue-800 text-xs">
+              <small
+                className="text-gray-400 underline"
+                style={{
+                  wordWrap: "break-word"
+                }}
+              >
                 {url}
-              </p>
+              </small>
             </>
           )}
         </div>
@@ -285,8 +301,10 @@ function ConnectedForm({
   meetingId,
   setExpanded,
   send,
-  gapi
+  gapi,
+  description
 }) {
+  console.log("error", error);
   return (
     <>
       <div className="mb3">
@@ -369,7 +387,10 @@ function ConnectedForm({
             type="email"
             value={email}
             placeholder="attendee@email.com"
-            onChange={e => setEmail(e.target.value)}
+            onChange={e => {
+              setError({});
+              setEmail(e.target.value);
+            }}
           />
 
           {attendees && attendees.length > 0 ? (
@@ -388,6 +409,8 @@ function ConnectedForm({
                 </li>
               ))}
             </ul>
+          ) : error && error.attendee ? (
+            <p className="text-red-500 text-xs italic">{error.attendee}</p>
           ) : (
             <p className="text-gray-600 text-xs italic pt-3">
               Gmail users will get a calendar invite, everyone else gets an
@@ -419,7 +442,8 @@ function ConnectedForm({
               firebase,
               meetingId,
               setExpanded,
-              send
+              send,
+              description
             })
           }
         >

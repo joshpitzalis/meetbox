@@ -13,3 +13,15 @@ test("When the app load it initializes gapi", () => {
   getByTestId("routes");
   expect(props.initClient).toHaveBeenCalled();
 });
+
+xtest("add meeting link to calendar", () => {
+  expect(true).toBeFalsy();
+});
+
+xtest("you must submit atleast one attendee", () => {
+  expect(true).toBeFalsy();
+});
+
+xtest("You shouldn't be able to add dates in the past", () => {
+  expect(true).toBeFalsy();
+});

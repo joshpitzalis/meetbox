@@ -4,7 +4,9 @@ import { BehaviorSubject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { Prerequisites } from "./Prep";
 
-const clickStream$ = new BehaviorSubject("").pipe(debounceTime(3000));
+const clickStream$ = new BehaviorSubject("").pipe(debounceTime(2000));
+
+// tk pull the mapping iteration into this file so that it is clearer that you are ampping over multiple items
 
 export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
   const [editMode, toggleEditMode] = useState(state.matches("draft"));
@@ -15,28 +17,10 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
     setTitle(name);
   }, [name]);
 
-  // const handleSubmit = data => {
-  //   const { value } = data;
-  //   toggleEditMode(false);
-  //   firebase
-  //     .firestore()
-  //     .doc(`meetings/${meetingId}`)
-  //     .update({
-  //       [`items.${id}.name`]: value.name
-  //     })
-  //     .then(() => console.log("updated"))
-  //     .catch(error => console.error(error));
-  // };
-
   const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    // listens to typing or toggling edit button
-    // waits for 3 seconds after last interaction
-    // then closes edit mode
-
     clickStream$.subscribe(({ name, targetId }) => {
-      console.log({ name, targetId });
       if (name && id === targetId) {
         toggleEditMode(false);
         firebase

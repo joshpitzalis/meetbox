@@ -32,7 +32,10 @@ export default Machine({
     draft: {
       on: {
         SAVED_DRAFT: "confirmed",
-        SAVED_TO_CAL: "confirmed"
+        SAVED_TO_CAL: "confirmed",
+        REDIRECTED_TO_CONFIRMED_AGENDA: "confirmed",
+        REDIRECTED_TO_ACTIVE_AGENDA: "active",
+        REDIRECTED_TO_COMPLETE_AGENDA: "complete"
       },
       initial: "loggedOut",
       states: {
@@ -63,16 +66,18 @@ export default Machine({
 
     confirmed: {
       on: {
-        STARTED: "active"
+        STARTED: "active",
+        REDIRECTED_TO_ACTIVE_AGENDA: "active",
+        REDIRECTED_TO_COMPLETE_AGENDA: "complete"
       }
     },
     active: {
       on: {
-        ENDED: "complete"
+        ENDED: "complete",
+        REDIRECTED_TO_COMPLETE_AGENDA: "complete"
       }
     },
     complete: {
-      entry: ["updateCompleteStatus"],
       type: "final"
     }
   }

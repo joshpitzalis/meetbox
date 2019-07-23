@@ -7,9 +7,9 @@ import React from "react";
 import { handleMinutesTextUpdate } from "../agendaSideEffects";
 import { Minutes } from "../components/Minutes.jsx";
 
-jest.mock("../agendaSideEffects", () => {
-  handleMinutesTextUpdate: jest.fn(() => {});
-});
+// jest.mock("../agendaSideEffects", () => {
+//   handleMinutesTextUpdate: jest.fn(() => {});
+// });
 
 afterEach(cleanup);
 
@@ -71,5 +71,17 @@ xtest("update task", () => {
 });
 
 xtest("delete task", () => {
+  expect(true).toBeFalsy();
+});
+
+xtest("test that when minutes on one item gets saved, it sdoesn't overwrite minutes on another item. test taht both get save dinidivdually", () => {
+  expect(true).toBeFalsy();
+});
+
+xtest("test that pushing staus change, by another user, updates your agenda", () => {
+  expect(true).toBeFalsy();
+});
+
+xtest("make sure a banner appears when a state is changed", () => {
   expect(true).toBeFalsy();
 });
