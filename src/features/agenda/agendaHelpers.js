@@ -50,3 +50,52 @@ export const deleteItem = (itemId, meetingId) =>
       [`items.${itemId}`]: firebase.firestore.FieldValue.delete()
     })
     .catch(error => console.error(error));
+
+export const handleMinutesTextUpdate = (
+  e,
+  setValue,
+  textInput$,
+  setSaved,
+  meetingId,
+  itemId,
+  firebase
+) => {
+  setValue(e.target.value);
+  const payload = {
+    text: e.target.value,
+    meetingId,
+    targetId: itemId,
+    firebase,
+    setSaved
+  };
+  textInput$.next(payload);
+  setSaved(false);
+};
+
+export const useSync = (textInput$, itemId, minutes) => {
+  const [value, setValue] = useState(minutes);
+  useEffect(() => {
+    setValue(minutes);
+  }, [minutes]);
+  useEffect(() => {
+    textInput$.subscribe(
+      ({ text, meetingId, targetId, firebase, setSaved }) => {
+        if (text && itemId === targetId) {
+          firebase
+            .firestore()
+            .doc(`meetings/${meetingId}`)
+            .update({
+              [`items.${itemId}.minutes`]: text
+            })
+            .then(() => {
+              console.log("saved");
+              setSaved(true);
+            })
+            .catch(error => console.error(error));
+        }
+      }
+    );
+    return () => textInput$.unsubscribe();
+  }, []);
+  return [value, setValue];
+};

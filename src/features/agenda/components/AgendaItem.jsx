@@ -2,9 +2,9 @@ import { Button } from "grommet";
 import { Close } from "grommet-icons";
 import React, { useState } from "react";
 import firebase from "../../../utilities/firebase";
-import { deleteItem } from "../agendaHelpers";
+import { deleteItem, handleMinutesTextUpdate } from "../agendaHelpers";
 import { ConfirmDelete } from "./ConfirmDelete";
-import { Minutes } from "./Minutes";
+import Minutes from "./Minutes";
 import { Prerequisites } from "./Prep";
 import { TaskList } from "./Tasks";
 import { AgendaItemName } from "./Title";
@@ -65,6 +65,7 @@ const AgendaItem = ({
                 meetingId={meetingId}
                 minutes={minutes}
                 state={state}
+                handleMinutesTextUpdate={handleMinutesTextUpdate}
               />
             )}
 

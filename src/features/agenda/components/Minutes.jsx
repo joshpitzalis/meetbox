@@ -1,39 +1,19 @@
 import { Markdown, TextArea } from "grommet";
 import React, { useState } from "react";
-import { Subject } from "rxjs";
-import { debounceTime } from "rxjs/operators";
+import { textInput$ } from "../agendaStreams$";
+import { useSync } from "./../agendaHelpers";
 
-const textInput$ = new Subject().pipe(debounceTime(2000));
-
-export const Minutes = ({ firebase, itemId, meetingId, minutes, state }) => {
-  const [value, setValue] = useState(minutes);
+// responsible for updating the minutes and syncing the updates to firebase
+const Minutes = ({
+  firebase,
+  itemId,
+  meetingId,
+  minutes,
+  state,
+  handleMinutesTextUpdate
+}) => {
   const [saved, setSaved] = useState(true);
-
-  React.useEffect(() => {
-    setValue(minutes);
-  }, [minutes]);
-
-  React.useEffect(() => {
-    textInput$.subscribe(
-      ({ text, meetingId, targetId, firebase, setSaved }) => {
-        if (text && itemId === targetId) {
-          firebase
-            .firestore()
-            .doc(`meetings/${meetingId}`)
-            .update({
-              [`items.${itemId}.minutes`]: text
-            })
-            .then(() => {
-              console.log("saved");
-              setSaved(true);
-            })
-            .catch(error => console.error(error));
-        }
-      }
-    );
-
-    return () => textInput$.unsubscribe();
-  }, []);
+  const [value, setValue] = useSync(textInput$, itemId, minutes);
 
   return (
     <div className="ma3 h5 pointer w-50" data-testid="editableMinutes">
@@ -45,32 +25,43 @@ export const Minutes = ({ firebase, itemId, meetingId, minutes, state }) => {
             focusIndicator={false}
             placeholder="Enter your minutes here..."
             fill={true}
-            plain
-            onChange={e => {
-              setValue(e.target.value);
-              const payload = {
-                text: e.target.value,
+            onChange={e =>
+              handleMinutesTextUpdate(
+                e,
+                setValue,
+                textInput$,
+                setSaved,
                 meetingId,
-                targetId: itemId,
-                firebase,
-                setSaved
-              };
-              textInput$.next(payload);
-              setSaved(false);
-            }}
+                itemId,
+                firebase
+              )
+            }
             style={{ backgroundColor: "white" }}
             value={value}
+            plain
           />
-          {saved ? (
-            <small className="o-50 dark-green">saved</small>
-          ) : (
-            <small className="o-50 dark-red">Saving...</small>
-          )}
+          <SavedStatus saved={saved} />
         </>
       ) : (
-        // <p className="measure">{value}</p>
-        <Markdown className="measure">{value || ""}</Markdown>
+        <Markdown className="measure" data-testid="minutesMarkdown">
+          {value || "No Minutes"}
+        </Markdown>
       )}
     </div>
+  );
+};
+
+export default Minutes;
+
+// responsible for showing whether the minutes have been saved or not
+export const SavedStatus = ({ saved }) => {
+  return (
+    <>
+      {saved ? (
+        <small className="o-50 dark-green">Saved</small>
+      ) : (
+        <small className="o-50 dark-red">Saving...</small>
+      )}
+    </>
   );
 };

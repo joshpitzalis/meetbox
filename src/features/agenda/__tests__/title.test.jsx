@@ -4,6 +4,7 @@ import { lorem } from "faker";
 import React from "react";
 import { State } from "xstate";
 import { AgendaItemName } from "../components/Title.jsx";
+
 afterEach(cleanup);
 
 test("A realtime update of the text as you are editing, updates the text you are editing", () => {
