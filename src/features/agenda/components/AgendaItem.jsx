@@ -7,7 +7,6 @@ import { ConfirmDelete } from "./ConfirmDelete";
 import Minutes from "./Minutes";
 import { Prerequisites } from "./Prep";
 import { TaskList } from "./Tasks";
-import ItemTime from "./Time";
 import { AgendaItemName } from "./Title";
 
 const AgendaItem = ({
@@ -37,7 +36,6 @@ const AgendaItem = ({
       ) : (
         <div className="flex w-100 pl3 pl6-ns">
           <div className={`flex justify-between items-centre ma3 flex-grow-1`}>
-            <ItemTime minutes={5} />
             <AgendaItemName
               name={name}
               id={id}

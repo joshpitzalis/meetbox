@@ -2,6 +2,7 @@ import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
 import { Add, Save } from "grommet-icons";
 import React, { useEffect } from "react";
+import { notfication$ } from "../components/Banner";
 import Sidebar from "../components/Sidebar";
 import {
   handleAddMeeting,
@@ -57,7 +58,13 @@ const Agenda = ({ match }) => {
           <p>Loading...</p>
         </div>
       )}
-
+      <button
+        onClick={() =>
+          notfication$.next(`Some info that you want to call attention to.`)
+        }
+      >
+        clickme
+      </button>
       {(current.matches("draft") ||
         current.matches("confirmed") ||
         current.matches("active") ||
