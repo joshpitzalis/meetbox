@@ -3,18 +3,18 @@ import { Subject } from "rxjs";
 import { delay, tap } from "rxjs/operators";
 export const notfication$ = new Subject();
 
-const useNotification = stream$ => {
+const useNotification = notificationStream$ => {
   const [message, setMessage] = React.useState();
   React.useEffect(() => {
-    const messages = stream$
+    const messages = notificationStream$
       .pipe(
-        tap(message => setMessage(message)),
+        tap(({ message }) => setMessage(message)),
         delay(3000),
         tap(() => setMessage(""))
       )
       .subscribe();
 
-    return () => messages.unubscribe();
+    return () => messages.unsubscribe();
   }, []);
   return message;
 };

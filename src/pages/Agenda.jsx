@@ -2,7 +2,6 @@ import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
 import { Add, Save } from "grommet-icons";
 import React, { useEffect } from "react";
-import { notfication$ } from "../components/Banner";
 import Sidebar from "../components/Sidebar";
 import {
   handleAddMeeting,
@@ -14,7 +13,7 @@ import stateMachine from "../utilities/statechart";
 
 const Agenda = ({ match }) => {
   const [current, send] = useMachine(stateMachine);
-  const meetingId = match.params.meetingId;
+  const meetingId = match && match.params && match.params.meetingId;
   const meeting = useStreamMeeting(meetingId);
 
   const [disabled, setDisabled] = React.useState(false);
@@ -52,19 +51,13 @@ const Agenda = ({ match }) => {
   }, [meetingId, meeting]);
 
   return (
-    <>
+    <div data-testid="agendaPage">
       {(current.matches("loading") || current.matches("creatingAgenda")) && (
         <div className="vh-100 vw-100 flex items-center justify-center">
           <p>Loading...</p>
         </div>
       )}
-      <button
-        onClick={() =>
-          notfication$.next(`Some info that you want to call attention to.`)
-        }
-      >
-        clickme
-      </button>
+
       {(current.matches("draft") ||
         current.matches("confirmed") ||
         current.matches("active") ||
@@ -115,7 +108,7 @@ const Agenda = ({ match }) => {
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 };
 

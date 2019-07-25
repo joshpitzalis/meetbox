@@ -6,7 +6,7 @@ const Landing = ({ match, history }) => {
   const [, send] = useMachine(stateMachine);
 
   return (
-    <div className="flex">
+    <div className="flex" data-testid="landingPage">
       <div className="vh-100  flex justify-center">
         <h1
           className="ph4 rotate-ns   "
