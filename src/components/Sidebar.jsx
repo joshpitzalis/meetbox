@@ -2,7 +2,8 @@ import { FormPreviousLink, Halt, Launch, Save } from "grommet-icons";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
 
-const Sidebar = ({ match, send, state, firebase, meetingId, title }) => {
+const Sidebar = ({ send, state, firebase, meetingId, title }) => {
+  console.log("title", title);
   React.useEffect(() => {
     var config = {
       selector: "h1",
@@ -15,7 +16,6 @@ const Sidebar = ({ match, send, state, firebase, meetingId, title }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [summary, setSummary] = React.useState(title);
 
-  console.log("match && match.url", window.location.href);
   return (
     <div
       className={`flex flex-column flex-row-ns fixed-ns vh-100-ns ${expanded &&
@@ -143,4 +143,5 @@ const Sidebar = ({ match, send, state, firebase, meetingId, title }) => {
     </div>
   );
 };
+
 export default Sidebar;

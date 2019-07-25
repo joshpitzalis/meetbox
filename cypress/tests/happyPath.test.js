@@ -1,7 +1,7 @@
 import { lorem } from "faker";
 
 describe("happy Path", () => {
-  it("lets me submit an agenda, activate it, edit it during a meeting, then complete it", () => {
+  it("lets me submit an agenda, activate it, edit it during a meeting, then complete it, also tests banners appear for each state", () => {
     const itemName = "example item name";
     const prepName = "example prep item";
     const meetingName = "test meeting name";
@@ -12,6 +12,15 @@ describe("happy Path", () => {
       .getByText(/get started/i)
       .click()
       // create an agenda in draft mode
+      .getByText(
+        /Add things you want to discuss in a meeting, then save your agenda to invite people to the meeting./i
+      )
+      .getByTestId("closeNotification")
+      .click()
+      .queryByText(
+        /Add things you want to discuss in a meeting, then save your agenda to invite people to the meeting./i
+      )
+      .should("not.exist")
       .getByText(/Add An Agenda Item/i)
       .click()
       .queryByTestId("agendaItem")
@@ -34,8 +43,8 @@ describe("happy Path", () => {
       // save agenda
       .getByTestId("saveAgenda")
       .click()
-      .getByTestId("agendaSubmitForm")
-      .click()
+      // .getByTestId("agendaSubmitForm")
+      // .click()
       .getByText(/No Googles, give me a link to share/i)
       .click()
       .getByText(/Finalise Agenda/i)
@@ -51,6 +60,9 @@ describe("happy Path", () => {
       .getByText(/confirm finalisation/i)
       .click()
       // agenda confirmed
+      .queryByText(
+        / 🎉 On the day of the meeting, open the link to this page and click on the green rocket to start the meeting so that you can take notes of what happens and keep a record of what people say they will do. 🎉/i
+      )
       .getByTestId("playButton")
       // try editing once agenda confirmed
       .getByText(itemName)
@@ -61,8 +73,12 @@ describe("happy Path", () => {
       .queryByTestId("prepForm")
       .should("not.exist")
       // meeting starts
+
       .getByTestId("playButton")
       .click()
+      .queryByText(
+        /This meeting has now started. Make sure you end the meeting when you are done to save all your notes./
+      )
       .getByTestId("stopButton")
       // editing during a meeting
       .queryAllByTestId("editableItemName")
@@ -92,6 +108,9 @@ describe("happy Path", () => {
       // end the meeting
       .getByTestId("stopButton")
       .click()
+      .queryByText(
+        /🎉 Congratulations! Your meeting is over. The details on this page will never change. Make a note of the link so that you can review these details if you ever need to. 🎉/i
+      )
       .queryByTestId("stopButton")
       .should("not.exist")
       .getByText(updatedMeetingName)
@@ -104,6 +123,6 @@ describe("happy Path", () => {
       .should("not.exist");
   });
 
-  it.skip("delete item", () => {});
+  it.skip("delete item, also test that it deletes while active", () => {});
   it.skip("loads an existing meeting in each state", () => {});
 });
