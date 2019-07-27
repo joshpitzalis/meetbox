@@ -10,7 +10,7 @@ export const handleAgendaSetNotification = () =>
   notfication$.next({
     type: "SUCCESS",
     message:
-      "🎉 Open this page on the day of the meeting and click on the rocket to start the meeting so you can take notes of what happened and what people said they would do.  🎉"
+      "🎉 You're done! Nice. Come back to this page on the day of the meeting and click on the green rocket to start the meeting. The app will help you take notes of what happens and keep a record of what people say they will do. 🎉"
   });
 
 export const handleMeetingStartNotification = () =>

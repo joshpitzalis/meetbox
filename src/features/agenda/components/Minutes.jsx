@@ -45,11 +45,11 @@ const Minutes = ({
       ) : (
         <div className="rf-measure rf-pl3" data-testid="minutesMarkdown">
           {value
-            ? value.split("\n").map(item => (
-                <>
+            ? value.split("\n").map((item, index) => (
+                <span key={`${item.substring(0, 1)}${index}`}>
                   {item}
                   <br />
-                </>
+                </span>
               ))
             : "No minutes for this item."}
         </div>

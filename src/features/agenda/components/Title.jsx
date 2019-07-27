@@ -72,7 +72,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
         </Form>
       ) : (
         <div
-          className="flex items-center rf-measure-narrow flex-grow-1 textPointer pa3 word-wrap"
+          className="flex items-start rf-measure-narrow flex-grow-1 textPointer pa3 word-wrap"
           onClick={() => {
             if (state.matches("active") || state.matches("draft")) {
               clickStream$.next("");

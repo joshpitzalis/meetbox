@@ -30,12 +30,10 @@ describe("happy Path", () => {
       .getAllByTestId("itemNameForm")
       .first()
       .submit()
-      .getAllByText(/click here to add prep/i)
+      .getAllByText(/Add Preparation/i)
       .first()
       .click()
-      .getAllByPlaceholderText(
-        /Something you want people to do before the meeting/i
-      )
+      .getAllByPlaceholderText(/add some prep/i)
       .first()
       .type(prepName)
       .getByTestId("prepForm")
@@ -61,7 +59,7 @@ describe("happy Path", () => {
       .click()
       // agenda confirmed
       .queryByText(
-        / 🎉 On the day of the meeting, open the link to this page and click on the green rocket to start the meeting so that you can take notes of what happens and keep a record of what people say they will do. 🎉/i
+        / 🎉 You're done! Nice. Come back to this page on the day of the meeting and click on the green rocket to start the meeting. The app will help you take notes of what happens and keep a record of what people say they will do. 🎉/i
       )
       .getByTestId("playButton")
       // try editing once agenda confirmed
@@ -97,9 +95,7 @@ describe("happy Path", () => {
       .first()
       .click()
       .getByTestId("taskEditBox")
-      .getAllByPlaceholderText(
-        /Describe any prep you need people to do for this agenda item./i
-      )
+      .getAllByPlaceholderText(/add a new task/i)
       .first()
       .type(task)
       .getAllByText(/Add/i)

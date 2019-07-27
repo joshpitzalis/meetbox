@@ -94,3 +94,9 @@ test("Editing the minutes section saves the minutes to storage", () => {
   userEvent.type(textbox, note);
   expect(props.handleMinutesTextUpdate).toHaveBeenCalled();
 });
+
+xtest("title overflow in agendat item", () => {});
+xtest("prep items fall horizontally", () => {});
+xtest("task items fall horizontally", () => {});
+xtest("task overflow, in agenda item", () => {});
+xtest("teh title should always be at eth top of an item, not in the middle", () => {});

@@ -40,7 +40,7 @@ test("The minutes component does not render the textarea when the agenda is comp
   getByTestId("minutesMarkdown");
 });
 
-test("if no minutes available then completed minutes renders a blank string", () => {
+test("if no minutes available then completed minutes renders a blank string placeholder", () => {
   const props = {
     firebase: jest.fn(),
     itemId: 123,
@@ -51,7 +51,7 @@ test("if no minutes available then completed minutes renders a blank string", ()
   };
 
   const { getByText, getByTestId } = render(<Minutes {...props} />);
-  getByText("No Minutes");
+  getByText("No minutes for this item.");
   getByTestId("minutesMarkdown");
 });
 
