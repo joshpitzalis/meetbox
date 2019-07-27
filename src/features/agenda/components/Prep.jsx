@@ -1,7 +1,7 @@
-import { Button, Form, FormField, RadioButton } from "grommet";
+import { Button, Form, FormField } from "grommet";
 import { Close } from "grommet-icons";
 import React, { useState } from "react";
-import firebase from "../../../sideEffects/firebase";
+import firebase from "../../../utilities/firebase";
 
 // interface IProps {
 //   meetingId: number;
@@ -19,26 +19,33 @@ import firebase from "../../../sideEffects/firebase";
 
 export const Prerequisites = ({ meetingId, id, prep, state }) => {
   const [editMode, setEditMode] = useState(false);
-
   const [value, resetForm] = useState({ name: "" });
 
   return (
-    <div className={`${state === "active" ? "w-100" : "w-25 center"}`}>
-      {prep &&
-        Object.values(prep).map(item => (
-          <PrepItem
-            {...item}
-            key={item.id}
-            editMode={editMode}
-            meetingId={meetingId}
-            itemId={id}
-          />
-        ))}
+    <div
+      className={` ${
+        state.matches("active") ? "w-100" : "w-25-ns w-100 center"
+      }`}
+    >
+      <ol className="list-decimal h-auto flex flex-column items-start pl4">
+        {prep &&
+          Object.values(prep).map(item => (
+            <PrepItem
+              {...item}
+              key={item.id}
+              editMode={editMode}
+              meetingId={meetingId}
+              itemId={id}
+              state={state}
+            />
+          ))}
+      </ol>
 
-      {editMode ? (
+      {editMode && (state.matches("draft") || state.matches("active")) ? (
         <div className="ma3 pt4 pl2">
           <Form
             value={value}
+            data-testid="prepForm"
             onSubmit={data => {
               const { value } = data;
               const prepId = +new Date();
@@ -58,8 +65,8 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
           >
             <FormField
               name="name"
-              label="Preparation"
-              placeholder="Describe any prep you need people to do for this agenda item."
+              label="Stuff you want people to do before the meeting starts"
+              placeholder="Add some prep"
               required
             />
 
@@ -79,13 +86,13 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
         </div>
       ) : (
         <div className="tc o-50 w-100">
-          {state === "draft" && (
+          {state.matches("draft") && (
             <Button
               type="button"
               label={
                 prep && Object.values(prep).length > 0
-                  ? "Click to add more prep."
-                  : "Click here to add prep."
+                  ? "Add More Prep"
+                  : "Add Preparation (optional)"
               }
               plain
               onClick={() => setEditMode(true)}
@@ -115,36 +122,32 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
 //   itemId
 // }) => {
 
-export const PrepItem = ({ name, id, editMode, meetingId, itemId }) => {
-  const [complete, markComplete] = useState(false);
-  return (
-    <div className="ma3">
-      {editMode ? (
-        <Button
-          icon={<Close />}
-          type="button"
-          label={name}
-          plain
-          onClick={() =>
-            firebase
-              .firestore()
-              .doc(`meetings/${meetingId}`)
-              .update({
-                [`items.${itemId}.prep.${id}`]: firebase.firestore.FieldValue.delete()
-              })
-              .catch(error => console.error(error))
-          }
-          className="dim"
-        />
-      ) : (
-        <RadioButton
-          name={name}
-          key={id}
-          checked={complete}
-          label={name}
-          onChange={() => markComplete(true)}
-        />
-      )}
-    </div>
+export const PrepItem = ({ name, id, editMode, meetingId, itemId, state }) => {
+  return editMode && (state.matches("draft") || state.matches("active")) ? (
+    <Button
+      icon={<Close className="hover-red" />}
+      type="button"
+      label={name}
+      plain
+      onClick={() =>
+        firebase
+          .firestore()
+          .doc(`meetings/${meetingId}`)
+          .update({
+            [`items.${itemId}.prep.${id}`]: firebase.firestore.FieldValue.delete()
+          })
+          .catch(error => console.error(error))
+      }
+      className="hover-red"
+    />
+  ) : (
+    <li
+      style={{
+        wordWrap: "break-word",
+        textOverflow: "ellipsis"
+      }}
+    >
+      {name}
+    </li>
   );
 };

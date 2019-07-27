@@ -1,55 +1,74 @@
 import { TextArea } from "grommet";
 import React, { useState } from "react";
-import { Subject } from "rxjs";
-import { debounceTime, tap } from "rxjs/operators";
-const textInput$ = new Subject();
+import { textInput$ } from "../agendaStreams$";
+import { useSync } from "./../agendaHelpers";
 
-export const Minutes = ({ firebase, itemId, meetingId, minutes, state }) => {
-  const [value, setValue] = useState(minutes);
+// responsible for updating the minutes and syncing the updates to firebase
+const Minutes = ({
+  firebase,
+  itemId,
+  meetingId,
+  minutes,
+  state,
+  handleMinutesTextUpdate
+}) => {
   const [saved, setSaved] = useState(true);
-  const handleTextUpdate = e => {
-    setValue(e.target.value);
-    textInput$.next(e.target.value);
-    setSaved(false);
-    textInput$
-      .pipe(
-        debounceTime(2000),
-        tap(
-          text =>
-            firebase
-              .firestore()
-              .doc(`meetings/${meetingId}`)
-              .update({
-                [`items.${itemId}.minutes`]: text
-              })
-          // .then(() => {
-          //   console.log("saved");
-          //   setSaved(true);
-          // })
-          // .catch(error => console.error(error))
-        )
-      )
-      .subscribe(text => setSaved(true));
-  };
+  const [value, setValue] = useSync(textInput$, itemId, minutes);
+
   return (
-    <div className="ma3 h5 pointer w-50">
-      {state === "completed" && <p>Minutes</p>}
-      {state === "active" ? (
+    <div className="ma3 rf-min-h5 pointer w-50" data-testid="editableMinutes">
+      {state.matches("active") ? (
         <>
           <TextArea
             data-testid="editableMinutes"
-            className="w-100 bg-white"
+            className="w-100 bg-white h-100"
+            focusIndicator={false}
             placeholder="Enter your minutes here..."
             fill={true}
-            onChange={handleTextUpdate}
+            onChange={e =>
+              handleMinutesTextUpdate(
+                e,
+                setValue,
+                textInput$,
+                setSaved,
+                meetingId,
+                itemId,
+                firebase
+              )
+            }
             style={{ backgroundColor: "white" }}
             value={value}
+            plain
           />
-          <small className="o-50">{`${saved ? "saved" : "Saving..."}`}</small>
+          <SavedStatus saved={saved} />
         </>
       ) : (
-        <p className="measure">{value}</p>
+        <div className="rf-measure rf-pl3" data-testid="minutesMarkdown">
+          {value
+            ? value.split("\n").map((item, index) => (
+                <span key={`${item.substring(0, 1)}${index}`}>
+                  {item}
+                  <br />
+                </span>
+              ))
+            : "No minutes for this item."}
+        </div>
       )}
     </div>
+  );
+};
+
+export default Minutes;
+
+// responsible for showing whether the minutes have been saved or not
+export const SavedStatus = ({ saved }) => {
+  return (
+    <>
+      {saved ? (
+        <small className="o-50 dark-green">Saved</small>
+      ) : (
+        <small className="o-50 dark-red">Saving...</small>
+      )}
+    </>
   );
 };

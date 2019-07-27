@@ -1,6 +1,6 @@
 import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
-import { Add, Send } from "grommet-icons";
+import { Add, Save } from "grommet-icons";
 import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import {
@@ -8,38 +8,50 @@ import {
   useStreamMeeting
 } from "../features/agenda/agendaHelpers";
 import AgendaItem from "../features/agenda/components/AgendaItem";
-import firebase from "../sideEffects/firebase";
-import stateMachine from "../statechart";
+import firebase from "../utilities/firebase";
+import stateMachine from "../utilities/statechart";
 
-const Agenda = ({ match, history }) => {
+const Agenda = ({ match }) => {
   const [current, send] = useMachine(stateMachine);
-  const meetingId = match.params.meetingId;
+  const meetingId = match && match.params && match.params.meetingId;
   const meeting = useStreamMeeting(meetingId);
 
+  const [disabled, setDisabled] = React.useState(false);
+
+  React.useEffect(() => {
+    setDisabled(false);
+    const blankItem =
+      meeting &&
+      meeting.items &&
+      Object.values(meeting.items).some(({ name }) => !name);
+
+    if (blankItem) {
+      setDisabled(true);
+    }
+  }, [meeting]);
+
   useEffect(() => {
-    if (meetingId && meeting && meeting.status === "complete") {
-      send("REDIRECTED_TO_COMPLETE_AGENDA");
-    }
+    if (meetingId && meeting) {
+      if (meeting.status === "complete") {
+        send("REDIRECTED_TO_COMPLETE_AGENDA");
+      }
 
-    if (meetingId && meeting && meeting.status === "active") {
-      send("REDIRECTED_TO_ACTIVE_AGENDA");
-    }
+      if (meeting.status === "active") {
+        send("REDIRECTED_TO_ACTIVE_AGENDA");
+      }
 
-    if (meetingId && meeting && meeting.status === "confirmed") {
-      send("REDIRECTED_TO_CONFIRMED_AGENDA");
-    }
+      if (meeting.status === "confirmed") {
+        send("REDIRECTED_TO_CONFIRMED_AGENDA");
+      }
 
-    if (meetingId && meeting && meeting.status === "draft") {
-      send("REDIRECTED_TO_EXISTING_AGENDA");
-    }
-
-    if (!meetingId) {
-      send({ type: "NEW_AGENDA_CREATED", payload: history });
+      if (meeting.status === "draft") {
+        send("REDIRECTED_TO_EXISTING_AGENDA");
+      }
     }
   }, [meetingId, meeting]);
 
   return (
-    <>
+    <div data-testid="agendaPage">
       {(current.matches("loading") || current.matches("creatingAgenda")) && (
         <div className="vh-100 vw-100 flex items-center justify-center">
           <p>Loading...</p>
@@ -50,12 +62,17 @@ const Agenda = ({ match, history }) => {
         current.matches("confirmed") ||
         current.matches("active") ||
         current.matches("complete")) && (
-        <section className="flex vh-100 w-100 ">
+        <section className="flex flex-wrap flex-column-ns flex-row vh-100-ns h-auto">
           <Sidebar
             send={send}
-            state={current.value}
+            state={current}
             meetingId={meetingId}
             firebase={firebase}
+            title={meeting && meeting.summary}
+            match={match}
+            itemLength={
+              meeting && meeting.items && Object.values(meeting.items).length
+            }
           />
           <div className="flex-grow-1 w-100 flex flex-column">
             {meeting &&
@@ -66,7 +83,7 @@ const Agenda = ({ match, history }) => {
                   {...props}
                   meetingId={meetingId}
                   index={index}
-                  state={current.value}
+                  state={current}
                   firebase={firebase}
                 />
               ))}
@@ -74,25 +91,33 @@ const Agenda = ({ match, history }) => {
               <div className="pa5 tc w-100">
                 <Button
                   icon={<Add />}
-                  className="pointer grow"
+                  className={`pointer dim`}
                   size="large"
                   primary
-                  label="Add Agenda Item"
+                  label="Add An Agenda Item"
                   onClick={() => handleAddMeeting(meetingId)}
+                  disabled={disabled}
                 />
-                <div className="pv3 flex items-center justify-center">
-                  <small className="o-50">
-                    When you are done, click on the
-                  </small>
-                  <Send className="ph1" />
-                  <small className="o-50"> to finalise.</small>
-                </div>
+                {meeting &&
+                  meeting.items &&
+                  Object.values(meeting.items).length > 0 && (
+                    <div className="pv3 flex-ns items-center justify-center dn ">
+                      <small className="o-50">
+                        When you're done, click the
+                      </small>
+                      <Save className="ph1" color="#D4D4D4" />
+                      <small className="o-50">
+                        {" "}
+                        icon in the bottom left corner to finalise.
+                      </small>
+                    </div>
+                  )}
               </div>
             )}
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 };
 

@@ -8,18 +8,21 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
   return (
     <div className="w-25">
       <p>Task list</p>
-      {tasks &&
-        Object.values(tasks).map(task => (
-          <Task
-            {...task}
-            key={task.taskId}
-            editMode={editMode}
-            itemId={itemId}
-            firebase={firebase}
-            meetingId={meetingId}
-          />
-        ))}
-      {editMode ? (
+      <div className="flex flex-column items-start">
+        {tasks &&
+          Object.values(tasks).map(task => (
+            <Task
+              {...task}
+              key={task.taskId}
+              editMode={editMode}
+              itemId={itemId}
+              firebase={firebase}
+              meetingId={meetingId}
+              state={state}
+            />
+          ))}
+      </div>
+      {editMode && state.matches("active") ? (
         <div className="pt4 pl2">
           <Form
             value={value}
@@ -40,11 +43,12 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
                 })
                 .catch(error => console.error(error));
             }}
+            data-testid="taskEditBox"
           >
             <FormField
               name="name"
-              label="Preparation"
-              placeholder="Describe any prep you need people to do for this agenda item."
+              // label="New Task"
+              placeholder="Add a new task"
               required
             />
 
@@ -64,17 +68,18 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
         </div>
       ) : (
         <div className=" o-50 w-100">
-          {state === "active" && (
+          {state.matches("active") && (
             <Button
               type="button"
               label={
                 tasks && Object.values(tasks).length > 0
-                  ? "Click to add more tasks."
+                  ? "Add another task..."
                   : "Click here to add a task."
               }
               plain
               onClick={() => setEditMode(true)}
               className="h3"
+              data-testid="editTask"
             />
           )}
         </div>
@@ -90,11 +95,12 @@ export function Task({
   editMode,
   itemId,
   meetingId,
-  firebase
+  firebase,
+  state
 }) {
   return (
-    <>
-      {editMode ? (
+    <div className="mv1">
+      {editMode && state.matches("active") ? (
         <Button
           icon={<Close />}
           type="button"
@@ -109,7 +115,7 @@ export function Task({
               })
               .catch(error => console.error(error))
           }
-          className="dim"
+          className="hover-red"
         />
       ) : (
         <CheckBox
@@ -127,6 +133,6 @@ export function Task({
           }
         />
       )}
-    </>
+    </div>
   );
 }

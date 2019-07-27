@@ -1,0 +1,10 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=d2dd0f78d56765c085782f4e945eb731c3003209e3ed15878efc4fa9f3ce9ded
+language: node_js
+os: osx
+node_js:
+  - "stable"
+cache:
+  directories:
+    - node_modules

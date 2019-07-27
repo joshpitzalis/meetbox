@@ -1,25 +1,15 @@
-import { Grommet } from "grommet";
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route } from "react-router-dom";
-import Agenda from "./pages/Agenda";
-import * as serviceWorker from "./serviceWorker";
+import { initClient } from "./features/calendar/calHelpers";
 import "./styles/index.css";
+import "./styles/refactored/rf-index.css";
+import { App } from "./utilities/Routes";
+import * as serviceWorker from "./utilities/serviceWorker";
 
-const App = () => {
-  return (
-    <BrowserRouter>
-      <Grommet plain>
-        <main className={`pa0 ma0 sans-serif`}>
-          <Route exact path="/" component={Agenda} />
-          <Route path="/meeting/:meetingId" component={Agenda} />
-        </main>
-      </Grommet>
-    </BrowserRouter>
-  );
-};
-
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <App initClient={initClient} />,
+  document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

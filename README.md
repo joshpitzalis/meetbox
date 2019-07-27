@@ -1,3 +1,3 @@
 # Meetbox
 
-Make meetings less 💩
+Helping meetings stay on point.
