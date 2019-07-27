@@ -1,0 +1,25 @@
+:root {
+  --spacing-medium: 1rem;
+}
+
+/* TYPOGRAPHY */
+.rf-measure {
+  max-width: 30em;
+}
+
+.rf-measure-narrow {
+  max-width: 20em;
+}
+
+.rf-lh-title {
+  line-height: 1.25;
+}
+
+/* SPACING */
+.rf-pl3 {
+  padding-left: var(--spacing-medium);
+}
+
+.rf-min-h5 {
+  min-height: 16rem;
+}

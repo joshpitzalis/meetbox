@@ -49,7 +49,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
           <FormField
             name="name"
             // label="Agenda Item"
-            className="measure"
+            className="rf-measure-narrow rf-lh-title"
             placeholder="Give your first agenda Item a name"
             required
             value={title || name}
@@ -72,7 +72,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
         </Form>
       ) : (
         <div
-          className="flex items-center measure flex-grow-1 textPointer pa3"
+          className="flex items-center rf-measure-narrow flex-grow-1 textPointer pa3 word-wrap"
           onClick={() => {
             if (state.matches("active") || state.matches("draft")) {
               clickStream$.next("");
@@ -80,7 +80,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
             }
           }}
         >
-          <h2 className=" f2" data-testid="itemName">
+          <h2 className="rf-lh-title f2 w-100" data-testid="itemName">
             {title || name}
           </h2>
         </div>

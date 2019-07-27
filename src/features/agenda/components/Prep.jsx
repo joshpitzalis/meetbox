@@ -27,7 +27,7 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
         state.matches("active") ? "w-100" : "w-25-ns w-100 center"
       }`}
     >
-      <ol className="list-decimal h-auto flex items-center pl4">
+      <ol className="list-decimal h-auto flex flex-column items-start pl4">
         {prep &&
           Object.values(prep).map(item => (
             <PrepItem
@@ -65,8 +65,8 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
           >
             <FormField
               name="name"
-              label="Preparation"
-              placeholder="Something you want people to do before the meeting"
+              label="Stuff you want people to do before the meeting starts"
+              placeholder="Add some prep"
               required
             />
 
@@ -91,8 +91,8 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
               type="button"
               label={
                 prep && Object.values(prep).length > 0
-                  ? "Click to add more prep."
-                  : "Click here to add prep."
+                  ? "Add More Prep"
+                  : "Add Preparation (optional)"
               }
               plain
               onClick={() => setEditMode(true)}
@@ -125,7 +125,7 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
 export const PrepItem = ({ name, id, editMode, meetingId, itemId, state }) => {
   return editMode && (state.matches("draft") || state.matches("active")) ? (
     <Button
-      icon={<Close />}
+      icon={<Close className="hover-red" />}
       type="button"
       label={name}
       plain
@@ -138,7 +138,7 @@ export const PrepItem = ({ name, id, editMode, meetingId, itemId, state }) => {
           })
           .catch(error => console.error(error))
       }
-      className="dim"
+      className="hover-red"
     />
   ) : (
     <li

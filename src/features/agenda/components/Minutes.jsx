@@ -1,4 +1,4 @@
-import { Markdown, TextArea } from "grommet";
+import { TextArea } from "grommet";
 import React, { useState } from "react";
 import { textInput$ } from "../agendaStreams$";
 import { useSync } from "./../agendaHelpers";
@@ -16,7 +16,7 @@ const Minutes = ({
   const [value, setValue] = useSync(textInput$, itemId, minutes);
 
   return (
-    <div className="ma3 h5 pointer w-50" data-testid="editableMinutes">
+    <div className="ma3 rf-min-h5 pointer w-50" data-testid="editableMinutes">
       {state.matches("active") ? (
         <>
           <TextArea
@@ -43,9 +43,16 @@ const Minutes = ({
           <SavedStatus saved={saved} />
         </>
       ) : (
-        <Markdown className="measure" data-testid="minutesMarkdown">
-          {value || "No Minutes"}
-        </Markdown>
+        <div className="rf-measure rf-pl3" data-testid="minutesMarkdown">
+          {value
+            ? value.split("\n").map(item => (
+                <>
+                  {item}
+                  <br />
+                </>
+              ))
+            : "No minutes for this item."}
+        </div>
       )}
     </div>
   );
