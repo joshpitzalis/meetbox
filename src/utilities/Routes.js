@@ -23,7 +23,7 @@ export const App = ({ initClient }) => {
   return (
     <BrowserRouter>
       <Grommet theme={theme}>
-        <main className={`pa0 ma0 sans-serif`} data-testid="routes">
+        <main className={`pa0 ma0 sans-serif`}>
           <Routes />
           <div className="w-100 tc white">
             <small>Version {process.env.REACT_APP_VERSION}</small>
@@ -36,13 +36,13 @@ export const App = ({ initClient }) => {
 
 export const Routes = () => {
   return (
-    <>
+    <div data-testid="routes">
       <Banner />
       <Switch>
         <Route exact path="/" component={Landing} />
         <Route exact path="/meeting/:meetingId" component={Agenda} />
         <Route component={NoMatch} />
       </Switch>
-    </>
+    </div>
   );
 };

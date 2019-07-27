@@ -6,6 +6,7 @@ import {
   handleWelcomeNotification
 } from "../features/agenda/agendaActions";
 import { createAgenda } from "../features/agenda/agendaHelpers";
+
 // tk rather than redirecting on idle you can persist state instead https://xstate.js.org/docs/guides/states.html#persisting-state
 
 export default Machine(

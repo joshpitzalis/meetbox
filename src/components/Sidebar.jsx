@@ -2,7 +2,7 @@ import { FormPreviousLink, Halt, Launch, Save } from "grommet-icons";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
 
-const Sidebar = ({ send, state, firebase, meetingId, title }) => {
+const Sidebar = ({ send, state, firebase, meetingId, title, itemLength }) => {
   console.log("title", title);
   React.useEffect(() => {
     var config = {
@@ -20,6 +20,7 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
     <div
       className={`flex flex-column flex-row-ns fixed-ns vh-100-ns ${expanded &&
         "shadow-1 z-1 vh-100 pr4 bg-white"}`}
+      data-testid="sidebar"
     >
       <aside
         className={`
@@ -105,17 +106,24 @@ const Sidebar = ({ send, state, firebase, meetingId, title }) => {
                 }}
               />
             ) : (
-              <div
-                className="flex flex-column pointer dim"
-                onClick={() => setExpanded(true)}
-                data-testid="saveAgenda"
-              >
-                <small className="ttu tc b mt3" style={{ color: "#D4D4D4" }}>
-                  Save <br />
-                  Draft
-                </small>
-                <Save color="#D4D4D4" size="large" className="ma3" />
-              </div>
+              <>
+                {itemLength > 0 && (
+                  <div
+                    className="flex flex-column pointer dim"
+                    onClick={() => setExpanded(true)}
+                    data-testid="saveAgenda"
+                  >
+                    <small
+                      className="ttu tc b mt3"
+                      style={{ color: "#D4D4D4" }}
+                    >
+                      Save <br />
+                      Draft
+                    </small>
+                    <Save color="#D4D4D4" size="large" className="ma3" />
+                  </div>
+                )}
+              </>
             )}
           </div>
         ) : (

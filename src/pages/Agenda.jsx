@@ -70,6 +70,9 @@ const Agenda = ({ match }) => {
             firebase={firebase}
             title={meeting && meeting.summary}
             match={match}
+            itemLength={
+              meeting && meeting.items && Object.values(meeting.items).length
+            }
           />
           <div className="flex-grow-1 w-100 flex flex-column">
             {meeting &&
@@ -95,14 +98,20 @@ const Agenda = ({ match }) => {
                   onClick={() => handleAddMeeting(meetingId)}
                   disabled={disabled}
                 />
-                <div className="pv3 flex-ns items-center justify-center dn ">
-                  <small className="o-50">When you're done, click the</small>
-                  <Save className="ph1" color="#D4D4D4" />
-                  <small className="o-50">
-                    {" "}
-                    icon in the bottom left corner to finalise.
-                  </small>
-                </div>
+                {meeting &&
+                  meeting.items &&
+                  Object.values(meeting.items).length > 0 && (
+                    <div className="pv3 flex-ns items-center justify-center dn ">
+                      <small className="o-50">
+                        When you're done, click the
+                      </small>
+                      <Save className="ph1" color="#D4D4D4" />
+                      <small className="o-50">
+                        {" "}
+                        icon in the bottom left corner to finalise.
+                      </small>
+                    </div>
+                  )}
               </div>
             )}
           </div>
