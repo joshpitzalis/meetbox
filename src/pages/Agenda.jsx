@@ -108,7 +108,7 @@ const Agenda = ({ match }) => {
                       <Save className="ph1" color="#D4D4D4" />
                       <small className="o-50">
                         {" "}
-                        icon in the bottom left corner to finalise.
+                        icon in the bottom left corner to save.
                       </small>
                     </div>
                   )}

@@ -1,7 +1,7 @@
-import { Button, WorldMap } from "grommet";
-import { FormClose, Google } from "grommet-icons";
+import { Button } from "grommet";
+import { Google } from "grommet-icons";
 import React from "react";
-import tzlookup from "tz-lookup";
+import ConnectedForm from "./ConnectedForm";
 
 const hourFrom = startTime => {
   const start = new Date(startTime).getTime();
@@ -54,10 +54,7 @@ const handleSubmit = async ({
     setError({ ...error, title: "You need a title." });
     return;
   }
-  if (!timezone && state.matches("draft.loggedIn")) {
-    setError({ ...error, timezone: "Select a timezone." });
-    return;
-  }
+
   if (!dateTime && state.matches("draft.loggedIn")) {
     setError({
       ...error,
@@ -81,12 +78,10 @@ const handleSubmit = async ({
         description,
         summary,
         start: {
-          dateTime: new Date(dateTime).toISOString(),
-          timezone
+          dateTime: dateTime
         },
         end: {
-          dateTime: hourFrom(dateTime),
-          timezone
+          dateTime: hourFrom(dateTime)
         },
         attendees
       };
@@ -120,7 +115,7 @@ const SubmitForm = ({
   const [attendees, setAttendees] = React.useState([]);
   const [email, setEmail] = React.useState("");
   const [dateTime, setDateTime] = React.useState("");
-  const [timezone, setTimezone] = React.useState("");
+
   const [error, setError] = React.useState({});
 
   const { gapi } = window;
@@ -157,8 +152,6 @@ const SubmitForm = ({
 
         {state.matches("draft.loggedIn") && (
           <ConnectedForm
-            timezone={timezone}
-            setTimezone={setTimezone}
             setError={setError}
             setDateTime={setDateTime}
             email={email}
@@ -230,7 +223,7 @@ const SubmitForm = ({
                 onClick={() =>
                   handleSubmit({
                     summary,
-                    timezone,
+
                     dateTime,
                     error,
                     setError,
@@ -280,176 +273,3 @@ const SubmitForm = ({
 };
 
 export default SubmitForm;
-
-function ConnectedForm({
-  timezone,
-  setTimezone,
-  setError,
-  setDateTime,
-  email,
-  setAttendees,
-  attendees,
-  setEmail,
-  handleSubmit,
-  error,
-  summary,
-  dateTime,
-  hourFrom,
-  state,
-  insertEvent,
-  firebase,
-  meetingId,
-  setExpanded,
-  send,
-  gapi,
-  description
-}) {
-  console.log("error", error);
-  return (
-    <>
-      <div className="mb3">
-        {error.timezone ? (
-          <p className="text-red-500 text-xs italic">{error.timezone}</p>
-        ) : (
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="timezone"
-          >
-            {timezone ? `Timezone: ${timezone}` : "Confirm Your Timezone"}
-          </label>
-        )}
-
-        <WorldMap
-          className="h-auto"
-          id="timezone"
-          color={error.timezone ? "red" : "neutral-1"}
-          onSelectPlace={async ([lat, lon]) => {
-            const timezone = await tzlookup(lat, lon);
-            setTimezone(timezone);
-          }}
-          selectColor="accent-2"
-          onClick={() => setError({})}
-        />
-      </div>
-
-      <div className="pb-5 mb-6 bb">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="startDate"
-        >
-          Start Date & Time
-        </label>
-
-        <input
-          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline
-                ${error.dateTime && "border-red-500"}`}
-          id="startDate"
-          type="datetime-local"
-          onChange={e => {
-            const datestamp = e.currentTarget.value;
-            setDateTime(datestamp);
-            setError({});
-          }}
-        />
-        {error.dateTime && (
-          <p className="text-red-500 text-xs italic">{error.dateTime}</p>
-        )}
-      </div>
-
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-
-          if (!email) {
-            return;
-          }
-
-          setAttendees([
-            ...attendees,
-            {
-              email
-            }
-          ]);
-          setEmail("");
-        }}
-      >
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="email"
-          >
-            Invitee Email Address
-          </label>
-
-          <input
-            className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            value={email}
-            placeholder="attendee@email.com"
-            onChange={e => {
-              setError({});
-              setEmail(e.target.value);
-            }}
-          />
-
-          {attendees && attendees.length > 0 ? (
-            <ul className="h-16 overflow-y-auto">
-              {attendees.map(({ email }) => (
-                <li key={email}>
-                  <FormClose
-                    className="ph-4 cursor-pointer"
-                    onClick={() =>
-                      setAttendees(
-                        attendees.filter(person => person.email !== email)
-                      )
-                    }
-                  />
-                  {email}
-                </li>
-              ))}
-            </ul>
-          ) : error && error.attendee ? (
-            <p className="text-red-500 text-xs italic">{error.attendee}</p>
-          ) : (
-            <p className="text-gray-600 text-xs italic pt-3">
-              Gmail users will get a calendar invite, everyone else gets an
-              email invite.{" "}
-            </p>
-          )}
-        </div>
-      </form>
-      <div className="flex items-center justify-between">
-        <button
-          className={`text-white font-bold py-2 px-4 rounded focus:outline-none ${
-            Object.keys(error).length > 0
-              ? "bg-red-800 hover:bg-red-700 focus:shadow-none"
-              : "bg-blue-800 hover:bg-blue-700 focus:shadow-outline"
-          }`}
-          type="button"
-          onClick={() =>
-            handleSubmit({
-              summary,
-              timezone,
-              dateTime,
-              error,
-              setError,
-              hourFrom,
-              attendees,
-              state,
-              insertEvent,
-              gapi,
-              firebase,
-              meetingId,
-              setExpanded,
-              send,
-              description
-            })
-          }
-        >
-          {Object.keys(error).length > 0 ? "Complete the form first" : "Send"}
-        </button>
-      </div>
-    </>
-  );
-}

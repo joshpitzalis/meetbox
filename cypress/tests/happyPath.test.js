@@ -13,7 +13,7 @@ describe("happy Path", () => {
       .click()
       // create an agenda in draft mode
       .getByText(
-        /Add things you want to discuss in a meeting, then save your agenda to invite people to the meeting./i
+        /Make a list of all the things you want to discuss in your meeting/i
       )
       .getByTestId("closeNotification")
       .click()

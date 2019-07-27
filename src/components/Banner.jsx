@@ -14,7 +14,7 @@ const useNotification = notificationStream$ => {
           setMessage(message);
           setType(type);
         }),
-        delay(5000),
+        delay(10000),
         tap(() => {
           setMessage("");
           setType("");

@@ -28,7 +28,11 @@ const Landing = ({ match, history }) => {
       <article className="pa3 pv4-ns ph5-ns h-screen flex flex-wrap flex-grow-1">
         <header className="w-50-ns w-100 pl3 tl">
           <h1 className="mb-16 font-extrabold mt5 text-5xl text-8xl lh-title ">
-            {/* Meetbox.io */}It helps meetings stay on point.
+            {/* Meetbox.io */}
+            {/* Help meetings stay on point. */}
+            Create An Agenda For Your Next Meeting
+            {/* Keep track of what happens in a meeting so that
+            everyone knows what to do afterwards. */}
           </h1>
           {/* <h2 className="f3 mid-gray lh-title ">
             A tool to help meetings stay on point.
@@ -44,7 +48,8 @@ const Landing = ({ match, history }) => {
             Get Started
           </button>
         </header>
-        <ul className="list pl0 w-50-ns w-100">
+
+        {/* <ul className="list pl0 w-50-ns w-100">
           <li className="pa3 pa4-ns mv2 item0">
             <b className="db f3 mb1">1. Create An Agenda Before The Meeting.</b>
             <span className="f5 db lh-copy measure">
@@ -81,6 +86,7 @@ const Landing = ({ match, history }) => {
             </span>
           </li>
         </ul>
+       */}
       </article>
     </div>
   );
