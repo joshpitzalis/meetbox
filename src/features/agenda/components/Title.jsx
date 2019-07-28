@@ -39,7 +39,7 @@ export function AgendaItemName({ name, id, meetingId, state, prep, firebase }) {
   return (
     <div
       className={`flex flex-column justify-start item-start 
-      ${state.matches("active") ? "w-25-ns" : "w-50-ns"}`}
+      ${state.matches("draft") ? "w-50-ns" : "w-25-ns"}`}
     >
       {(editMode && state.matches("draft")) || state.matches("active") ? (
         <Form

@@ -24,7 +24,9 @@ const Sidebar = ({
   console.log("savedDateTime", savedDateTime);
   const [expanded, setExpanded] = React.useState(false);
   const [summary, setSummary] = React.useState(title);
-  const [dateTime, setDateTime] = React.useState(savedDateTime.seconds);
+  const [dateTime, setDateTime] = React.useState(
+    savedDateTime && savedDateTime.seconds ? savedDateTime.seconds : 0
+  );
   return (
     <div
       className={`flex flex-column flex-row-ns 
@@ -83,7 +85,7 @@ const Sidebar = ({
         )}
 
         <h1
-          className="ph4 rotate-ns flex items-center"
+          className="ph4-ns pa3 pv0-ns rotate-ns flex items-center"
           style={{
             textAlign: "center",
             fontSize: "23px",
@@ -137,12 +139,14 @@ const Sidebar = ({
             )}
           </div>
         ) : (
-          <div>
-            <dl class={`dib mr3 pa3 text-gray-700`}>
-              <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
-              <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
-            </dl>
-          </div>
+          !!savedDateTime && (
+            <div>
+              <dl class={`dib mr3 pa3 text-gray-700`}>
+                <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
+                <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
+              </dl>
+            </div>
+          )
         )}
       </aside>
 

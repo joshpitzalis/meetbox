@@ -6,10 +6,10 @@ const Landing = ({ match, history }) => {
   const [, send] = useMachine(stateMachine);
 
   return (
-    <div className="flex" data-testid="landingPage">
-      <div className="vh-100  flex justify-center">
+    <div className="flex-ns" data-testid="landingPage">
+      <div className="vh-100-ns flex justify-center">
         <h1
-          className="ph4 rotate-ns   "
+          className="ph4-ns pa3 rotate-ns"
           style={{
             textAlign: "center",
             fontSize: "23px",
@@ -52,7 +52,7 @@ const Landing = ({ match, history }) => {
           </button>
         </header>
 
-        <ul className="list pl0 w-50-ns w-100">
+        <ul className="list pl0 w-50-ns w-100 dn db-l">
           <li className="pa3 pa4-ns mv4 item0">
             <b className="db f3 mb1 text-gray-700 h3">
               📅 Use it to create an agenda and send out google calendar

@@ -31,7 +31,7 @@ const useNotification = notificationStream$ => {
 const Banner = () => {
   const [message, clear, type] = useNotification(notfication$);
   return (
-    <div>
+    <div className="dn db-l">
       {message && (
         <div
           className={`${
