@@ -3,7 +3,7 @@ import { notfication$ } from "../../components/Banner";
 export const handleWelcomeNotification = () =>
   notfication$.next({
     message:
-      "Add things you want to discuss in a meeting, then save your agenda to invite people to the meeting."
+      "Make a list of all the things you want to discuss in your meeting."
   });
 
 export const handleAgendaSetNotification = () =>

@@ -24,7 +24,7 @@ const AgendaItem = ({
   return (
     <div
       data-testid="agendaItem"
-      className={`flex items-center item${index} near-black`}
+      className={`flex items-center item${index % 12} near-black`}
     >
       {confirm ? (
         <ConfirmDelete
