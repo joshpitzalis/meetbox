@@ -75,67 +75,15 @@ const ConnectedForm = ({
         )}
       </div> */}
 
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          if (!email) {
-            return;
-          }
-          setAttendees([
-            ...attendees,
-            {
-              email
-            }
-          ]);
-          setEmail("");
-        }}
-      >
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="email"
-          >
-            Invitee Email Address
-          </label>
+      <PeopleForm
+        email={email}
+        setAttendees={setAttendees}
+        attendees={attendees}
+        setEmail={setEmail}
+        setError={setError}
+        error={error}
+      />
 
-          <input
-            className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            value={email}
-            placeholder="attendee@email.com"
-            onChange={e => {
-              setError({});
-              setEmail(e.target.value);
-            }}
-          />
-
-          {attendees && attendees.length > 0 ? (
-            <ul className="h-16 overflow-y-auto">
-              {attendees.map(({ email }) => (
-                <li key={email}>
-                  <FormClose
-                    className="ph-4 cursor-pointer"
-                    onClick={() =>
-                      setAttendees(
-                        attendees.filter(person => person.email !== email)
-                      )
-                    }
-                  />
-                  {email}
-                </li>
-              ))}
-            </ul>
-          ) : error && error.attendee ? (
-            <p className="text-red-500 text-xs italic">{error.attendee}</p>
-          ) : (
-            <p className="text-gray-600 text-xs italic pt-3">
-              Gmail users will get a calendar invite, everyone else gets an
-              email invite.{" "}
-            </p>
-          )}
-        </div>
-      </form>
       <div className="flex items-center justify-between">
         <button
           className={`text-white font-bold py-2 px-4 rounded focus:outline-none ${
@@ -185,3 +133,81 @@ const DateTime = ({ value, onClick, error }) => {
     />
   );
 };
+
+function PeopleForm({
+  email,
+  setAttendees,
+  attendees,
+  setEmail,
+  setError,
+
+  error
+}) {
+  return (
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+
+        if (!email) {
+          return;
+        }
+
+        setAttendees([
+          ...attendees,
+          {
+            email
+          }
+        ]);
+        setEmail("");
+      }}
+    >
+      <div class="flex items-center border-b border-b-2 border-blue-800 py-2">
+        <input
+          class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+          type="email"
+          placeholder="Invitee's Email Address"
+          aria-label="email address"
+          value={email}
+          onChange={e => {
+            setError({});
+            setEmail(e.target.value);
+          }}
+        />
+
+        <button
+          class="flex-shrink-0 border-transparent border-4 text-blue-800 hover:blue-teal-800 text-sm py-1 px-2 rounded"
+          type="submit"
+        >
+          Add
+        </button>
+      </div>
+
+      <div className="mb-4">
+        {attendees && attendees.length > 0 ? (
+          <ul className="h-16 overflow-y-auto">
+            {attendees.map(({ email }) => (
+              <li key={email}>
+                <FormClose
+                  className="ph-4 cursor-pointer"
+                  onClick={() =>
+                    setAttendees(
+                      attendees.filter(person => person.email !== email)
+                    )
+                  }
+                />
+                {email}
+              </li>
+            ))}
+          </ul>
+        ) : error && error.attendee ? (
+          <p className="text-red-500 text-xs italic">{error.attendee}</p>
+        ) : (
+          <p className="text-gray-600 text-xs italic pt-3">
+            Gmail users will get a calendar invite, everyone else gets an email
+            invite.{" "}
+          </p>
+        )}
+      </div>
+    </form>
+  );
+}
