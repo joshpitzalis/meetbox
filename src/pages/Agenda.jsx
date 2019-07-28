@@ -73,7 +73,9 @@ const Agenda = ({ match }) => {
             itemLength={
               meeting && meeting.items && Object.values(meeting.items).length
             }
+            savedDateTime={meeting && meeting.dateTime}
           />
+
           <div className="flex-grow-1 w-100 flex flex-column">
             {meeting &&
               meeting.items &&

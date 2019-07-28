@@ -1,13 +1,8 @@
+import addMinutes from "date-fns/addMinutes";
 import { Button } from "grommet";
 import { Google } from "grommet-icons";
 import React from "react";
 import ConnectedForm from "./ConnectedForm";
-
-const hourFrom = startTime => {
-  const start = new Date(startTime).getTime();
-  const end = new Date(start + 1 * 1000 * 60 * 60).toISOString();
-  return end;
-};
 
 const login = async (gapi, send) => {
   try {
@@ -35,11 +30,10 @@ const insertEvent = async (
 
 const handleSubmit = async ({
   summary,
-  timezone,
+  duration,
   dateTime,
   error,
   setError,
-  hourFrom,
   attendees,
   state,
   insertEvent,
@@ -66,13 +60,13 @@ const handleSubmit = async ({
   if (attendees.length === 0 && state.matches("draft.loggedIn")) {
     setError({
       ...error,
-      attendee:
-        "You need to invite atleast one person. Add an email to the input above then press enter to add an attendee."
+      attendee: "You need to invite atleast one person."
     });
     return;
   }
 
   try {
+    
     if (state.matches("draft.loggedIn")) {
       const payload = {
         description,
@@ -81,7 +75,7 @@ const handleSubmit = async ({
           dateTime: dateTime
         },
         end: {
-          dateTime: hourFrom(dateTime)
+          dateTime: addMinutes(dateTime, duration)
         },
         attendees
       };
@@ -93,7 +87,8 @@ const handleSubmit = async ({
       .doc(`meetings/${meetingId}`)
       .update({
         status: "confirmed",
-        summary
+        summary,
+        dateTime
       });
     send("SAVED_DRAFT");
     setExpanded(false);
@@ -110,12 +105,14 @@ const SubmitForm = ({
   summary,
   setSummary,
   meetingId,
-  firebase
+  firebase,
+  dateTime,
+  setDateTime
 }) => {
   const [attendees, setAttendees] = React.useState([]);
   const [email, setEmail] = React.useState("");
-  const [dateTime, setDateTime] = React.useState("");
 
+  const [duration, setDuration] = React.useState(25);
   const [error, setError] = React.useState({});
 
   const { gapi } = window;
@@ -126,29 +123,12 @@ const SubmitForm = ({
       data-testid="agendaSubmitForm"
     >
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 h-auto">
-        <div className="mb-3">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="description"
-          >
-            Meeting Description
-          </label>
-          <input
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${error.title &&
-              "border-red-500"}`}
-            id="description"
-            type="text"
-            value={summary}
-            placeholder="Keep it super short."
-            onChange={e => {
-              setSummary(e.target.value);
-              setError({});
-            }}
-          />
-          {error.title && (
-            <p className="text-red-500 text-xs italic">{error.title}</p>
-          )}
-        </div>
+        <Objective
+          summary={summary}
+          setSummary={setSummary}
+          setError={setError}
+          error={error}
+        />
 
         {state.matches("draft.loggedIn") && (
           <ConnectedForm
@@ -162,7 +142,6 @@ const SubmitForm = ({
             error={error}
             summary={summary}
             dateTime={dateTime}
-            hourFrom={hourFrom}
             state={state}
             insertEvent={insertEvent}
             firebase={firebase}
@@ -171,13 +150,15 @@ const SubmitForm = ({
             send={send}
             gapi={gapi}
             description={url}
+            duration={duration}
+            setDuration={setDuration}
           />
         )}
 
         {state.matches("draft.loggedOut") && (
           <div className="flex flex-col items-start tc mt5">
             <p className="text-gray-500 text-sm mb2 tl">
-              To send out calendar invites...
+              If you want to send out invites...
             </p>
             <Button
               className=" pv2 "
@@ -191,7 +172,7 @@ const SubmitForm = ({
               className="text-gray-500 underline  hover:text-blue-800 text-sm mt5 underline pointer"
               onClick={() => send("URL_ONLY")}
             >
-              No Googles, give me a link to share.
+              No invites, give me a link to share.
             </p>
           </div>
         )}
@@ -223,11 +204,11 @@ const SubmitForm = ({
                 onClick={() =>
                   handleSubmit({
                     summary,
-
+                    duration,
                     dateTime,
                     error,
                     setError,
-                    hourFrom,
+
                     attendees,
                     state,
                     insertEvent,
@@ -273,3 +254,32 @@ const SubmitForm = ({
 };
 
 export default SubmitForm;
+
+function Objective({ summary, error, setSummary, setError }) {
+  return (
+    <div className="mb-3">
+      <label
+        className="block text-gray-700 text-sm font-bold mb-2"
+        htmlFor="description"
+      >
+        The Meeting's Objective
+      </label>
+      <input
+        className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${error.title &&
+          "border-red-500"}`}
+        id="description"
+        type="text"
+        value={summary}
+        placeholder="Keep it short and clear."
+        onChange={e => {
+          setSummary(e.target.value);
+          setError({});
+        }}
+      />
+
+      {error.title && (
+        <p className="text-red-500 text-xs italic">{error.title}</p>
+      )}
+    </div>
+  );
+}

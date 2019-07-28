@@ -22,59 +22,19 @@ const ConnectedForm = ({
   setExpanded,
   send,
   gapi,
-  description
+  description,
+  duration,
+  setDuration
 }) => {
   return (
     <>
-      <div className="pb-5 mb-6 bb">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="startDate"
-        >
-          Date & Time
-        </label>
-        <DatePicker
-          customInput={<DateTime error={error.dateTime} />}
-          selected={dateTime}
-          onChange={datestamp => {
-            setError({});
-            setDateTime(datestamp);
-          }}
-          minDate={new Date()}
-          showTimeSelect
-          dateFormat="MMMM d, yyyy h:mm aa"
-          timeIntervals={15}
-        />
-
-        {error.dateTime && (
-          <p className="text-red-500 text-xs italic">{error.dateTime}</p>
-        )}
-      </div>
-
-      {/* <div className="pb-5 mb-6 bb text-gray-700">
-        <label
-          className="block text-gray-700 text-sm font-bold mb-2"
-          htmlFor="startDate"
-        >
-          Duration
-        </label>
-
-       
-        <dl class="dib mr5">
-          <dd class="f3 f2-ns b ml0">25</dd>
-          <dd class="f6 f5-ns b ml0">Minutes</dd>
-        </dl>
-
-        <dl class="dib mr5">
-          <dd class="f3 f2-ns b ml0">50</dd>
-          <dd class="f6 f5-ns b ml0">Minutes</dd>
-        </dl>
-
-        {error.dateTime && (
-          <p className="text-red-500 text-xs italic">{error.dateTime}</p>
-        )}
-      </div> */}
-
+      <DateAndTime
+        dateTime={dateTime}
+        setError={setError}
+        setDateTime={setDateTime}
+        error={error}
+      />
+      <Duration duration={duration} setDuration={setDuration} />
       <PeopleForm
         email={email}
         setAttendees={setAttendees}
@@ -107,7 +67,8 @@ const ConnectedForm = ({
               meetingId,
               setExpanded,
               send,
-              description
+              description,
+              duration
             })
           }
         >
@@ -140,7 +101,6 @@ function PeopleForm({
   attendees,
   setEmail,
   setError,
-
   error
 }) {
   return (
@@ -182,7 +142,7 @@ function PeopleForm({
         </button>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 mt3">
         {attendees && attendees.length > 0 ? (
           <ul className="h-16 overflow-y-auto">
             {attendees.map(({ email }) => (
@@ -209,5 +169,58 @@ function PeopleForm({
         )}
       </div>
     </form>
+  );
+}
+
+function Duration({ duration, setDuration }) {
+  return (
+    <div className="pb-5 mb-6 bb flex items-center text-gray-700">
+      <dl
+        class={`dib mr3 pa3  ${
+          duration === 25 ? "br2 ba bw2" : "o-50 pointer"
+        }`}
+        onClick={() => setDuration(25)}
+      >
+        <dd class="f3 f2-ns b ml0">25</dd>
+        <dd class="f6 f5-ns b ml0">Minutes</dd>
+      </dl>
+
+      <dl
+        class={`dib mr5 pa3 ${duration === 50 ? "br2 ba bw2" : "o-50 pointer"}`}
+        onClick={() => setDuration(50)}
+      >
+        <dd class="f3 f2-ns b ml0">50</dd>
+        <dd class="f6 f5-ns b ml0">Minutes</dd>
+      </dl>
+    </div>
+  );
+}
+
+function DateAndTime({ dateTime, setError, setDateTime, error }) {
+  return (
+    <div className="pb-5">
+      <label
+        className="block text-gray-700 text-sm font-bold mb-2"
+        htmlFor="startDate"
+      >
+        Date & Time
+      </label>
+      <DatePicker
+        customInput={<DateTime error={error.dateTime} />}
+        selected={dateTime}
+        onChange={datestamp => {
+          setError({});
+          setDateTime(datestamp);
+        }}
+        minDate={new Date()}
+        showTimeSelect
+        dateFormat="MMMM d, yyyy h:mm aa"
+        timeIntervals={15}
+      />
+
+      {error.dateTime && (
+        <p className="text-red-500 text-xs italic">{error.dateTime}</p>
+      )}
+    </div>
   );
 }
