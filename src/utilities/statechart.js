@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { Machine } from "xstate";
 import {
   handleAgendaSetNotification,
@@ -6,7 +7,6 @@ import {
   handleWelcomeNotification
 } from "../features/agenda/agendaActions";
 import { createAgenda } from "../features/agenda/agendaHelpers";
-
 // tk rather than redirecting on idle you can persist state instead https://xstate.js.org/docs/guides/states.html#persisting-state
 
 export default Machine(
@@ -37,7 +37,7 @@ export default Machine(
         }
       },
       draft: {
-        entry: "handleWelcomeNotification",
+        entry: ["handleWelcomeNotification", "analyticsDraft"],
         on: {
           SAVED_DRAFT: "confirmed",
           SAVED_TO_CAL: "confirmed",
@@ -73,7 +73,7 @@ export default Machine(
       },
 
       confirmed: {
-        entry: "handleAgendaSetNotification",
+        entry: ["handleAgendaSetNotification", "analyticsConfirmed"],
         on: {
           STARTED: "active",
           REDIRECTED_TO_ACTIVE_AGENDA: "active",
@@ -81,20 +81,24 @@ export default Machine(
         }
       },
       active: {
-        entry: "handleMeetingStartNotification",
+        entry: ["handleMeetingStartNotification", "analyticsActive"],
         on: {
           ENDED: "complete",
           REDIRECTED_TO_COMPLETE_AGENDA: "complete"
         }
       },
       complete: {
-        entry: "handleMeetingOverNotification",
+        entry: ["handleMeetingOverNotification", "analyticsComplete"],
         type: "final"
       }
     }
   },
   {
     actions: {
+      analyticsDraft: () => ReactGA.pageview("/draft"),
+      analyticsConfirmed: () => ReactGA.pageview("/confirmed"),
+      analyticsActive: () => ReactGA.pageview("/active"),
+      analyticsComplete: () => ReactGA.pageview("/complete"),
       handleWelcomeNotification,
       handleAgendaSetNotification,
       handleMeetingStartNotification,

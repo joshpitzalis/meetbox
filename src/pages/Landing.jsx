@@ -1,9 +1,14 @@
 import { useMachine } from "@xstate/react";
 import React from "react";
+import ReactGA from "react-ga";
 import stateMachine from "../utilities/statechart";
 
 const Landing = ({ match, history }) => {
   const [, send] = useMachine(stateMachine);
+
+  React.useEffect(() => {
+    ReactGA.pageview("/landing");
+  }, []);
 
   return (
     <div className="flex" data-testid="landingPage">
@@ -37,9 +42,14 @@ const Landing = ({ match, history }) => {
           <button
             className="btn btn-blue mv3 dim pointer"
             style={{ backgroundColor: "#373F85" }}
-            onClick={() =>
-              send({ type: "NEW_AGENDA_CREATED", payload: history })
-            }
+            onClick={() => {
+              ReactGA.event({
+                category: "User",
+                action: "NEW_AGENDA_CREATED"
+              });
+
+              send({ type: "NEW_AGENDA_CREATED", payload: history });
+            }}
           >
             Get Started
           </button>
