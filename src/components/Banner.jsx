@@ -14,7 +14,7 @@ const useNotification = notificationStream$ => {
           setMessage(message);
           setType(type);
         }),
-        delay(5000),
+        delay(10000),
         tap(() => {
           setMessage("");
           setType("");
@@ -31,7 +31,7 @@ const useNotification = notificationStream$ => {
 const Banner = () => {
   const [message, clear, type] = useNotification(notfication$);
   return (
-    <div>
+    <div className="dn db-l">
       {message && (
         <div
           className={`${

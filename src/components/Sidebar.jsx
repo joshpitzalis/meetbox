@@ -1,9 +1,17 @@
+import format from "date-fns/format";
 import { FormPreviousLink, Halt, Launch, Save } from "grommet-icons";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
 
-const Sidebar = ({ send, state, firebase, meetingId, title, itemLength }) => {
-  console.log("title", title);
+const Sidebar = ({
+  send,
+  state,
+  firebase,
+  meetingId,
+  title,
+  itemLength,
+  savedDateTime
+}) => {
   React.useEffect(() => {
     var config = {
       selector: "h1",
@@ -13,13 +21,16 @@ const Sidebar = ({ send, state, firebase, meetingId, title, itemLength }) => {
     window.Headway && window.Headway.init(config);
   }, []);
 
+  console.log("savedDateTime", savedDateTime);
   const [expanded, setExpanded] = React.useState(false);
   const [summary, setSummary] = React.useState(title);
-
+  const [dateTime, setDateTime] = React.useState(
+    savedDateTime && savedDateTime.seconds ? savedDateTime.seconds : 0
+  );
   return (
     <div
-      className={`flex flex-column flex-row-ns fixed-ns vh-100-ns ${expanded &&
-        "shadow-1 z-1 vh-100 pr4 bg-white"}`}
+      className={`flex flex-column flex-row-ns 
+      fixed-ns vh-100-ns ${expanded && "shadow-1 z-1 vh-100 pr4 bg-white"}`}
       data-testid="sidebar"
     >
       <aside
@@ -74,7 +85,7 @@ const Sidebar = ({ send, state, firebase, meetingId, title, itemLength }) => {
         )}
 
         <h1
-          className="ph4 rotate-ns flex items-center "
+          className="ph4-ns pa3 pv0-ns rotate-ns flex items-center"
           style={{
             textAlign: "center",
             fontSize: "23px",
@@ -84,7 +95,8 @@ const Sidebar = ({ send, state, firebase, meetingId, title, itemLength }) => {
             fontVariant: "normal",
             fontWeight: "700",
             lineHeight: "23px",
-            color: " #363d87"
+            color: " #363d87",
+            wordBreak: "break-all"
           }}
         >
           {summary || "Meetbox"}
@@ -127,7 +139,14 @@ const Sidebar = ({ send, state, firebase, meetingId, title, itemLength }) => {
             )}
           </div>
         ) : (
-          <span />
+          !!savedDateTime && (
+            <div>
+              <dl class={`dib mr3 pa3 text-gray-700`}>
+                <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
+                <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
+              </dl>
+            </div>
+          )
         )}
       </aside>
 
@@ -146,6 +165,8 @@ const Sidebar = ({ send, state, firebase, meetingId, title, itemLength }) => {
             window.location.href &&
             window.location.href
           }
+          dateTime={dateTime}
+          setDateTime={setDateTime}
         />
       )}
     </div>

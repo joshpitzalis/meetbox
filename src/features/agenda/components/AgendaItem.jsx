@@ -24,7 +24,7 @@ const AgendaItem = ({
   return (
     <div
       data-testid="agendaItem"
-      className={`flex items-center item${index} near-black`}
+      className={`flex items-center item${index % 12} near-black`}
     >
       {confirm ? (
         <ConfirmDelete
@@ -35,7 +35,9 @@ const AgendaItem = ({
         />
       ) : (
         <div className="flex w-100 pl3 pl6-ns">
-          <div className={`flex justify-between items-centre ma3 flex-grow-1`}>
+          <div
+            className={`flex flex-column flex-row-ns justify-between items-centre ma3 flex-grow-1`}
+          >
             <AgendaItemName
               name={name}
               id={id}

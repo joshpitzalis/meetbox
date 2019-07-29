@@ -16,7 +16,10 @@ const Minutes = ({
   const [value, setValue] = useSync(textInput$, itemId, minutes);
 
   return (
-    <div className="ma3 rf-min-h5 pointer w-50" data-testid="editableMinutes">
+    <div
+      className="ma3-ns rf-min-h5 pointer w-50-ns"
+      data-testid="editableMinutes"
+    >
       {state.matches("active") ? (
         <>
           <TextArea

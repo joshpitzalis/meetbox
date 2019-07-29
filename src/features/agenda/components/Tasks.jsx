@@ -6,7 +6,7 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
   const [editMode, setEditMode] = useState(false);
   const [value, resetForm] = useState({ name: "" });
   return (
-    <div className="w-25">
+    <div className="w-25-ns mt0-ns mt5">
       <p>Task list</p>
       <div className="flex flex-column items-start">
         {tasks &&
