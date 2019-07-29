@@ -20,6 +20,7 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-sparklines": "^1.7.0",
     "rxfire": "^3.6.4",
     "rxjs": "^6.5.2",
     "styled-components": "^4.3.1",

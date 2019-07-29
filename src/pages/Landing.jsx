@@ -55,8 +55,8 @@ const Landing = ({ match, history }) => {
         <ul className="list pl0 w-50-ns w-100 dn db-l">
           <li className="pa3 pa4-ns mv4 item0">
             <b className="db f3 mb1 text-gray-700 h3">
-              📅 Use it to create an agenda and send out google calendar
-              invites.
+              📅 Use it to create and collaborate on an agenda, then send out
+              google calendar invites.
             </b>
             {/* <span className="f5 db lh-copy measure">
               Use Meetbox to draft a list of everything you want to discuss in

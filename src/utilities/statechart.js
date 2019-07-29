@@ -20,7 +20,8 @@ export default Machine(
           REDIRECTED_TO_EXISTING_AGENDA: "draft",
           REDIRECTED_TO_CONFIRMED_AGENDA: "confirmed",
           REDIRECTED_TO_ACTIVE_AGENDA: "active",
-          REDIRECTED_TO_COMPLETE_AGENDA: "complete"
+          REDIRECTED_TO_COMPLETE_AGENDA: "complete",
+          REDIRECTED_TO_ACTION_PLAN: "actionPlan"
         }
       },
       creatingAgenda: {
@@ -84,12 +85,18 @@ export default Machine(
         entry: "handleMeetingStartNotification",
         on: {
           ENDED: "complete",
-          REDIRECTED_TO_COMPLETE_AGENDA: "complete"
+          REDIRECTED_TO_COMPLETE_AGENDA: "actionPlan"
         }
       },
       complete: {
-        entry: "handleMeetingOverNotification",
-        type: "final"
+        on: {
+          REDIRECTED_TO_ACTION_PLAN: "actionPlan"
+        }
+      },
+      actionPlan: {
+        on: {
+          REDIRECTED_TO_MINUTES_VIEW: "actionPlan"
+        }
       }
     }
   },
