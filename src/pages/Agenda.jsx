@@ -5,10 +5,7 @@ import React, { useEffect } from "react";
 import ReactGA from "react-ga";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import Sidebar from "../components/Sidebar";
-import {
-  handleAddMeeting,
-  useStreamMeeting
-} from "../features/agenda/agendaHelpers";
+import { handleAddMeeting, useStreamMeeting } from "../features/agenda/agendaHelpers";
 import AgendaItem from "../features/agenda/components/AgendaItem";
 import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
@@ -311,12 +308,12 @@ const TaskList = ({
             </div>
           ))}
       </div>
-      {/* <button
+      <button
         className="underline small-caps pointer"
-        onClick={() => setFullscreen(id)}
+        // onClick={() => setFullscreen(id)}
       >
-        <small className="tc relative">show more...</small>
-      </button> */}
+        <small className="tc relative">more...</small>
+      </button>
     </div>
   );
 };
@@ -354,19 +351,19 @@ function SelectedTaskList({
           {/* <time className="f6 ttu tracked gray">Sometime before 1967</time> */}
           {tasks &&
             Object.values(tasks).map(({ name }) => (
-              <div className="flex items-center mb2" key={name}>
+              <div className="flex items-center mb2 measure-narrow" key={name}>
                 <CheckBox
                   className="mr2 checkmark"
                   type="checkbox"
                   id={name}
-                  label={truncate(name, 35)}
+                  label={name}
                   checked={true}
                 />
               </div>
             ))}
         </header>
-        <div className="fn fl-ns w-50-ns">
-          <p className="f5 lh-copy measure mt0-ns">
+        <div className="fn fr-ns w-50-ns">
+          <p className="f5 lh-copy measure mt0-ns pt4">
             {minutes
               ? minutes.split("\n").map((item, index) => (
                   <span key={`${item.substring(0, 1)}${index}`}>
