@@ -1,17 +1,15 @@
 import { useMachine } from "@xstate/react";
-import { Button } from "grommet";
+import { Button, CheckBox } from "grommet";
 import { Add, Save } from "grommet-icons";
 import React, { useEffect } from "react";
 import ReactGA from "react-ga";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import Sidebar from "../components/Sidebar";
-import {
-  handleAddMeeting,
-  useStreamMeeting
-} from "../features/agenda/agendaHelpers";
+import { handleAddMeeting, useStreamMeeting } from "../features/agenda/agendaHelpers";
 import AgendaItem from "../features/agenda/components/AgendaItem";
 import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
+
 const Agenda = ({ match }) => {
   const [current, send] = useMachine(stateMachine);
   const meetingId = match && match.params && match.params.meetingId;
@@ -52,10 +50,8 @@ const Agenda = ({ match }) => {
     }
   }, [meetingId, meeting]);
 
-  console.log("current.matches", current.value);
-
   return (
-    <div data-testid="agendaPage">
+    <div data-testid="agendaPage" className="vh-100">
       <div
         className={`
         ${current.matches("complete") ? "dn" : "dn-l"}
@@ -68,7 +64,11 @@ const Agenda = ({ match }) => {
           </h1>
         </span>
       </div>
-      <span className={current.matches("complete") ? "db db-l" : "dn db-l"}>
+      <span
+        className={`h-100 ${
+          current.matches("complete") ? "db db-l" : "dn db-l"
+        }`}
+      >
         {(current.matches("loading") || current.matches("creatingAgenda")) && (
           <div className="vh-100 vw-100 flex items-center justify-center">
             <p>Loading...</p>
@@ -182,28 +182,55 @@ const Agenda = ({ match }) => {
 export default Agenda;
 
 function ActionPlan({ send, meeting, meetingId, current, firebase }) {
+  const [fullscreen, setFullscreen] = React.useState("1564316157068");
+
+  const onlyListsThatHaveTasks = item =>
+    item && item.tasks && Object.values(item.tasks).length > 0;
+
+  const selectedList =
+    fullscreen &&
+    meeting &&
+    meeting.items &&
+    Object.values(meeting.items).find(item => item.id === fullscreen);
+  console.log("fullscreen", fullscreen);
   return (
-    <div className="ml6">
-      <section className="flex-grow-1 w-100 flex flex-column ">
-        <TeamStats />
+    <div className="ml6  w-100 vh-100 ">
+      {/* <TeamStats /> */}
+      <button
+        className="ma4 fr"
+        onClick={() => send("REDIRECTED_TO_ACTION_PLAN")}
+      >
+        <small className="silver small-caps">Switch to the minutes view</small>
+      </button>
 
-        {meeting &&
-          meeting.items &&
-          Object.values(meeting.items).map((props, index) => (
-            <TaskList
-              key={props.id}
-              {...props}
-              meetingId={meetingId}
-              index={index}
-              state={current}
-              firebase={firebase}
-            />
-          ))}
-
-        <button onClick={() => send("REDIRECTED_TO_ACTION_PLAN")}>
-          Go to Minutes View
-        </button>
-      </section>
+      {!fullscreen ? (
+        <section className="flex-grow-1 w-100 flex flex-wrap w-100 ">
+          {meeting &&
+            meeting.items &&
+            Object.values(meeting.items)
+              .filter(onlyListsThatHaveTasks)
+              .map((props, index) => (
+                <TaskList
+                  key={props.id}
+                  {...props}
+                  meetingId={meetingId}
+                  index={index}
+                  state={current}
+                  firebase={firebase}
+                  setFullscreen={setFullscreen}
+                />
+              ))}{" "}
+          {/* <div className="ba bw4 b--light-blue h5 w5 flex items-center justify-center">
+          <p>+ new task list</p>
+        </div> */}
+        </section>
+      ) : (
+        <SelectedTaskList
+          setFullscreen={setFullscreen}
+          selectedList={selectedList}
+        />
+      )}
+      {/* <hr className="bb bw1" /> */}
     </div>
   );
 }
@@ -244,25 +271,63 @@ const TaskList = ({
   meetingId,
   state,
   minutes,
-  tasks
-}) => (
-  <form className="pa4">
-    <fieldset id={name} className="bn">
-      <legend className="fw7 mb2">{name}</legend>
-      {tasks &&
-        Object.values(tasks).map(item => (
-          <div className="flex items-center mb2">
-            <input
-              className="mr2"
-              type="checkbox"
-              id="spacejam"
-              value="spacejam"
-            />
-            <label for="spacejam" className="lh-copy">
-              Space Jam
-            </label>
-          </div>
-        ))}
-    </fieldset>
-  </form>
-);
+  tasks,
+  setFullscreen
+}) => {
+  const truncate = (name, count) =>
+    name && name.length > count ? `${name.substr(0, count)}...` : name;
+  return (
+    <form
+      className={`ma3 mv4  ba flex flex-column w5 vh-50 br1 bw5 b--item${index +
+        1} item${index + 1} overflow-hidden word-wrap`}
+    >
+      <div className="flex-grow-1">
+        <p className="fw7 mb4 f3 lh-solid">{truncate(name, 30)}</p>
+
+        <hr />
+        {tasks &&
+          Object.values(tasks).map(({ name }) => (
+            <div className="flex items-center mb2" key={name}>
+              <CheckBox
+                className="mr2 checkmark"
+                type="checkbox"
+                id={name}
+                label={truncate(name, 35)}
+                checked={true}
+              />
+            </div>
+          ))}
+      </div>
+      <button
+        className="underline small-caps pointer"
+        onClick={() => setFullscreen(id)}
+      >
+        <small className="tc relative">show more...</small>
+      </button>
+    </form>
+  );
+};
+
+function SelectedTaskList({
+  selectedList: { name, prep, minutes, tasks } = {},
+  setFullscreen
+}) {
+  return (
+    <div
+      className="h-100 w-100 bg-red relative br2 pa4"
+      style={{
+        top: "5rem",
+        left: "5rem"
+      }}
+    >
+      <button
+        className="underline small-caps pointer"
+        onClick={() => setFullscreen("")}
+      >
+        <small className="tc relative">Go Back...</small>
+      </button>
+      {/* name, prep, index, state, minutes, tasks */}
+      <p>{name}</p>
+    </div>
+  );
+}

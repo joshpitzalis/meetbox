@@ -36,7 +36,7 @@ export const App = ({ initClient }) => {
 
 export const Routes = () => {
   return (
-    <div data-testid="routes">
+    <div data-testid="routes" className="vh-100">
       <Banner />
       <Switch>
         <Route exact path="/" component={Landing} />

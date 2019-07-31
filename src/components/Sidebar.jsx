@@ -1,7 +1,7 @@
+import format from "date-fns/format";
 import { FormPreviousLink, Halt, Launch, Save } from "grommet-icons";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
-// import format from "date-fns/format";
 const Sidebar = ({
   send,
   state,
@@ -35,7 +35,7 @@ const Sidebar = ({
       <aside
         className={`
          flex flex-row md:flex-col lg:flex-col flex-column-ns
-         justify-around h-100-ns bg-white w-100 w-auto-ns 
+         justify-between h-100-ns bg-white w-100 w-auto-ns 
          ${expanded ? "items-start" : "items-center "}
          `}
       >
@@ -139,14 +139,13 @@ const Sidebar = ({
           </div>
         ) : (
           // !!savedDateTime && (
-          //   <div>
-          //     <dl class={`dib mr3 pa3 text-gray-700`}>
-          //       <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
-          //       <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
-          //     </dl>
-          //   </div>
+          <div>
+            <dl class={`dib mr3 pa3 text-gray-700`}>
+              <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
+              <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
+            </dl>
+          </div>
           // )
-          <span />
         )}
       </aside>
 
