@@ -1,6 +1,7 @@
 import { Button, CheckBox, Form, FormField } from "grommet";
 import { Close } from "grommet-icons";
 import React, { useState } from "react";
+import ReactGA from "react-ga";
 
 export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
   const [editMode, setEditMode] = useState(false);
@@ -41,6 +42,12 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
                     complete: false
                   }
                 })
+                .then(() =>
+                  ReactGA.event({
+                    category: "User",
+                    action: "Added Task"
+                  })
+                )
                 .catch(error => console.error(error));
             }}
             data-testid="taskEditBox"
@@ -113,6 +120,12 @@ export function Task({
               .update({
                 [`items.${itemId}.tasks.${taskId}`]: firebase.firestore.FieldValue.delete()
               })
+              .then(() =>
+                ReactGA.event({
+                  category: "User",
+                  action: "Deleted Task"
+                })
+              )
               .catch(error => console.error(error))
           }
           className="hover-red"
@@ -129,6 +142,12 @@ export function Task({
                 [`items.${itemId}.tasks.${taskId}.complete`]: event.target
                   .checked
               })
+              .then(() =>
+                ReactGA.event({
+                  category: "User",
+                  action: "Toggled Task"
+                })
+              )
               .catch(error => console.error(error))
           }
         />

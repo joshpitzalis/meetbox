@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { Machine } from "xstate";
 import {
   handleAgendaSetNotification,
@@ -6,7 +7,6 @@ import {
   handleWelcomeNotification
 } from "../features/agenda/agendaActions";
 import { createAgenda } from "../features/agenda/agendaHelpers";
-
 // tk rather than redirecting on idle you can persist state instead https://xstate.js.org/docs/guides/states.html#persisting-state
 
 export default Machine(
@@ -38,7 +38,7 @@ export default Machine(
         }
       },
       draft: {
-        entry: "handleWelcomeNotification",
+        entry: ["handleWelcomeNotification", "analyticsDraft"],
         on: {
           SAVED_DRAFT: "confirmed",
           SAVED_TO_CAL: "confirmed",
@@ -55,6 +55,7 @@ export default Machine(
             }
           },
           linkOnly: {
+            entry: "analyticsLinkOnly",
             on: {
               FINALISED: "confirm",
               RETURNED: "loggedOut"
@@ -66,6 +67,7 @@ export default Machine(
             }
           },
           loggedIn: {
+            entry: "analyticsGoogle",
             on: {
               RETURNED: "loggedOut"
             }
@@ -74,7 +76,7 @@ export default Machine(
       },
 
       confirmed: {
-        entry: "handleAgendaSetNotification",
+        entry: ["handleAgendaSetNotification", "analyticsConfirmed"],
         on: {
           STARTED: "active",
           REDIRECTED_TO_ACTIVE_AGENDA: "active",
@@ -82,18 +84,20 @@ export default Machine(
         }
       },
       active: {
-        entry: "handleMeetingStartNotification",
+        entry: ["handleMeetingStartNotification", "analyticsActive"],
         on: {
           ENDED: "complete",
           REDIRECTED_TO_COMPLETE_AGENDA: "actionPlan"
         }
       },
       complete: {
+        entry: ["handleMeetingOverNotification", "analyticsComplete"],
         on: {
           REDIRECTED_TO_ACTION_PLAN: "actionPlan"
         }
       },
       actionPlan: {
+        entry: ["handleMeetingOverNotification", "analyticsActionPlan"],
         on: {
           REDIRECTED_TO_MINUTES_VIEW: "actionPlan"
         }
@@ -102,6 +106,23 @@ export default Machine(
   },
   {
     actions: {
+      analyticsDraft: () => ReactGA.pageview("/meeting/draft"),
+      analyticsConfirmed: () => ReactGA.pageview("/meeting/confirmed"),
+      analyticsActive: () => ReactGA.pageview("/meeting/active"),
+      analyticsComplete: () => ReactGA.pageview("/meeting/complete"),
+      analyticsActionPlan: () => ReactGA.pageview("/meeting/action"),
+      analyticsGoogle: () =>
+        ReactGA.event({
+          category: "User",
+          action: ":ogged in to Send Invites With Google"
+        }),
+
+      analyticsLinkOnly: () =>
+        ReactGA.event({
+          category: "User",
+          action: "Sent Invites With Link Only"
+        }),
+
       handleWelcomeNotification,
       handleAgendaSetNotification,
       handleMeetingStartNotification,

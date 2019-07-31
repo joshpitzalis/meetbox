@@ -1,6 +1,7 @@
 import { Button, Form, FormField } from "grommet";
 import { Close } from "grommet-icons";
 import React, { useState } from "react";
+import ReactGA from "react-ga";
 import firebase from "../../../utilities/firebase";
 
 // interface IProps {
@@ -60,6 +61,12 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
                     name
                   }
                 })
+                .then(() =>
+                  ReactGA.event({
+                    category: "User",
+                    action: "Added Prep Item"
+                  })
+                )
                 .catch(error => console.error(error));
             }}
           >
@@ -136,6 +143,12 @@ export const PrepItem = ({ name, id, editMode, meetingId, itemId, state }) => {
           .update({
             [`items.${itemId}.prep.${id}`]: firebase.firestore.FieldValue.delete()
           })
+          .then(() =>
+            ReactGA.event({
+              category: "User",
+              action: "Deleted Prep Item"
+            })
+          )
           .catch(error => console.error(error))
       }
       className="hover-red"
