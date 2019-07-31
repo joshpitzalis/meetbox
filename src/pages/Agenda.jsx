@@ -5,10 +5,16 @@ import React, { useEffect } from "react";
 import ReactGA from "react-ga";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import Sidebar from "../components/Sidebar";
-import { handleAddMeeting, useStreamMeeting } from "../features/agenda/agendaHelpers";
+import {
+  handleAddMeeting,
+  useStreamMeeting
+} from "../features/agenda/agendaHelpers";
 import AgendaItem from "../features/agenda/components/AgendaItem";
 import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
+
+const truncate = (name, count) =>
+  name && name.length > count ? `${name.substr(0, count)}...` : name;
 
 const Agenda = ({ match }) => {
   const [current, send] = useMachine(stateMachine);
@@ -182,7 +188,8 @@ const Agenda = ({ match }) => {
 export default Agenda;
 
 function ActionPlan({ send, meeting, meetingId, current, firebase }) {
-  const [fullscreen, setFullscreen] = React.useState("1564316157068");
+  const [fullscreen, setFullscreen] = React.useState("");
+  const [index, setIndex] = React.useState("");
 
   const onlyListsThatHaveTasks = item =>
     item && item.tasks && Object.values(item.tasks).length > 0;
@@ -203,31 +210,33 @@ function ActionPlan({ send, meeting, meetingId, current, firebase }) {
         <small className="silver small-caps">Switch to the minutes view</small>
       </button>
 
-      {!fullscreen ? (
-        <section className="flex-grow-1 w-100 flex flex-wrap w-100 ">
-          {meeting &&
-            meeting.items &&
-            Object.values(meeting.items)
-              .filter(onlyListsThatHaveTasks)
-              .map((props, index) => (
-                <TaskList
-                  key={props.id}
-                  {...props}
-                  meetingId={meetingId}
-                  index={index}
-                  state={current}
-                  firebase={firebase}
-                  setFullscreen={setFullscreen}
-                />
-              ))}{" "}
-          {/* <div className="ba bw4 b--light-blue h5 w5 flex items-center justify-center">
+      <section className="flex-grow-1 w-100 flex flex-wrap w-100 ">
+        {meeting &&
+          meeting.items &&
+          Object.values(meeting.items)
+            .filter(onlyListsThatHaveTasks)
+            .map((props, index) => (
+              <TaskList
+                key={props.id}
+                {...props}
+                meetingId={meetingId}
+                index={index}
+                state={current}
+                firebase={firebase}
+                setFullscreen={setFullscreen}
+                setIndex={setIndex}
+              />
+            ))}{" "}
+        {/* <div className="ba bw4 b--light-blue h5 w5 flex items-center justify-center">
           <p>+ new task list</p>
         </div> */}
-        </section>
-      ) : (
+      </section>
+      {fullscreen && (
         <SelectedTaskList
           setFullscreen={setFullscreen}
           selectedList={selectedList}
+          setIndex={setIndex}
+          index={index}
         />
       )}
       {/* <hr className="bb bw1" /> */}
@@ -272,14 +281,17 @@ const TaskList = ({
   state,
   minutes,
   tasks,
-  setFullscreen
+  setFullscreen,
+  setIndex
 }) => {
-  const truncate = (name, count) =>
-    name && name.length > count ? `${name.substr(0, count)}...` : name;
   return (
-    <form
+    <div
       className={`ma3 mv4  ba flex flex-column w5 vh-50 br1 bw5 b--item${index +
-        1} item${index + 1} overflow-hidden word-wrap`}
+        1} item${index + 1} overflow-hidden word-wrap pointer`}
+      onClick={() => {
+        setIndex(index + 1);
+        setFullscreen(id);
+      }}
     >
       <div className="flex-grow-1">
         <p className="fw7 mb4 f3 lh-solid">{truncate(name, 30)}</p>
@@ -287,47 +299,85 @@ const TaskList = ({
         <hr />
         {tasks &&
           Object.values(tasks).map(({ name }) => (
-            <div className="flex items-center mb2" key={name}>
+            <div className="flex items-center mb2 z-1" key={name}>
               <CheckBox
                 className="mr2 checkmark"
                 type="checkbox"
                 id={name}
                 label={truncate(name, 35)}
                 checked={true}
+                onClick={event => event.stopPropagation()}
               />
             </div>
           ))}
       </div>
-      <button
+      {/* <button
         className="underline small-caps pointer"
         onClick={() => setFullscreen(id)}
       >
         <small className="tc relative">show more...</small>
-      </button>
-    </form>
+      </button> */}
+    </div>
   );
 };
 
 function SelectedTaskList({
   selectedList: { name, prep, minutes, tasks } = {},
-  setFullscreen
+  setFullscreen,
+  setIndex,
+  index
 }) {
   return (
     <div
-      className="h-100 w-100 bg-red relative br2 pa4"
+      className={`h-100 w-100 item${index} relative br2 pa4`}
       style={{
-        top: "5rem",
-        left: "5rem"
+        bottom: "25rem",
+        left: "1rem"
       }}
     >
       <button
         className="underline small-caps pointer"
-        onClick={() => setFullscreen("")}
+        onClick={() => {
+          setIndex(index);
+          setFullscreen("");
+        }}
       >
         <small className="tc relative">Go Back...</small>
       </button>
       {/* name, prep, index, state, minutes, tasks */}
-      <p>{name}</p>
+
+      <article className="cf ph3 ph5-ns pv5">
+        <header className="fn fl-ns w-50-ns pr4-ns">
+          <h1 className="bw2 ba b--near-black" />
+          <h1 className="f2 lh-title fw9 mb3 mt0 pt3 ">{name}</h1>
+          <h2 className="f4 mb3 mt4 lh-title">Task List</h2>
+          {/* <time className="f6 ttu tracked gray">Sometime before 1967</time> */}
+          {tasks &&
+            Object.values(tasks).map(({ name }) => (
+              <div className="flex items-center mb2" key={name}>
+                <CheckBox
+                  className="mr2 checkmark"
+                  type="checkbox"
+                  id={name}
+                  label={truncate(name, 35)}
+                  checked={true}
+                />
+              </div>
+            ))}
+        </header>
+        <div className="fn fl-ns w-50-ns">
+          <p className="f5 lh-copy measure mt0-ns">
+            {minutes
+              ? minutes.split("\n").map((item, index) => (
+                  <span key={`${item.substring(0, 1)}${index}`}>
+                    {item}
+                    <br />
+                  </span>
+                ))
+              : "No minutes for this item."}
+          </p>
+        </div>
+      </article>
     </div>
   );
 }
