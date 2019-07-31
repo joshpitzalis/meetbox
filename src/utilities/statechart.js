@@ -54,6 +54,7 @@ export default Machine(
             }
           },
           linkOnly: {
+            entry: "analyticsLinkOnly",
             on: {
               FINALISED: "confirm",
               RETURNED: "loggedOut"
@@ -65,6 +66,7 @@ export default Machine(
             }
           },
           loggedIn: {
+            entry: "analyticsGoogle",
             on: {
               RETURNED: "loggedOut"
             }
@@ -95,10 +97,21 @@ export default Machine(
   },
   {
     actions: {
-      analyticsDraft: () => ReactGA.pageview("/draft"),
-      analyticsConfirmed: () => ReactGA.pageview("/confirmed"),
-      analyticsActive: () => ReactGA.pageview("/active"),
-      analyticsComplete: () => ReactGA.pageview("/complete"),
+      analyticsDraft: () => ReactGA.pageview("/meeting/draft"),
+      analyticsConfirmed: () => ReactGA.pageview("/meeting/confirmed"),
+      analyticsActive: () => ReactGA.pageview("/meeting/active"),
+      analyticsComplete: () => ReactGA.pageview("/meeting/complete"),
+      analyticsGoogle: () =>
+        ReactGA.event({
+          category: "User",
+          action: ":ogged in to Send Invites With Google"
+        }),
+      analyticsLinkOnly: () =>
+        ReactGA.event({
+          category: "User",
+          action: "Sent Invites With Link Only"
+        }),
+
       handleWelcomeNotification,
       handleAgendaSetNotification,
       handleMeetingStartNotification,

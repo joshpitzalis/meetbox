@@ -1,5 +1,7 @@
 import { Button } from "grommet";
 import React from "react";
+import ReactGA from "react-ga";
+
 export function ConfirmDelete({ deleteItem, id, meetingId, setConfirm }) {
   return (
     <div className="h5 flex flex-column items-center justify-center w-100 bg-light-red white">
@@ -12,6 +14,10 @@ export function ConfirmDelete({ deleteItem, id, meetingId, setConfirm }) {
           onClick={() => {
             deleteItem(id, meetingId);
             setConfirm(false);
+            ReactGA.event({
+              category: "User",
+              action: "Delete Agneda Item"
+            });
           }}
           className="pointer mh5-ns white b--white ma3 "
         />

@@ -2,6 +2,7 @@ import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
 import { Add, Save } from "grommet-icons";
 import React, { useEffect } from "react";
+import ReactGA from "react-ga";
 import Sidebar from "../components/Sidebar";
 import {
   handleAddMeeting,
@@ -104,17 +105,19 @@ const Agenda = ({ match }) => {
                 ))}
 
               {current.matches("complete") && (
-                <a
+                <ReactGA.OutboundLink
                   className="bg-lightest-blue navy flex items-center justify-center pa4 w-100"
-                  href="https://joshpitzalis.typeform.com/to/HCWJeW"
+                  eventLabel="typeform"
+                  to="https://joshpitzalis.typeform.com/to/HCWJeW"
                   target="_blank"
+                  trackerNames={["tracker2"]}
                 >
                   <span className="lh-title ml3 tc pointer grow">
                     🚀 Tell us what feature you'd like Meetbox to work on next.
                     🚀{" "}
                     <span className="underline">Click here to help us out</span>
                   </span>
-                </a>
+                </ReactGA.OutboundLink>
               )}
 
               {(current.matches("draft") || current.matches("active")) && (

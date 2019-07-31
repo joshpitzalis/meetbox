@@ -66,7 +66,6 @@ const handleSubmit = async ({
   }
 
   try {
-    
     if (state.matches("draft.loggedIn")) {
       const payload = {
         description,
@@ -165,7 +164,9 @@ const SubmitForm = ({
               plain
               icon={<Google color="plain" />}
               label="Connect to Google"
-              onClick={() => login(gapi, send)}
+              onClick={() => {
+                login(gapi, send);
+              }}
             />
 
             <p

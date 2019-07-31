@@ -1,4 +1,3 @@
-import format from "date-fns/format";
 import { FormPreviousLink, Halt, Launch, Save } from "grommet-icons";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
@@ -139,14 +138,15 @@ const Sidebar = ({
             )}
           </div>
         ) : (
-          !!savedDateTime && (
-            <div>
-              <dl class={`dib mr3 pa3 text-gray-700`}>
-                <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
-                <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
-              </dl>
-            </div>
-          )
+          // !!savedDateTime && (
+          //   <div>
+          //     <dl class={`dib mr3 pa3 text-gray-700`}>
+          //       <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
+          //       <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
+          //     </dl>
+          //   </div>
+          // )
+          <span />
         )}
       </aside>
 
