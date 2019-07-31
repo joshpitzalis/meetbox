@@ -52,6 +52,8 @@ const Agenda = ({ match }) => {
     }
   }, [meetingId, meeting]);
 
+  console.log("current.matches", current.value);
+
   return (
     <div data-testid="agendaPage">
       <div
@@ -73,88 +75,42 @@ const Agenda = ({ match }) => {
           </div>
         )}
 
-        {current.matches("complete") && (
-          <button onClick={() => send("REDIRECTED_TO_ACTION_PLAN")}>
-            Go to Action Plan
-          </button>
-        )}
-
-        {(current.matches("draft") ||
+        {current.matches("draft") ||
           current.matches("confirmed") ||
           current.matches("active") ||
           current.matches("complete") ||
-          current.matches("actionPlan")) && (
-          <section className="flex flex-wrap flex-column-ns flex-row vh-100-ns h-auto">
-            <Sidebar
-              send={send}
-              state={current}
-              meetingId={meetingId}
-              firebase={firebase}
-              title={meeting && meeting.summary}
-              match={match}
-              itemLength={
-                meeting && meeting.items && Object.values(meeting.items).length
-              }
-              savedDateTime={meeting && meeting.dateTime}
-            />
-
-            {current.matches("actionPlan") && (
-              <ActionPlan
+          (current.matches("actionPlan") && (
+            <section className="flex flex-wrap flex-column-ns flex-row vh-100-ns h-auto">
+              <Sidebar
                 send={send}
-                meeting={meeting}
+                state={current}
                 meetingId={meetingId}
-                current={current}
                 firebase={firebase}
-              />
-            )}
-
-            {(current.matches("draft") ||
-              current.matches("confirmed") ||
-              current.matches("active") ||
-              current.matches("complete")) && (
-              <div className="flex-grow-1 w-100 flex flex-column">
-                {meeting &&
+                title={meeting && meeting.summary}
+                match={match}
+                itemLength={
+                  meeting &&
                   meeting.items &&
-                  Object.values(meeting.items).map((props, index) => (
-                    <AgendaItem
-                      key={props.id}
-                      {...props}
-                      meetingId={meetingId}
-                      index={index}
-                      state={current}
-                      firebase={firebase}
-                    />
-                  ))}
+                  Object.values(meeting.items).length
+                }
+                savedDateTime={meeting && meeting.dateTime}
+              />
 
-                {current.matches("complete") && (
-                  <ReactGA.OutboundLink
-                    className="bg-lightest-blue navy flex items-center justify-center pa4 w-100"
-                    eventLabel="typeform"
-                    to="https://joshpitzalis.typeform.com/to/HCWJeW"
-                    target="_blank"
-                    trackerNames={["tracker2"]}
-                  >
-                    <span className="lh-title ml3 tc pointer grow">
-                      🚀 Tell us what feature you'd like Meetbox to work on
-                      next. 🚀{" "}
-                      <span className="underline">
-                        Click here to help us out
-                      </span>
-                    </span>
-                  </ReactGA.OutboundLink>
-                )}
+              {current.matches("actionPlan") && (
+                <ActionPlan
+                  send={send}
+                  meeting={meeting}
+                  meetingId={meetingId}
+                  current={current}
+                  firebase={firebase}
+                />
+              )}
 
-                {(current.matches("draft") || current.matches("active")) && (
-                  <div className="pa5 tc w-100">
-                    {/* <Button
-                      icon={<Add />}
-                      className={`pointer dim`}
-                      size="large"
-                      primary
-                      label="Add An Agenda Item"
-                      onClick={() => handleAddMeeting(meetingId)}
-                      disabled={disabled}
-                    /> */}
+              {current.matches("draft") ||
+                current.matches("confirmed") ||
+                current.matches("active") ||
+                (current.matches("complete") && (
+                  <div className="flex-grow-1 w-100 flex flex-column">
                     {meeting &&
                       meeting.items &&
                       Object.values(meeting.items).map((props, index) => (
@@ -168,11 +124,13 @@ const Agenda = ({ match }) => {
                         />
                       ))}
 
-                    {/* {current.matches("complete") && (
-                      <a
+                    {current.matches("complete") && (
+                      <ReactGA.OutboundLink
                         className="bg-lightest-blue navy flex items-center justify-center pa4 w-100"
-                        href="https://joshpitzalis.typeform.com/to/HCWJeW"
+                        eventLabel="typeform"
+                        to="https://joshpitzalis.typeform.com/to/HCWJeW"
                         target="_blank"
+                        trackerNames={["tracker2"]}
                       >
                         <span className="lh-title ml3 tc pointer grow">
                           🚀 Tell us what feature you'd like Meetbox to work on
@@ -181,8 +139,8 @@ const Agenda = ({ match }) => {
                             Click here to help us out
                           </span>
                         </span>
-                      </a>
-                    )} */}
+                      </ReactGA.OutboundLink>
+                    )}
 
                     {(current.matches("draft") ||
                       current.matches("active")) && (
@@ -213,11 +171,9 @@ const Agenda = ({ match }) => {
                       </div>
                     )}
                   </div>
-                )}
-              </div>
-            )}
-          </section>
-        )}
+                ))}
+            </section>
+          ))}
       </span>
     </div>
   );
