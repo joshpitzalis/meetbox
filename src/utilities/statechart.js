@@ -20,8 +20,7 @@ export default Machine(
           REDIRECTED_TO_EXISTING_AGENDA: "draft",
           REDIRECTED_TO_CONFIRMED_AGENDA: "confirmed",
           REDIRECTED_TO_ACTIVE_AGENDA: "active",
-          REDIRECTED_TO_COMPLETE_AGENDA: "complete",
-          REDIRECTED_TO_ACTION_PLAN: "actionPlan"
+          REDIRECTED_TO_COMPLETE_AGENDA: "complete"
         }
       },
       creatingAgenda: {
@@ -91,15 +90,20 @@ export default Machine(
         }
       },
       complete: {
-        entry: ["handleMeetingOverNotification", "analyticsComplete"],
-        on: {
-          REDIRECTED_TO_ACTION_PLAN: "actionPlan"
-        }
-      },
-      actionPlan: {
-        entry: ["handleMeetingOverNotification", "analyticsActionPlan"],
-        on: {
-          REDIRECTED_TO_MINUTES_VIEW: "actionPlan"
+        initial: "actionPlan",
+        states: {
+          actionPlan: {
+            entry: ["handleMeetingOverNotification", "analyticsActionPlan"],
+            on: {
+              REDIRECTED_TO_MINUTES_VIEW: "minutes"
+            }
+          },
+          minutes: {
+            entry: ["handleMeetingOverNotification", "analyticsComplete"],
+            on: {
+              REDIRECTED_TO_ACTION_PLAN: "actionPlan"
+            }
+          }
         }
       }
     }

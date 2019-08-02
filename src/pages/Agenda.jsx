@@ -1,21 +1,14 @@
 import { useMachine } from "@xstate/react";
-import { Button, CheckBox } from "grommet";
-import { Add, Save } from "grommet-icons";
 import React, { useEffect } from "react";
-import ReactGA from "react-ga";
-import { Sparklines, SparklinesLine } from "react-sparklines";
 import Sidebar from "../components/Sidebar";
 import {
   handleAddMeeting,
   useStreamMeeting
 } from "../features/agenda/agendaHelpers";
-import AgendaItem from "../features/agenda/components/AgendaItem";
 import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
-
-const truncate = (name, count) =>
-  name && name.length > count ? `${name.substr(0, count)}...` : name;
-
+import ActionPlan from "./ActionPlan";
+import { CompletedMinutes } from "./CompletedMinutes";
 const Agenda = ({ match }) => {
   const [current, send] = useMachine(stateMachine);
   const meetingId = match && match.params && match.params.meetingId;
@@ -38,8 +31,7 @@ const Agenda = ({ match }) => {
   useEffect(() => {
     if (meetingId && meeting) {
       if (meeting.status === "complete") {
-        // send("REDIRECTED_TO_COMPLETE_AGENDA");
-        send("REDIRECTED_TO_ACTION_PLAN");
+        send("REDIRECTED_TO_COMPLETE_AGENDA");
       }
 
       if (meeting.status === "active") {
@@ -56,20 +48,11 @@ const Agenda = ({ match }) => {
     }
   }, [meetingId, meeting]);
 
+  console.log("current.value", current.value);
+
   return (
     <div data-testid="agendaPage" className="vh-100">
-      <div
-        className={`
-        ${current.matches("complete") ? "dn" : "dn-l"}
-        `}
-      >
-        <span className="flex flex-column vh-100 vw-100 items-center justify-center measure center">
-          <h1 className="f1 lh-title pa2">
-            If you want to use this app on your phone, click on the orange
-            button in the bottom right corner and let us know.
-          </h1>
-        </span>
-      </div>
+      <SorryNoMobileScreen current={current} />
       <span
         className={`h-100 ${
           current.matches("complete") ? "db db-l" : "dn db-l"
@@ -81,52 +64,48 @@ const Agenda = ({ match }) => {
           </div>
         )}
 
-        {current.matches("draft") ||
+        {(current.matches("draft") ||
           current.matches("confirmed") ||
           current.matches("active") ||
           current.matches("complete") ||
-          (current.matches("actionPlan") && (
-            <section className="flex flex-wrap flex-column-ns flex-row vh-100-ns h-auto">
-              <Sidebar
+          current.matches("actionPlan")) && (
+          <section className="flex flex-wrap flex-column-ns flex-row vh-100-ns h-auto">
+            <Sidebar
+              send={send}
+              state={current}
+              meetingId={meetingId}
+              firebase={firebase}
+              title={meeting && meeting.summary}
+              match={match}
+              itemLength={
+                meeting && meeting.items && Object.values(meeting.items).length
+              }
+              savedDateTime={meeting && meeting.dateTime}
+            />
+            {current.matches("complete.actionPlan") && (
+              <ActionPlan
                 send={send}
-                state={current}
+                meeting={meeting}
                 meetingId={meetingId}
+                current={current}
                 firebase={firebase}
-                title={meeting && meeting.summary}
-                match={match}
-                itemLength={
-                  meeting &&
-                  meeting.items &&
-                  Object.values(meeting.items).length
-                }
-                savedDateTime={meeting && meeting.dateTime}
               />
-
-              {current.matches("actionPlan") && (
-                <ActionPlan
-                  send={send}
-                  meeting={meeting}
-                  meetingId={meetingId}
-                  current={current}
-                  firebase={firebase}
-                />
-              )}
-
-              {current.matches("draft") ||
-                current.matches("confirmed") ||
-                current.matches("active") ||
-                (current.matches("complete") && (
-                  <CompletedMinutes
-                    meeting={meeting}
-                    meetingId={meetingId}
-                    current={current}
-                    firebase={firebase}
-                    handleAddMeeting={handleAddMeeting}
-                    disabled={disabled}
-                  />
-                ))}
-            </section>
-          ))}
+            )}
+            {(current.matches("draft") ||
+              current.matches("confirmed") ||
+              current.matches("active") ||
+              current.matches("complete.minutes")) && (
+              <CompletedMinutes
+                meeting={meeting}
+                meetingId={meetingId}
+                current={current}
+                firebase={firebase}
+                handleAddMeeting={handleAddMeeting}
+                disabled={disabled}
+              />
+            )}
+          </section>
+        )}
       </span>
     </div>
   );
@@ -134,263 +113,19 @@ const Agenda = ({ match }) => {
 
 export default Agenda;
 
-function ActionPlan({ send, meeting, meetingId, current, firebase }) {
-  const [fullscreen, setFullscreen] = React.useState("");
-  const [index, setIndex] = React.useState("");
-
-  const onlyListsThatHaveTasks = item =>
-    item && item.tasks && Object.values(item.tasks).length > 0;
-
-  const selectedList =
-    fullscreen &&
-    meeting &&
-    meeting.items &&
-    Object.values(meeting.items).find(item => item.id === fullscreen);
-
-  return (
-    <div className="ml6  w-100 vh-100 ">
-      {/* <TeamStats /> */}
-      <button
-        className="ma4 fr"
-        onClick={() => send("REDIRECTED_TO_ACTION_PLAN")}
-      >
-        <small className="silver small-caps">Switch to the minutes view</small>
-      </button>
-
-      <section className="flex-grow-1 w-100 flex flex-wrap w-100 ">
-        {meeting &&
-          meeting.items &&
-          Object.values(meeting.items)
-            .filter(onlyListsThatHaveTasks)
-            .map((props, index) => (
-              <TaskList
-                key={props.id}
-                {...props}
-                meetingId={meetingId}
-                index={index}
-                state={current}
-                firebase={firebase}
-                setFullscreen={setFullscreen}
-                setIndex={setIndex}
-              />
-            ))}{" "}
-        {/* <div className="ba bw4 b--light-blue h5 w5 flex items-center justify-center">
-          <p>+ new task list</p>
-        </div> */}
-      </section>
-      {fullscreen && (
-        <SelectedTaskList
-          setFullscreen={setFullscreen}
-          selectedList={selectedList}
-          setIndex={setIndex}
-          index={index}
-        />
-      )}
-      {/* <hr className="bb bw1" /> */}
-    </div>
-  );
-}
-
-export const TeamStats = () => (
-  <section className="pa3 pa5-ns" data-name="slab-stat-small">
-    {/* <h3 className="f6 ttu tracked">Project Stats</h3> */}
-    <div className="cf">
-      <dl className="db dib-l w-auto-l lh-title mr6-l">
-        {/* useful for finding github issues count history */}
-        {/* https://9-volt.github.io/bug-life/?repo=joshpitzalis/tinyteams */}
-        <Sparklines
-          data={[3, 12, 13, 8, 9, 10, 12, 21, 19, 22, 32, 46, 55, 51, 71, 73]}
-        >
-          <SparklinesLine style={{ fill: "none" }} />
-        </Sparklines>
-        <dd className="f6 fw4 ml0">Github Issues</dd>
-        <dd className="f7 fw4 ml0 o-30">Last updated 24 March</dd>
-        <dd className="f2 f-subheadline-l fw6 ml0">73</dd>
-      </dl>
-      <dl className="db dib-l w-auto-l lh-title mr6-l">
-        <Sparklines data={[0, 2]}>
-          <SparklinesLine style={{ fill: "none" }} />
-        </Sparklines>
-        <dd className="f6 fw4 ml0">Email Subscribers</dd>
-        <dd className="f7 fw4 ml0 o-30">Last updated 24 March</dd>
-        <dd className="f2 f-subheadline-l fw6 ml0">2</dd>
-      </dl>
-    </div>
-  </section>
-);
-
-const TaskList = ({
-  id,
-  name,
-  prep,
-  index,
-  meetingId,
-  state,
-  minutes,
-  tasks,
-  setFullscreen,
-  setIndex
-}) => {
+function SorryNoMobileScreen({ current }) {
   return (
     <div
-      className={`ma3 mv4  ba flex flex-column w5 vh-50 br1 bw5 b--item${index +
-        1} item${index + 1} overflow-hidden word-wrap pointer`}
-      onClick={() => {
-        setIndex(index + 1);
-        setFullscreen(id);
-      }}
+      className={`
+        ${current.matches("complete") ? "dn" : "dn-l"}
+        `}
     >
-      <div className="flex-grow-1">
-        <p className="fw7 mb4 f3 lh-solid">{truncate(name, 30)}</p>
-
-        <hr />
-        {tasks &&
-          Object.values(tasks).map(({ name }) => (
-            <div className="flex items-center mb2 z-1" key={name}>
-              <CheckBox
-                className="mr2 checkmark"
-                type="checkbox"
-                id={name}
-                label={truncate(name, 35)}
-                checked={true}
-                onClick={event => event.stopPropagation()}
-              />
-            </div>
-          ))}
-      </div>
-      <button
-        className="underline small-caps pointer"
-        // onClick={() => setFullscreen(id)}
-      >
-        <small className="tc relative">more...</small>
-      </button>
-    </div>
-  );
-};
-
-function SelectedTaskList({
-  selectedList: { name, prep, minutes, tasks } = {},
-  setFullscreen,
-  setIndex,
-  index
-}) {
-  return (
-    <div
-      className={`h-100 w-100 item${index} relative br2 pa4`}
-      style={{
-        bottom: "25rem",
-        left: "1rem"
-      }}
-    >
-      <button
-        className="underline small-caps pointer"
-        onClick={() => {
-          setIndex(index);
-          setFullscreen("");
-        }}
-      >
-        <small className="tc relative">Go Back...</small>
-      </button>
-      {/* name, prep, index, state, minutes, tasks */}
-
-      <article className="cf ph3 ph5-ns pv5">
-        <header className="fn fl-ns w-50-ns pr4-ns">
-          <h1 className="bw2 ba b--near-black" />
-          <h1 className="f2 lh-title fw9 mb3 mt0 pt3 ">{name}</h1>
-          <h2 className="f4 mb3 mt4 lh-title">Task List</h2>
-          {/* <time className="f6 ttu tracked gray">Sometime before 1967</time> */}
-          {tasks &&
-            Object.values(tasks).map(({ name }) => (
-              <div className="flex items-center mb2 measure-narrow" key={name}>
-                <CheckBox
-                  className="mr2 checkmark"
-                  type="checkbox"
-                  id={name}
-                  label={name}
-                  checked={true}
-                />
-              </div>
-            ))}
-        </header>
-        <div className="fn fr-ns w-50-ns">
-          <p className="f5 lh-copy measure mt0-ns pt4">
-            {minutes
-              ? minutes.split("\n").map((item, index) => (
-                  <span key={`${item.substring(0, 1)}${index}`}>
-                    {item}
-                    <br />
-                  </span>
-                ))
-              : "No minutes for this item."}
-          </p>
-        </div>
-      </article>
-    </div>
-  );
-}
-
-function CompletedMinutes({
-  meeting,
-  meetingId,
-  current,
-  firebase,
-  handleAddMeeting,
-  disabled
-}) {
-  return (
-    <div className="flex-grow-1 w-100 flex flex-column">
-      {meeting &&
-        meeting.items &&
-        Object.values(meeting.items).map((props, index) => (
-          <AgendaItem
-            key={props.id}
-            {...props}
-            meetingId={meetingId}
-            index={index}
-            state={current}
-            firebase={firebase}
-          />
-        ))}
-
-      {current.matches("complete") && (
-        <ReactGA.OutboundLink
-          className="bg-lightest-blue navy flex items-center justify-center pa4 w-100"
-          eventLabel="typeform"
-          to="https://joshpitzalis.typeform.com/to/HCWJeW"
-          target="_blank"
-          trackerNames={["tracker2"]}
-        >
-          <span className="lh-title ml3 tc pointer grow">
-            🚀 What problem would you like Meetbox to solve that it is not
-            currently solving? 🚀{" "}
-            <span className="underline">Please tell us, we want to know.</span>
-          </span>
-        </ReactGA.OutboundLink>
-      )}
-
-      {(current.matches("draft") || current.matches("active")) && (
-        <div className="pa5 tc w-100">
-          <Button
-            icon={<Add />}
-            className={`pointer dim`}
-            size="large"
-            primary
-            label="Add An Agenda Item"
-            onClick={() => handleAddMeeting(meetingId)}
-            disabled={disabled}
-          />
-          {meeting && meeting.items && Object.values(meeting.items).length > 0 && (
-            <div className="pv3 flex-ns items-center justify-center dn ">
-              <small className="o-50">When you're done, click the</small>
-              <Save className="ph1" color="#D4D4D4" />
-              <small className="o-50">
-                {" "}
-                icon in the bottom left corner to save.
-              </small>
-            </div>
-          )}
-        </div>
-      )}
+      <span className="flex flex-column vh-100 vw-100 items-center justify-center measure center">
+        <h1 className="f1 lh-title pa2">
+          If you want to use this app on your phone, click on the orange button
+          in the bottom right corner and let us know.
+        </h1>
+      </span>
     </div>
   );
 }

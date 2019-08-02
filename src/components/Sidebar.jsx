@@ -1,4 +1,3 @@
-import format from "date-fns/format";
 import { FormPreviousLink, Halt, Launch, Save } from "grommet-icons";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
@@ -138,14 +137,31 @@ const Sidebar = ({
             )}
           </div>
         ) : (
-          // !!savedDateTime && (
-          <div>
-            <dl class={`dib mr3 pa3 text-gray-700`}>
-              <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
-              <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
-            </dl>
-          </div>
-          // )
+          <button
+            className="w3"
+            onClick={() =>
+              send(
+                state.matches("complete.actionPlan")
+                  ? "REDIRECTED_TO_MINUTES_VIEW"
+                  : "REDIRECTED_TO_ACTION_PLAN"
+              )
+            }
+          >
+            <small className="silver small-caps  tc">
+              {state.matches("complete.actionPlan")
+                ? "Switch to the minutes view"
+                : "Switch to the Action view"}
+            </small>
+          </button>
+
+          // // !!savedDateTime && (
+          // <div>
+          //   <dl class={`dib mr3 pa3 text-gray-700`}>
+          //     <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
+          //     <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
+          //   </dl>
+          // </div>
+          // // )
         )}
       </aside>
 
