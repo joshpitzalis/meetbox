@@ -7,7 +7,8 @@ import React from "react";
 import { Router } from "react-router-dom";
 import { State } from "xstate";
 import { Routes } from "../../../utilities/Routes";
-import Minutes from "../components/Minutes.jsx";
+import Minutes from "../components/Minutes";
+
 afterEach(cleanup);
 
 test.skip("If there are no agenda items to save draft button should not be visible", () => {

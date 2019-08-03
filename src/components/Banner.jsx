@@ -31,7 +31,7 @@ const useNotification = notificationStream$ => {
 const Banner = () => {
   const [message, clear, type] = useNotification(notfication$);
   return (
-    <div>
+    <div className="dn db-l absolute z-999 ma4 w-100">
       {message && (
         <div
           className={`${
@@ -40,7 +40,7 @@ const Banner = () => {
               : type === "ERROR"
               ? "bg-washed-red red"
               : "bg-lightest-blue navy"
-          } flex items-center justify-center pa4 w-100`}
+          } flex items-center justify-center pa4 br-pill w-75 center`}
           data-tesid="notification"
         >
           <span className="lh-title ml3 tc">{message}</span>

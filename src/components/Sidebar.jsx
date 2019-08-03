@@ -1,8 +1,6 @@
-import format from "date-fns/format";
 import { FormPreviousLink, Halt, Launch, Save } from "grommet-icons";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
-
 const Sidebar = ({
   send,
   state,
@@ -10,7 +8,8 @@ const Sidebar = ({
   meetingId,
   title,
   itemLength,
-  savedDateTime
+  savedDateTime,
+  agendaViewAvailable
 }) => {
   React.useEffect(() => {
     var config = {
@@ -21,10 +20,12 @@ const Sidebar = ({
     window.Headway && window.Headway.init(config);
   }, []);
 
-  console.log("savedDateTime", savedDateTime);
   const [expanded, setExpanded] = React.useState(false);
   const [summary, setSummary] = React.useState(title);
-  const [dateTime, setDateTime] = React.useState(savedDateTime.seconds);
+  const [dateTime, setDateTime] = React.useState(
+    savedDateTime && savedDateTime.seconds ? savedDateTime.seconds : 0
+  );
+
   return (
     <div
       className={`flex flex-column flex-row-ns 
@@ -33,8 +34,8 @@ const Sidebar = ({
     >
       <aside
         className={`
-         flex flex-row md:flex-col lg:flex-col flex-column-ns
-         justify-around h-100-ns bg-white w-100 w-auto-ns 
+        pv3 ph2 flex flex-row  md:flex-col lg:flex-col flex-column-ns
+         justify-between h-100-ns bg-white w-100 w-auto-ns 
          ${expanded ? "items-start" : "items-center "}
          `}
       >
@@ -83,7 +84,7 @@ const Sidebar = ({
         )}
 
         <h1
-          className="ph4 rotate-ns flex items-center"
+          className="ph4-ns pa3 pv0-ns rotate-ns flex items-center"
           style={{
             textAlign: "center",
             fontSize: "23px",
@@ -136,14 +137,36 @@ const Sidebar = ({
               </>
             )}
           </div>
+        ) : agendaViewAvailable && state.matches("complete") ? (
+          <button
+            className="w3 dn dib-ns"
+            onClick={() =>
+              send(
+                state.matches("complete.actionPlan")
+                  ? "REDIRECTED_TO_MINUTES_VIEW"
+                  : "REDIRECTED_TO_ACTION_PLAN"
+              )
+            }
+          >
+            <small className="silver small-caps  tc">
+              {state.matches("complete.actionPlan")
+                ? "Switch to the minutes view"
+                : "Switch to the Action view"}
+            </small>
+          </button>
         ) : (
-          <div>
-            <dl class={`dib mr3 pa3 text-gray-700`}>
-              <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
-              <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
-            </dl>
-          </div>
-        )}
+          <span />
+        )
+
+        // // !!savedDateTime && (
+        // <div>
+        //   <dl class={`dib mr3 pa3 text-gray-700`}>
+        //     <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
+        //     <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
+        //   </dl>
+        // </div>
+        // // )
+        }
       </aside>
 
       {expanded && (

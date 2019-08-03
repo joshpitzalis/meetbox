@@ -23,3 +23,21 @@
 .rf-min-h5 {
   min-height: 16rem;
 }
+
+.rf-min-vh-100 {
+  min-height: 100vh;
+}
+
+/* WIDGETS */
+
+.rf-badge {
+  background-color: white;
+
+  border-radius: 9999px;
+  color: black;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+}

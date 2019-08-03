@@ -38,6 +38,48 @@ primary #373F85 */
   background-color: #894f9c;
 }
 
-/* .item12 {
-  background-color: #3a2a76;
-} */
+.b--item0 {
+  border-color: #fdfce7;
+}
+.b--item1 {
+  border-color: #faf4c0;
+}
+.b--item2 {
+  border-color: #e0eac3;
+}
+.b--item3 {
+  border-color: #c6e0d7;
+}
+.b--item4 {
+  border-color: #b2cdd7;
+}
+.b--item5 {
+  border-color: #cbb39e;
+}
+.b--item6 {
+  border-color: #e79c74;
+}
+.b--item7 {
+  border-color: #e49883;
+}
+.b--item8 {
+  border-color: #df9598;
+}
+.b--item9 {
+  border-color: #d1869f;
+}
+.b--item10 {
+  border-color: #bc72a7;
+}
+.b--item11 {
+  border-color: #894f9c;
+}
+
+.b--item12 {
+  border-color: #3a2a76;
+}
+
+.checkmark + div {
+  background-color: white;
+  border-color: currentColor;
+}
