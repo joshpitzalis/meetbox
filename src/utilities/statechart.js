@@ -90,16 +90,15 @@ export default Machine(
         }
       },
       complete: {
+        entry: ["handleMeetingOverNotification", "analyticsActionPlan"],
         initial: "actionPlan",
         states: {
           actionPlan: {
-            entry: ["handleMeetingOverNotification", "analyticsActionPlan"],
             on: {
               REDIRECTED_TO_MINUTES_VIEW: "minutes"
             }
           },
           minutes: {
-            entry: ["handleMeetingOverNotification", "analyticsComplete"],
             on: {
               REDIRECTED_TO_ACTION_PLAN: "actionPlan"
             }

@@ -50,7 +50,7 @@ const Agenda = ({ match }) => {
   }, [meetingId, meeting]);
 
   return (
-    <div data-testid="agendaPage" className="vh-100">
+    <div data-testid="agendaPage" className="rf-min-vh-100">
       <SorryNoMobileScreen current={current} />
       <span
         className={`h-100 ${
@@ -79,6 +79,14 @@ const Agenda = ({ match }) => {
                 meeting && meeting.items && Object.values(meeting.items).length
               }
               savedDateTime={meeting && meeting.dateTime}
+              agendaViewAvailable={
+                meeting &&
+                meeting.items &&
+                Object.values(meeting.items).some(
+                  item =>
+                    item && item.tasks && Object.values(item.tasks).length > 0
+                )
+              }
             />
             {current.matches("complete.actionPlan") && (
               <ActionPlan

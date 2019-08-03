@@ -8,7 +8,8 @@ const Sidebar = ({
   meetingId,
   title,
   itemLength,
-  savedDateTime
+  savedDateTime,
+  agendaViewAvailable
 }) => {
   React.useEffect(() => {
     var config = {
@@ -24,15 +25,16 @@ const Sidebar = ({
   const [dateTime, setDateTime] = React.useState(
     savedDateTime && savedDateTime.seconds ? savedDateTime.seconds : 0
   );
+
   return (
     <div
-      className={`flex flex-column flex-row-ns pv3
+      className={`flex flex-column flex-row-ns 
       fixed-ns vh-100-ns ${expanded && "shadow-1 z-1 vh-100 pr4 bg-white"}`}
       data-testid="sidebar"
     >
       <aside
         className={`
-         flex flex-row  md:flex-col lg:flex-col flex-column-ns
+        pv3 ph2 flex flex-row  md:flex-col lg:flex-col flex-column-ns
          justify-between h-100-ns bg-white w-100 w-auto-ns 
          ${expanded ? "items-start" : "items-center "}
          `}
@@ -135,7 +137,7 @@ const Sidebar = ({
               </>
             )}
           </div>
-        ) : (
+        ) : agendaViewAvailable && state.matches("complete") ? (
           <button
             className="w3 dn dib-ns"
             onClick={() =>
@@ -152,16 +154,19 @@ const Sidebar = ({
                 : "Switch to the Action view"}
             </small>
           </button>
+        ) : (
+          <span />
+        )
 
-          // // !!savedDateTime && (
-          // <div>
-          //   <dl class={`dib mr3 pa3 text-gray-700`}>
-          //     <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
-          //     <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
-          //   </dl>
-          // </div>
-          // // )
-        )}
+        // // !!savedDateTime && (
+        // <div>
+        //   <dl class={`dib mr3 pa3 text-gray-700`}>
+        //     <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
+        //     <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
+        //   </dl>
+        // </div>
+        // // )
+        }
       </aside>
 
       {expanded && (

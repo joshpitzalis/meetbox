@@ -13,7 +13,7 @@ describe("happy Path", () => {
       .click()
       // create an agenda in draft mode
       .getByText(
-        /Make a list of all the things you want to discuss in your meeting/i
+        /Close this notification to start making a list of all the things you want to discuss in your meeting./i
       )
       .getByTestId("closeNotification")
       .click()
@@ -59,7 +59,7 @@ describe("happy Path", () => {
       .click()
       // agenda confirmed
       .queryByText(
-        / 🎉 You're done! Nice. Come back to this page on the day of the meeting and click on the green rocket to start the meeting. The app will help you take notes of what happens and keep a record of what people say they will do. 🎉/i
+        / 🎉 You're done! Nice. Come back to this page on the day of the meeting. You can take notes of what happens during the meeting and keep a record of what people say they will do. 🎉/i
       )
       .getByTestId("playButton")
       // try editing once agenda confirmed
@@ -77,6 +77,8 @@ describe("happy Path", () => {
       .queryByText(
         /This meeting has now started. Make sure you end the meeting when you are done to save all your notes./
       )
+      .getByTestId("closeNotification")
+      .click()
       .getByTestId("stopButton")
       // editing during a meeting
       .queryAllByTestId("editableItemName")
@@ -105,7 +107,7 @@ describe("happy Path", () => {
       .getByTestId("stopButton")
       .click()
       .queryByText(
-        /🎉 Congratulations! Your meeting is over. The details on this page will never change. Make a note of the link so that you can review these details if you ever need to. 🎉/i
+        /🎉 Congratulations! Your meeting is over. Make a note of the URL so that you can review this whenever you need to. 🎉/i
       )
       .queryByTestId("stopButton")
       .should("not.exist")
@@ -122,4 +124,5 @@ describe("happy Path", () => {
 
   it.skip("delete item, also test that it deletes while active", () => {});
   it.skip("loads an existing meeting in each state", () => {});
+  it.skip("test multiple task sin multiple lists can be completed in cypress jus so that there is no indexing issues.", () => {});
 });

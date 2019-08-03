@@ -20,8 +20,21 @@ const ActionPlan = ({
 }) => {
   const [fullscreen, setFullscreen] = React.useState("");
   const [index, setIndex] = React.useState("");
-  const onlyListsThatHaveTasks = item =>
-    item && item.tasks && Object.values(item.tasks).length > 0;
+  // const onlyListsThatHaveTasks = item =>
+  //   item && item.tasks && Object.values(item.tasks).length > 0;
+
+  const listWithTasks =
+    meeting &&
+    meeting.items &&
+    Object.values(meeting.items).filter(
+      item => item && item.tasks && Object.values(item.tasks).length > 0
+    );
+
+  React.useEffect(() => {
+    if (listWithTasks.length === 0) {
+      send("REDIRECTED_TO_MINUTES_VIEW");
+    }
+  }, []);
 
   const selectedList =
     fullscreen &&
@@ -55,7 +68,7 @@ const ActionPlan = ({
           disabled={disabled}
         />
       </p>
-      {fullscreen && (
+      {fullscreen ? (
         <SelectedTaskList
           setFullscreen={setFullscreen}
           selectedList={selectedList}
@@ -64,13 +77,10 @@ const ActionPlan = ({
           firebase={firebase}
           meetingId={meetingId}
         />
-      )}
-      <section className="flex-grow-1 w-100 flex flex-wrap w-100">
-        {meeting &&
-          meeting.items &&
-          Object.values(meeting.items)
-            .filter(onlyListsThatHaveTasks)
-            .map((props, index) => (
+      ) : (
+        <section className="flex-grow-1 w-100 flex flex-wrap justify-start w-100">
+          {listWithTasks &&
+            listWithTasks.map((props, index) => (
               <TaskList
                 key={props.id}
                 {...props}
@@ -82,7 +92,8 @@ const ActionPlan = ({
                 setIndex={setIndex}
               />
             ))}{" "}
-      </section>
+        </section>
+      )}
     </div>
   );
 };
@@ -94,99 +105,96 @@ export default ActionPlan;
 //   return prevProps && nextProps && prevProps.tasks !== nextProps.tasks;
 // };
 
-export const TaskList =
-  // React.memo(
-  ({
-    id,
-    name,
-    index,
-    meetingId,
-    tasks,
-    setFullscreen,
-    setIndex,
-    firebase
-  }) => {
-    const taskArray = Object.values(tasks);
-    return (
-      // <Overdrive id={id}>
-      <div className="flex-grow-1">
-        <div className="dn flex-ns flex-column flex-grow-1 ma3-ns mv4-ns w-100 w5-ns">
-          <div
-            className={` ba flex flex-column w5 vh-50 br1 bw5 b--item${index +
-              1} item${index + 1} overflow-hidden word-wrap pointer`}
-            onClick={event => {
-              event.stopPropagation();
-              setIndex(index + 1);
-              setFullscreen(id);
-            }}
-          >
-            <div className="flex-grow-1">
-              <div className="flex items-baseline">
+export const TaskList = ({
+  id,
+  name,
+  index,
+  meetingId,
+  tasks,
+  setFullscreen,
+  setIndex,
+  firebase
+}) => {
+  const taskArray = Object.values(tasks);
+  const unfinishedTaskCount =
+    taskArray && taskArray.filter(tasks => tasks.complete === false).length;
+  return (
+    <div>
+      <div className="dn flex-ns flex-column flex-grow-1 ma3-ns mv4-ns w-100 w5-ns">
+        <div
+          className={` ba flex flex-column w5 vh-50 br1 bw5 b--item${index +
+            1} item${index + 1} overflow-hidden word-wrap pointer`}
+          onClick={event => {
+            event.stopPropagation();
+            setIndex(index + 1);
+            setFullscreen(id);
+          }}
+        >
+          <div className="flex-grow-1">
+            <div className="flex items-baseline">
+              {!!unfinishedTaskCount && (
                 <span className="rf-badge dn di-ns mr2">
-                  {taskArray.filter(tasks => tasks.complete === false).length}
-                </span>{" "}
-                <p className="fw7 mb4 f3 lh-solid">{truncate(name, 30)}</p>
-              </div>
-
-              <hr />
-              {tasks &&
-                taskArray
-                  .sort((a, b) => {
-                    if (a.complete > b.complete) return 1;
-                    if (b.complete > a.complete) return -1;
-                    return 0;
-                  })
-                  .map(({ name, taskId, complete }) => {
-                    return (
-                      <div className="flex items-center mb2 z-1" key={taskId}>
-                        <CheckBox
-                          className="mr2 checkmark"
-                          type="checkbox"
-                          id={taskId}
-                          label={truncate(name, 35)}
-                          checked={complete}
-                          onClick={event => {
-                            console.log({ taskId });
-                            firebase
-                              .firestore()
-                              .doc(`meetings/${meetingId}`)
-                              .update({
-                                [`items.${id}.tasks.${taskId}.complete`]: event
-                                  .target.checked
-                              })
-                              .then(() =>
-                                ReactGA.event({
-                                  category: "User",
-                                  action: "Toggled Task"
-                                })
-                              )
-                              .catch(error => console.error(error));
-                            event.stopPropagation();
-                          }}
-                        />
-                      </div>
-                    );
-                  })}
+                  {unfinishedTaskCount}
+                </span>
+              )}
+              <p className="fw7 mb4 f3 lh-solid">{truncate(name, 30)}</p>
             </div>
+
+            <hr />
+            {tasks &&
+              taskArray
+                .sort((a, b) => {
+                  if (a.complete > b.complete) return 1;
+                  if (b.complete > a.complete) return -1;
+                  return 0;
+                })
+                .map(({ name, taskId, complete }) => {
+                  return (
+                    <div className="flex items-center mb2 z-1" key={taskId}>
+                      <CheckBox
+                        className="mr2 checkmark"
+                        type="checkbox"
+                        id={taskId}
+                        label={truncate(name, 35)}
+                        checked={complete}
+                        onClick={event => {
+                          console.log({ taskId });
+                          firebase
+                            .firestore()
+                            .doc(`meetings/${meetingId}`)
+                            .update({
+                              [`items.${id}.tasks.${taskId}.complete`]: event
+                                .target.checked
+                            })
+                            .then(() =>
+                              ReactGA.event({
+                                category: "User",
+                                action: "Toggled Task"
+                              })
+                            )
+                            .catch(error => console.error(error));
+                          event.stopPropagation();
+                        }}
+                      />
+                    </div>
+                  );
+                })}
           </div>
-          <button
-            className="small-caps pointer"
-            onClick={event => {
-              event.stopPropagation();
-              setIndex(index + 1);
-              setFullscreen(id);
-            }}
-          >
-            <small className="tc  silver">more...</small>
-          </button>
         </div>
+        <button
+          className="small-caps pointer"
+          onClick={event => {
+            event.stopPropagation();
+            setIndex(index + 1);
+            setFullscreen(id);
+          }}
+        >
+          <small className="tc  silver">more...</small>
+        </button>
       </div>
-      // </Overdrive>
-    );
-  };
-//   ,
-//   compare
-// );
+    </div>
+  );
+};
 
 export const TeamStats = () => (
   <section className="pa3 pa5-ns" data-name="slab-stat-small">
