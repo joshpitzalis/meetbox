@@ -109,14 +109,15 @@ describe("happy Path", () => {
       )
       .queryByTestId("stopButton")
       .should("not.exist")
-      .getByText(updatedMeetingName)
-      .getByText(note)
-      .getByText(task)
+      .getAllByText(updatedMeetingName)
+      .getAllByText(note)
+      .getAllByText(task)
       // try editing after a meeting has ended
       .queryByTestId("editTitle")
       .should("not.exist")
       .queryByTestId("taskEditBox")
-      .should("not.exist");
+      .should("not.exist")
+      .getByText("What problem is Meetbox not yet solving for your team ?");
   });
 
   it.skip("delete item, also test that it deletes while active", () => {});

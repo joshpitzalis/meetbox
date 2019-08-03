@@ -1,6 +1,7 @@
 import { useMachine } from "@xstate/react";
 import React from "react";
 import ReactGA from "react-ga";
+import rocket from "../styles/images/rocket.svg";
 import stateMachine from "../utilities/statechart";
 
 const Landing = ({ match, history }) => {
@@ -36,7 +37,7 @@ const Landing = ({ match, history }) => {
             {/* Meetbox.io */}
             {/* Help meetings stay on point. */}
             {/* Create An Agenda For Your Next Meeting */}
-            Turn meetings into action plans.
+            Turn team meetings into action plans.
             {/* Keep track of what happens in a meeting so that
             everyone knows what to do afterwards. */}
           </h1>
@@ -61,6 +62,23 @@ const Landing = ({ match, history }) => {
             Get Started
           </button>
         </header>
+
+        {/* <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l">
+          <div className="aspect-ratio aspect-ratio--3x4 mb4 w-100 h-auto">
+            <div
+              className="aspect-ratio--object cover"
+             
+            />
+          </div>
+        </article> */}
+
+        <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l flex items-end">
+          <img
+            className="w-100 h-auto mb3 pb4"
+            src={rocket}
+            alt="team rocket building"
+          />
+        </article>
 
         {/* <Features /> */}
       </article>

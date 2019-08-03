@@ -19,7 +19,6 @@ const Sidebar = ({
     window.Headway && window.Headway.init(config);
   }, []);
 
-  console.log("savedDateTime", savedDateTime);
   const [expanded, setExpanded] = React.useState(false);
   const [summary, setSummary] = React.useState(title);
   const [dateTime, setDateTime] = React.useState(
@@ -27,13 +26,13 @@ const Sidebar = ({
   );
   return (
     <div
-      className={`flex flex-column flex-row-ns 
+      className={`flex flex-column flex-row-ns pv3
       fixed-ns vh-100-ns ${expanded && "shadow-1 z-1 vh-100 pr4 bg-white"}`}
       data-testid="sidebar"
     >
       <aside
         className={`
-         flex flex-row md:flex-col lg:flex-col flex-column-ns
+         flex flex-row  md:flex-col lg:flex-col flex-column-ns
          justify-between h-100-ns bg-white w-100 w-auto-ns 
          ${expanded ? "items-start" : "items-center "}
          `}
@@ -138,7 +137,7 @@ const Sidebar = ({
           </div>
         ) : (
           <button
-            className="w3"
+            className="w3 dn dib-ns"
             onClick={() =>
               send(
                 state.matches("complete.actionPlan")

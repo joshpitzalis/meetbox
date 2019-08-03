@@ -86,7 +86,7 @@ export default Machine(
         entry: ["handleMeetingStartNotification", "analyticsActive"],
         on: {
           ENDED: "complete",
-          REDIRECTED_TO_COMPLETE_AGENDA: "actionPlan"
+          REDIRECTED_TO_COMPLETE_AGENDA: "complete"
         }
       },
       complete: {

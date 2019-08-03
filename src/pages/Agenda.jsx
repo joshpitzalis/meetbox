@@ -9,6 +9,7 @@ import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
 import ActionPlan from "./ActionPlan";
 import { CompletedMinutes } from "./CompletedMinutes";
+
 const Agenda = ({ match }) => {
   const [current, send] = useMachine(stateMachine);
   const meetingId = match && match.params && match.params.meetingId;
@@ -48,8 +49,6 @@ const Agenda = ({ match }) => {
     }
   }, [meetingId, meeting]);
 
-  console.log("current.value", current.value);
-
   return (
     <div data-testid="agendaPage" className="vh-100">
       <SorryNoMobileScreen current={current} />
@@ -67,8 +66,7 @@ const Agenda = ({ match }) => {
         {(current.matches("draft") ||
           current.matches("confirmed") ||
           current.matches("active") ||
-          current.matches("complete") ||
-          current.matches("actionPlan")) && (
+          current.matches("complete")) && (
           <section className="flex flex-wrap flex-column-ns flex-row vh-100-ns h-auto">
             <Sidebar
               send={send}
@@ -89,6 +87,8 @@ const Agenda = ({ match }) => {
                 meetingId={meetingId}
                 current={current}
                 firebase={firebase}
+                disabled={disabled}
+                handleAddMeeting={handleAddMeeting}
               />
             )}
             {(current.matches("draft") ||

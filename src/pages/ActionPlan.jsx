@@ -1,24 +1,36 @@
 import { CheckBox } from "grommet";
 import React from "react";
 import ReactGA from "react-ga";
+// import Overdrive from "react-overdrive";
 import { Sparklines, SparklinesLine } from "react-sparklines";
+import { CompletedMinutes } from "./CompletedMinutes";
 import { SelectedTaskList } from "./TaskListPage";
 
 const truncate = (name, count) =>
   name && name.length > count ? `${name.substr(0, count)}...` : name;
 
-const ActionPlan = ({ send, meeting, meetingId, current, firebase }) => {
+const ActionPlan = ({
+  send,
+  meeting,
+  meetingId,
+  current,
+  firebase,
+  handleAddMeeting,
+  disabled
+}) => {
   const [fullscreen, setFullscreen] = React.useState("");
   const [index, setIndex] = React.useState("");
   const onlyListsThatHaveTasks = item =>
     item && item.tasks && Object.values(item.tasks).length > 0;
+
   const selectedList =
     fullscreen &&
     meeting &&
     meeting.items &&
     Object.values(meeting.items).find(item => item.id === fullscreen);
+
   return (
-    <div className="ml6  w-100 vh-100 ">
+    <div className="ml6-ns  w-100 vh-100 " onClick={() => setFullscreen("")}>
       {current.matches("complete.actionPlan") && (
         <ReactGA.OutboundLink
           className="navy flex items-center justify-center pa4 w-100"
@@ -28,10 +40,30 @@ const ActionPlan = ({ send, meeting, meetingId, current, firebase }) => {
           trackerNames={["tracker2"]}
         >
           <span className="lh-title ml3 tc pointer grow">
-            What problem would you like Meetbox to solve next?{" "}
+            What problem is Meetbox not yet solving for your team ?{" "}
             <span className="underline">We need to know.</span>
           </span>
         </ReactGA.OutboundLink>
+      )}
+      <p className="dn-ns dib w-100">
+        <CompletedMinutes
+          meeting={meeting}
+          meetingId={meetingId}
+          current={current}
+          firebase={firebase}
+          handleAddMeeting={handleAddMeeting}
+          disabled={disabled}
+        />
+      </p>
+      {fullscreen && (
+        <SelectedTaskList
+          setFullscreen={setFullscreen}
+          selectedList={selectedList}
+          setIndex={setIndex}
+          index={index}
+          firebase={firebase}
+          meetingId={meetingId}
+        />
       )}
       <section className="flex-grow-1 w-100 flex flex-wrap w-100">
         {meeting &&
@@ -51,70 +83,110 @@ const ActionPlan = ({ send, meeting, meetingId, current, firebase }) => {
               />
             ))}{" "}
       </section>
-      {fullscreen && (
-        <SelectedTaskList
-          setFullscreen={setFullscreen}
-          selectedList={selectedList}
-          setIndex={setIndex}
-          index={index}
-        />
-      )}
     </div>
   );
 };
 
 export default ActionPlan;
 
-export const TaskList = ({
-  id,
-  name,
-  prep,
-  index,
-  meetingId,
-  state,
-  minutes,
-  tasks,
-  setFullscreen,
-  setIndex
-}) => {
-  return (
-    <div className="flex flex-column ma3 mv4">
-      <div
-        className={` ba flex flex-column w5 vh-50 br1 bw5 b--item${index +
-          1} item${index + 1} overflow-hidden word-wrap pointer`}
-        onClick={() => {
-          setIndex(index + 1);
-          setFullscreen(id);
-        }}
-      >
-        <div className="flex-grow-1">
-          <p className="fw7 mb4 f3 lh-solid">{truncate(name, 30)}</p>
+// const compare = (prevProps, nextProps) => {
+//   console.log({ prevProps, nextProps });
+//   return prevProps && nextProps && prevProps.tasks !== nextProps.tasks;
+// };
 
-          <hr />
-          {tasks &&
-            Object.values(tasks).map(({ name }) => (
-              <div className="flex items-center mb2 z-1" key={name}>
-                <CheckBox
-                  className="mr2 checkmark"
-                  type="checkbox"
-                  id={name}
-                  label={truncate(name, 35)}
-                  checked={true}
-                  onClick={event => event.stopPropagation()}
-                />
+export const TaskList =
+  // React.memo(
+  ({
+    id,
+    name,
+    index,
+    meetingId,
+    tasks,
+    setFullscreen,
+    setIndex,
+    firebase
+  }) => {
+    const taskArray = Object.values(tasks);
+    return (
+      // <Overdrive id={id}>
+      <div className="flex-grow-1">
+        <div className="dn flex-ns flex-column flex-grow-1 ma3-ns mv4-ns w-100 w5-ns">
+          <div
+            className={` ba flex flex-column w5 vh-50 br1 bw5 b--item${index +
+              1} item${index + 1} overflow-hidden word-wrap pointer`}
+            onClick={event => {
+              event.stopPropagation();
+              setIndex(index + 1);
+              setFullscreen(id);
+            }}
+          >
+            <div className="flex-grow-1">
+              <div className="flex items-baseline">
+                <span className="rf-badge dn di-ns mr2">
+                  {taskArray.filter(tasks => tasks.complete === false).length}
+                </span>{" "}
+                <p className="fw7 mb4 f3 lh-solid">{truncate(name, 30)}</p>
               </div>
-            ))}
+
+              <hr />
+              {tasks &&
+                taskArray
+                  .sort((a, b) => {
+                    if (a.complete > b.complete) return 1;
+                    if (b.complete > a.complete) return -1;
+                    return 0;
+                  })
+                  .map(({ name, taskId, complete }) => {
+                    return (
+                      <div className="flex items-center mb2 z-1" key={taskId}>
+                        <CheckBox
+                          className="mr2 checkmark"
+                          type="checkbox"
+                          id={taskId}
+                          label={truncate(name, 35)}
+                          checked={complete}
+                          onClick={event => {
+                            console.log({ taskId });
+                            firebase
+                              .firestore()
+                              .doc(`meetings/${meetingId}`)
+                              .update({
+                                [`items.${id}.tasks.${taskId}.complete`]: event
+                                  .target.checked
+                              })
+                              .then(() =>
+                                ReactGA.event({
+                                  category: "User",
+                                  action: "Toggled Task"
+                                })
+                              )
+                              .catch(error => console.error(error));
+                            event.stopPropagation();
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
+            </div>
+          </div>
+          <button
+            className="small-caps pointer"
+            onClick={event => {
+              event.stopPropagation();
+              setIndex(index + 1);
+              setFullscreen(id);
+            }}
+          >
+            <small className="tc  silver">more...</small>
+          </button>
         </div>
       </div>
-      <button
-        className="small-caps pointer"
-        // onClick={() => setFullscreen(id)}
-      >
-        <small className="tc relative silver">more...</small>
-      </button>
-    </div>
-  );
-};
+      // </Overdrive>
+    );
+  };
+//   ,
+//   compare
+// );
 
 export const TeamStats = () => (
   <section className="pa3 pa5-ns" data-name="slab-stat-small">

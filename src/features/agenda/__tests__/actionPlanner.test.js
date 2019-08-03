@@ -1,27 +1,24 @@
 import "@testing-library/jest-dom/extend-expect";
-import { cleanup, render } from "@testing-library/react";
-import { createMemoryHistory } from "history";
-// import { Router } from "react-router-dom";
-// import { Routes } from "../../../utilities/Routes";
-import ActionPlan from "../../../pages/ActionPlan";
+import { cleanup } from "@testing-library/react";
+
+// const mockState = () => State.from("complete");
+
+// jest.mock('"../../../utilities/statechart.js"', () => mockState);
+
 afterEach(cleanup);
 
-test.only("clicking on the toggle button toggles between action plan and minutes view", () => {
-  const history = createMemoryHistory({ initialEntries: ["/meeting/123"] });
+test.skip("clicking on the toggle button toggles between action plan and minutes view", () => {});
 
-  const { getByTestId, queryByTestId } = render(ActionPlan);
+test.skip("in action view clicking on the task toggle toggle completion of task", () => {});
 
-  // const props = {
-  //   match: {
-  //     params: {
-  //       meetingId: "123"
-  //     }
-  //   }
-  // };
-  // const { getByTestId, queryByTestId } = render(<Agenda {...props} />);
-  getByTestId("routes");
-  getByTestId("agendaPage");
-  getByTestId("sidebar");
-  expect(queryByTestId("saveAgenda")).not.toBeInDocument();
-  // getByTestId("saveAgenda");
-});
+test.skip("in selected list view clicking on the task toggle toggle completion of task", () => {});
+
+test.skip("open and close work for selcted list view", () => {});
+
+test.skip("selected list view minutes text is as long as it needs to be, no overflow", () => {});
+
+test.skip("selected list view tasks are as long as it needs to be, no overflow", () => {});
+
+test.skip("when you select a task list it takes you to a unique url with that task list", () => {});
+
+test.skip("closing the task list takes you back to teh project url", () => {});
