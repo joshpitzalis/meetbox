@@ -72,9 +72,9 @@ const Landing = ({ match, history }) => {
           </div>
         </article> */}
 
-        <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l flex items-end">
+        <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l flex items-end justify-end dn db-l">
           <img
-            className="w-100 h-auto mb3 pb4"
+            className="w-auto h-50 mb3 pb4"
             src={rocket}
             alt="team rocket building"
           />

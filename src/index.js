@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import ReactDOM from "react-dom";
 import ReactGA from "react-ga";
@@ -6,6 +7,11 @@ import "./styles/index.css";
 import "./styles/refactored/rf-index.css";
 import { App } from "./utilities/Routes";
 import * as serviceWorker from "./utilities/serviceWorker";
+
+Sentry.init({
+  dsn: "https://9d62f97eeb4841afb06190594c0d5f15@sentry.io/1520725"
+});
+
 ReactGA.initialize(process.env.REACT_APP_TRACKING_ID);
 ReactDOM.render(
   <App initClient={initClient} />,
