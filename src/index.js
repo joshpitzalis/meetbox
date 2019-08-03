@@ -8,9 +8,12 @@ import "./styles/refactored/rf-index.css";
 import { App } from "./utilities/Routes";
 import * as serviceWorker from "./utilities/serviceWorker";
 
-Sentry.init({
-  dsn: "https://9d62f97eeb4841afb06190594c0d5f15@sentry.io/1520725"
-});
+if (process.env.NODE_ENV === "production") {
+  Sentry.init({
+    release: process.env.REACT_APP_VERSION,
+    dsn: "https://9d62f97eeb4841afb06190594c0d5f15@sentry.io/1520725"
+  });
+}
 
 ReactGA.initialize(process.env.REACT_APP_TRACKING_ID);
 ReactDOM.render(
