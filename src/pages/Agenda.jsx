@@ -49,6 +49,8 @@ const Agenda = ({ match }) => {
     }
   }, [meetingId, meeting]);
 
+  console.log("match", match);
+
   return (
     <div data-testid="agendaPage" className="rf-min-vh-100">
       <SorryNoMobileScreen current={current} />
@@ -87,6 +89,7 @@ const Agenda = ({ match }) => {
                     item && item.tasks && Object.values(item.tasks).length > 0
                 )
               }
+              minutesLink={meetingId}
             />
             {current.matches("complete.actionPlan") && (
               <ActionPlan

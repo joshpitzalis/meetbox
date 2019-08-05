@@ -1,11 +1,4 @@
-import {
-  FormClose,
-  FormPreviousLink,
-  Halt,
-  Launch,
-  Save,
-  ShareOption
-} from "grommet-icons";
+import { FormClose, FormPreviousLink, Halt, Launch, Save, ShareOption } from "grommet-icons";
 import PropTypes from "prop-types";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
@@ -33,7 +26,8 @@ const Sidebar = ({
   title,
   itemLength,
   savedDateTime,
-  agendaViewAvailable
+  agendaViewAvailable,
+  minutesLink
 }) => {
   React.useEffect(() => {
     var config = {
@@ -68,6 +62,7 @@ const Sidebar = ({
           send={send}
           firebase={firebase}
           meetingId={meetingId}
+          minutesLink={minutesLink}
         />
         <h1
           className="ph4-ns pa3 pv0-ns rotate-ns flex items-center"
@@ -122,7 +117,7 @@ const topPropTypes = {
 
 const topDefaultProps = {};
 
-const TopWidget = ({ state, firebase, meetingId, send }) => {
+const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
   const [visible, toggleVisibility] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [attendees, setAttendees] = React.useState([]);
@@ -189,7 +184,7 @@ const TopWidget = ({ state, firebase, meetingId, send }) => {
           </div>
           {visible && (
             <Modal>
-              <article className="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+              <article className="mw5 h-auto center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
                 <FormClose
                   className="fr pointer"
                   data-testid="closeModal"
@@ -197,15 +192,13 @@ const TopWidget = ({ state, firebase, meetingId, send }) => {
                     toggleVisibility(!visible);
                   }}
                 />
+                <div className="cf" />
                 <div className="tc">
                   <img
-                    className="w-auto h3"
+                    className="w-auto h4 center"
                     src={minutes}
-                    alt="poeple sharing some shapes"
+                    alt="people sharing some shapes"
                   />
-
-                  <h1 className="f4">Share Minutes</h1>
-                  <hr className="mw3 bb bw1 b--black-10" />
                 </div>
 
                 <EmailForm
@@ -218,6 +211,24 @@ const TopWidget = ({ state, firebase, meetingId, send }) => {
                   helperText="Add the email addresses of people you would like to send these
                     minutes to."
                 />
+                {/* <hr className="mw3 bb bw1 b--black-10" /> */}
+
+                <button
+                  className="btn btn-blue mv3 dim pointer"
+                  style={{ backgroundColor: "#373F85" }}
+                  onClick={() => {
+                    attendees.forEach(recipient =>
+                      window.analytics.track("beta_test_invite", {
+                        recipient,
+                        minutesLink
+                      })
+                    );
+
+                    send({ type: "EMAIL_INVITES_SENT" });
+                  }}
+                >
+                  Send
+                </button>
               </article>
             </Modal>
           )}
@@ -333,13 +344,12 @@ export const EmailForm = ({
 }) => {
   return (
     <form
+      className="mt3"
       onSubmit={e => {
         e.preventDefault();
-
         if (!email) {
           return;
         }
-
         setAttendees([
           ...attendees,
           {
@@ -372,7 +382,7 @@ export const EmailForm = ({
 
       <div className="mb-4 mt3">
         {attendees && attendees.length > 0 ? (
-          <ul className="h-16 overflow-y-auto">
+          <ul className="h4 tl overflow-y-scroll black">
             {attendees.map(({ email }) => (
               <li key={email}>
                 <FormClose

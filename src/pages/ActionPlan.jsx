@@ -98,21 +98,6 @@ const ActionPlan = ({
             ))}{" "}
         </section>
       )}
-
-      <section>
-        <button
-          onClick={() => {
-            window.analytics.track("beta_test_invite", {
-              firstname: "Joshu",
-              source: "Meetbox",
-              recipient: "pittman.joshua@gmail.com",
-              minutesLink: "123"
-            });
-          }}
-        >
-          send to josh
-        </button>
-      </section>
     </div>
   );
 };
