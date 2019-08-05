@@ -95,14 +95,14 @@ const DateTime = ({ value, onClick, error }) => {
   );
 };
 
-function PeopleForm({
+const  PeopleForm = ({
   email,
   setAttendees,
   attendees,
   setEmail,
   setError,
   error
-}) {
+}) => {
   return (
     <form
       onSubmit={e => {

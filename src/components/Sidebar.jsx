@@ -1,6 +1,30 @@
-import { FormPreviousLink, Halt, Launch, Save } from "grommet-icons";
+import {
+  FormClose,
+  FormPreviousLink,
+  Halt,
+  Launch,
+  Save,
+  ShareOption
+} from "grommet-icons";
+import PropTypes from "prop-types";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
+import minutes from "../styles/images/minutes.svg";
+import Modal from "./Modal";
+
+const titleStyle = {
+  textAlign: "center",
+  fontSize: "23px",
+  textTransform: "uppercase",
+  fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif',
+  fontStyle: "normal",
+  fontVariant: "normal",
+  fontWeight: "700",
+  lineHeight: "23px",
+  color: " #363d87",
+  wordBreak: "break-all"
+};
+
 const Sidebar = ({
   send,
   state,
@@ -39,134 +63,30 @@ const Sidebar = ({
          ${expanded ? "items-start" : "items-center "}
          `}
       >
-        {state.matches("confirmed") ? (
-          <div
-            className="flex flex-column items-center pointer grow"
-            onClick={() => {
-              send("STARTED");
-              firebase
-                .firestore()
-                .doc(`meetings/${meetingId}`)
-                .update({
-                  status: "active"
-                })
-                .catch(console.error);
-            }}
-          >
-            <Launch data-testid="playButton" color="green" size="large" />
-            <small className="dark-green ttu tc b mt3">
-              Start <br />
-              Meeting
-            </small>
-          </div>
-        ) : state.matches("active") ? (
-          <div
-            className="flex flex-column items-center pointer grow"
-            onClick={() => {
-              send("ENDED");
-              firebase
-                .firestore()
-                .doc(`meetings/${meetingId}`)
-                .update({
-                  status: "complete"
-                })
-                .catch(console.error);
-            }}
-          >
-            <Halt data-testid="stopButton" color="red" size="large" />
-            <small className="dark-red ttu tc b mt3">
-              End <br />
-              Meeting
-            </small>
-          </div>
-        ) : (
-          <span className="w3" />
-        )}
-
+        <TopWidget
+          state={state}
+          send={send}
+          firebase={firebase}
+          meetingId={meetingId}
+        />
         <h1
           className="ph4-ns pa3 pv0-ns rotate-ns flex items-center"
-          style={{
-            textAlign: "center",
-            fontSize: "23px",
-            textTransform: "uppercase",
-            fontFamily: 'Futura, "Trebuchet MS", Arial, sans-serif',
-            fontStyle: "normal",
-            fontVariant: "normal",
-            fontWeight: "700",
-            lineHeight: "23px",
-            color: " #363d87",
-            wordBreak: "break-all"
-          }}
+          style={titleStyle}
         >
           {summary || "Meetbox"}
-
           <span id="HW_badge_cont" className="pointer">
             <span id="HW_badge" />
           </span>
         </h1>
-        {state.matches("draft") ? (
-          <div>
-            {expanded ? (
-              <FormPreviousLink
-                color="#D4D4D4"
-                size="large"
-                className="pointer ma3"
-                onClick={() => {
-                  send("RETURNED");
-                  setExpanded(false);
-                }}
-              />
-            ) : (
-              <>
-                {itemLength > 0 && (
-                  <div
-                    className="flex flex-column pointer dim"
-                    onClick={() => setExpanded(true)}
-                    data-testid="saveAgenda"
-                  >
-                    <small
-                      className="ttu tc b mt3"
-                      style={{ color: "#D4D4D4" }}
-                    >
-                      Save <br />
-                      Draft
-                    </small>
-                    <Save color="#D4D4D4" size="large" className="ma3" />
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        ) : agendaViewAvailable && state.matches("complete") ? (
-          <button
-            className="w3 dn dib-ns"
-            onClick={() =>
-              send(
-                state.matches("complete.actionPlan")
-                  ? "REDIRECTED_TO_MINUTES_VIEW"
-                  : "REDIRECTED_TO_ACTION_PLAN"
-              )
-            }
-          >
-            <small className="silver small-caps  tc">
-              {state.matches("complete.actionPlan")
-                ? "Switch to the minutes view"
-                : "Switch to the Action view"}
-            </small>
-          </button>
-        ) : (
-          <span />
-        )
 
-        // // !!savedDateTime && (
-        // <div>
-        //   <dl class={`dib mr3 pa3 text-gray-700`}>
-        //     <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
-        //     <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
-        //   </dl>
-        // </div>
-        // // )
-        }
+        <BottomWidget
+          state={state}
+          send={send}
+          expanded={expanded}
+          setExpanded={setExpanded}
+          itemLength={itemLength}
+          agendaViewAvailable={agendaViewAvailable}
+        />
       </aside>
 
       {expanded && (
@@ -193,3 +113,286 @@ const Sidebar = ({
 };
 
 export default Sidebar;
+
+const topPropTypes = {
+  state: PropTypes.array.isRequired,
+  firebase: PropTypes.func.isRequired,
+  meetingId: PropTypes.string.isRequired
+};
+
+const topDefaultProps = {};
+
+const TopWidget = ({ state, firebase, meetingId, send }) => {
+  const [visible, toggleVisibility] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [attendees, setAttendees] = React.useState([]);
+  const [error, setError] = React.useState(false);
+
+  switch (true) {
+    case state.matches("active"):
+      return (
+        <div
+          className="flex flex-column items-center pointer grow"
+          onClick={() => {
+            send("ENDED");
+            firebase
+              .firestore()
+              .doc(`meetings/${meetingId}`)
+              .update({
+                status: "complete"
+              })
+              .catch(console.error);
+          }}
+        >
+          <Halt data-testid="stopButton" color="red" size="large" />
+          <small className="dark-red ttu tc b mt3">
+            End <br />
+            Meeting
+          </small>
+        </div>
+      );
+    case state.matches("confirmed"):
+      return (
+        <div
+          className="flex flex-column items-center pointer grow"
+          onClick={() => {
+            send("STARTED");
+            firebase
+              .firestore()
+              .doc(`meetings/${meetingId}`)
+              .update({
+                status: "active"
+              })
+              .catch(console.error);
+          }}
+        >
+          <Launch data-testid="playButton" color="green" size="large" />
+          <small className="dark-green ttu tc b mt3">
+            Start <br />
+            Meeting
+          </small>
+        </div>
+      );
+
+    case state.matches("complete"):
+      return (
+        <>
+          <div
+            className="flex rf-x rf-col pointer"
+            onClick={() => {
+              toggleVisibility(!visible);
+            }}
+            data-testid="shareMinutesButton"
+          >
+            <ShareOption size="large" />
+            <small className="small-caps silver underline">Share</small>
+          </div>
+          {visible && (
+            <Modal>
+              <article className="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                <FormClose
+                  className="fr pointer"
+                  data-testid="closeModal"
+                  onClick={() => {
+                    toggleVisibility(!visible);
+                  }}
+                />
+                <div className="tc">
+                  <img
+                    className="w-auto h3"
+                    src={minutes}
+                    alt="poeple sharing some shapes"
+                  />
+
+                  <h1 className="f4">Share Minutes</h1>
+                  <hr className="mw3 bb bw1 b--black-10" />
+                </div>
+
+                <EmailForm
+                  email={email}
+                  setEmail={setEmail}
+                  attendees={attendees}
+                  setAttendees={setAttendees}
+                  error={error}
+                  setError={setError}
+                  helperText="Add the email addresses of people you would like to send these
+                    minutes to."
+                />
+              </article>
+            </Modal>
+          )}
+        </>
+      );
+
+    default:
+      return <span className="w3" />;
+  }
+};
+
+TopWidget.propTypes = topPropTypes;
+TopWidget.defaultProps = topDefaultProps;
+
+const propTypes = {
+  state: PropTypes.array.isRequired,
+  send: PropTypes.func.isRequired,
+  expanded: PropTypes.bool.isRequired,
+  setExpanded: PropTypes.func.isRequired,
+  itemLength: PropTypes.number.isRequired,
+  agendaViewAvailable: PropTypes.bool.isRequired
+};
+
+const defaultProps = {};
+
+const BottomWidget = ({
+  state,
+  send,
+  expanded,
+  setExpanded,
+  itemLength,
+  agendaViewAvailable
+}) => {
+  switch (true) {
+    case state.matches("draft"):
+      return (
+        <div>
+          {expanded ? (
+            <FormPreviousLink
+              color="#D4D4D4"
+              size="large"
+              className="pointer ma3"
+              onClick={() => {
+                send("RETURNED");
+                setExpanded(false);
+              }}
+            />
+          ) : (
+            <>
+              {itemLength > 0 && (
+                <div
+                  className="flex flex-column pointer dim"
+                  onClick={() => setExpanded(true)}
+                  data-testid="saveAgenda"
+                >
+                  <small className="ttu tc b mt3" style={{ color: "#D4D4D4" }}>
+                    Save <br />
+                    Draft
+                  </small>
+                  <Save color="#D4D4D4" size="large" className="ma3" />
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      );
+    case state.matches("complete"):
+      return (
+        agendaViewAvailable && (
+          <button
+            className="w3 dn dib-ns"
+            onClick={() =>
+              send(
+                state.matches("complete.actionPlan")
+                  ? "REDIRECTED_TO_MINUTES_VIEW"
+                  : "REDIRECTED_TO_ACTION_PLAN"
+              )
+            }
+          >
+            <small className="silver small-caps  tc">
+              {state.matches("complete.actionPlan")
+                ? "Switch to the minutes view"
+                : "Switch to the Action view"}
+            </small>
+          </button>
+        )
+      );
+
+    default:
+      return <span />;
+    // // !!savedDateTime && (
+    // <div>
+    //   <dl class={`dib mr3 pa3 text-gray-700`}>
+    //     <dd class="f6 f4-ns b ml0">{format(dateTime, "MMM")}</dd>
+    //     <dd class="f3 f2-ns b ml0 mt2">{format(dateTime, "Do")}</dd>
+    //   </dl>
+    // </div>
+    // // )
+  }
+};
+
+BottomWidget.propTypes = propTypes;
+BottomWidget.defaultProps = defaultProps;
+
+export const EmailForm = ({
+  email,
+  setEmail,
+  attendees,
+  setAttendees,
+  error,
+  setError,
+  helperText
+}) => {
+  return (
+    <form
+      onSubmit={e => {
+        e.preventDefault();
+
+        if (!email) {
+          return;
+        }
+
+        setAttendees([
+          ...attendees,
+          {
+            email
+          }
+        ]);
+        setEmail("");
+      }}
+    >
+      <div class="flex items-center border-b border-b-2 border-blue-800 py-2">
+        <input
+          class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+          type="email"
+          placeholder="email@ddress.com"
+          aria-label="email address"
+          value={email}
+          onChange={e => {
+            setError({});
+            setEmail(e.target.value);
+          }}
+        />
+
+        <button
+          class="flex-shrink-0 border-transparent border-4 text-blue-800 hover:blue-teal-800 text-sm py-1 px-2 rounded"
+          type="submit"
+        >
+          Add
+        </button>
+      </div>
+
+      <div className="mb-4 mt3">
+        {attendees && attendees.length > 0 ? (
+          <ul className="h-16 overflow-y-auto">
+            {attendees.map(({ email }) => (
+              <li key={email}>
+                <FormClose
+                  className="ph-4 cursor-pointer"
+                  onClick={() =>
+                    setAttendees(
+                      attendees.filter(person => person.email !== email)
+                    )
+                  }
+                />
+                {email}
+              </li>
+            ))}
+          </ul>
+        ) : error && error.attendee ? (
+          <p className="text-red-500 text-xs italic">{error.attendee}</p>
+        ) : (
+          <p className="text-gray-600 text-xs italic pt-3">{helperText}</p>
+        )}
+      </div>
+    </form>
+  );
+};

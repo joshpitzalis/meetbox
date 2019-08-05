@@ -43,7 +43,11 @@ const ActionPlan = ({
     Object.values(meeting.items).find(item => item.id === fullscreen);
 
   return (
-    <div className="ml6-ns  w-100 vh-100 " onClick={() => setFullscreen("")}>
+    <div
+      className="ml6-ns  w-100 vh-100 "
+      onClick={() => setFullscreen("")}
+      data-testid="actinPlanPage"
+    >
       {current.matches("complete.actionPlan") && (
         <ReactGA.OutboundLink
           className="navy flex items-center justify-center pa4 w-100"
@@ -98,7 +102,6 @@ const ActionPlan = ({
       <section>
         <button
           onClick={() => {
-            console.log("frog");
             window.analytics.track("beta_test_invite", {
               firstname: "Joshu",
               source: "Meetbox",

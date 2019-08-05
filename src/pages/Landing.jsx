@@ -34,19 +34,9 @@ const Landing = ({ match, history }) => {
       <article className="pa3 pv4-ns ph5-ns h-screen flex flex-wrap flex-grow-1">
         <header className="w-50-ns w-100 pl3 tl">
           <h1 className="mb-16 font-extrabold mt4 text-5xl text-8xl lh-title ">
-            {/* Meetbox.io */}
-            {/* Help meetings stay on point. */}
-            {/* Create An Agenda For Your Next Meeting */}
             Turn team meetings into action plans.
-            {/* Keep track of what happens in a meeting so that
-            everyone knows what to do afterwards. */}
           </h1>
-          {/* <h2 className="f3 mid-gray lh-title ">
-            A tool to help meetings stay on point.
-          </h2> */}
-          {/* <p className="db block text-gray-700 font-bold mb-2">
-            In-person and online.
-          </p> */}
+
           <button
             className="btn btn-blue mv3 dim pointer"
             style={{ backgroundColor: "#373F85" }}
@@ -62,15 +52,6 @@ const Landing = ({ match, history }) => {
             Get Started
           </button>
         </header>
-
-        {/* <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l">
-          <div className="aspect-ratio aspect-ratio--3x4 mb4 w-100 h-auto">
-            <div
-              className="aspect-ratio--object cover"
-             
-            />
-          </div>
-        </article> */}
 
         <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l flex items-end justify-end dn db-l">
           <img

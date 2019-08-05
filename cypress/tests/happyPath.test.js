@@ -122,6 +122,22 @@ describe("happy Path", () => {
       .getByText("What problem is Meetbox not yet solving for your team ?");
   });
 
+  it.only("lets you share minutes after a meeting", () => {
+    const completeMeeting = `meeting/5mB2ocpjw43UwvI0wB4k`;
+    cy.visit(completeMeeting)
+      .getByTestId("actinPlanPage")
+      .getByTestId("closeNotification")
+      .click()
+      .getByText("Share")
+      .getByTestId("shareMinutesButton")
+      .click()
+      .getByTestId("modal")
+      .getByTestId("closeModal")
+      .click()
+      .queryByTestId("modal")
+      .should("not.exist");
+  });
+
   it.skip("delete item, also test that it deletes while active", () => {});
   it.skip("loads an existing meeting in each state", () => {});
   it.skip("test multiple task sin multiple lists can be completed in cypress jus so that there is no indexing issues.", () => {});
