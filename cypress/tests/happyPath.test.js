@@ -124,6 +124,8 @@ describe("happy Path", () => {
 
   it.only("lets you share minutes after a meeting", () => {
     const completeMeeting = `meeting/5mB2ocpjw43UwvI0wB4k`;
+    const fakeEmail = "1@1.com";
+
     cy.visit(completeMeeting)
       .getByTestId("actionPlanPage")
       .getByTestId("closeNotification")
@@ -135,7 +137,24 @@ describe("happy Path", () => {
       .getAllByTestId("closeModal")
       .click()
       .queryByTestId("modal")
-      .should("not.exist");
+      .should("not.exist")
+      // check for form error handling
+      .getByTestId("shareMinutesButton")
+      .click()
+      .getByTestId("emailSubmit")
+      .click()
+      .getByText(/You must enter a recepient/i)
+      // send out invites
+      .getByPlaceholderText("email@ddress.com")
+      .type(fakeEmail)
+      .getByTestId("emailSubmit")
+      .click()
+      .getByText(fakeEmail)
+      .getByTestId("sendInvites")
+      .click()
+      .queryByTestId("modal")
+      .should("not.exist")
+      .getByText(/Your minutes have been sent/);
   });
 
   it.skip("delete item, also test that it deletes while active", () => {});

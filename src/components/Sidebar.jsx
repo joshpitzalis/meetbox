@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
 import minutes from "../styles/images/minutes.svg";
+import { notfication$ } from "./Banner";
 import Modal from "./Modal";
 
 const titleStyle = {
@@ -209,16 +210,21 @@ const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
                   helperText="Add the email addresses of people you would like to send these
                     minutes to."
                   onSubmit={attendees => {
-                    attendees.forEach(recipient => {
-                      console.log("frog", recipient.email);
-                      window.analytics.track("beta_test_invite", {
-                        recipient: recipient.email,
-                        minutesLink
+                    try {
+                      attendees.forEach(recipient =>
+                        window.analytics.track("beta_test_invite", {
+                          recipient: recipient.email,
+                          minutesLink
+                        })
+                      );
+                      send({ type: "EMAIL_INVITES_SENT" });
+                      toggleVisibility(!visible);
+                      notfication$.next({
+                        message: "Your minutes have been sent."
                       });
-                    });
-
-                    send({ type: "EMAIL_INVITES_SENT" });
-                    toggleVisibility(!visible);
+                    } catch (error) {
+                      console.error("error", error);
+                    }
                   }}
                 />
               </article>
