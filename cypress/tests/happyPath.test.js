@@ -122,7 +122,7 @@ describe("happy Path", () => {
       .getByText("What problem is Meetbox not yet solving for your team ?");
   });
 
-  it.only("lets you share minutes after a meeting", () => {
+  it("lets you share minutes after a meeting", () => {
     const completeMeeting = `meeting/5mB2ocpjw43UwvI0wB4k`;
     const fakeEmail = "1@1.com";
 

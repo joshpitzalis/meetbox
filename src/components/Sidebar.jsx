@@ -223,7 +223,10 @@ const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
                         message: "Your minutes have been sent."
                       });
                     } catch (error) {
-                      console.error("error", error);
+                      notfication$.next({
+                        type: "ERROR",
+                        message: error
+                      });
                     }
                   }}
                 />

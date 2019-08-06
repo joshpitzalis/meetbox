@@ -1,7 +1,11 @@
 import { useMachine } from "@xstate/react";
+import { Button } from "grommet";
+import { Google } from "grommet-icons";
 import React from "react";
 import ReactGA from "react-ga";
+import { notfication$ } from "../components/Banner";
 import rocket from "../styles/images/rocket.svg";
+import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
 
 const Landing = ({ match, history }) => {
@@ -37,20 +41,41 @@ const Landing = ({ match, history }) => {
             Turn team meetings into action plans.
           </h1>
 
-          <button
-            className="btn btn-blue mv3 dim pointer"
-            style={{ backgroundColor: "#373F85" }}
-            onClick={() => {
-              ReactGA.event({
-                category: "User",
-                action: "NEW_AGENDA_CREATED"
-              });
+          <Button
+            icon={<Google color="plain" />}
+            label="Get Started"
+            onClick={async () => {
+              const { gapi } = window;
+              const { auth } = firebase;
+              try {
+                const googleAuth = gapi.auth2.getAuthInstance();
 
-              send({ type: "NEW_AGENDA_CREATED", payload: history });
+                const googleUser = await googleAuth.signIn();
+
+                const token = googleUser.getAuthResponse().id_token;
+
+                const credential = auth.GoogleAuthProvider.credential(
+                  token
+                );
+
+                await auth().signInWithCredential(credential);
+
+                ReactGA.event({
+                  category: "User",
+                  action: "NEW_AGENDA_CREATED"
+                });
+
+                send({ type: "NEW_AGENDA_CREATED", payload: history });
+              } catch (error) {
+                console.log("error", error, typeof error);
+
+                notfication$.next({
+                  type: "ERROR",
+                  message: error.TypeError
+                });
+              }
             }}
-          >
-            Get Started
-          </button>
+          />
         </header>
 
         <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l flex items-end justify-end dn db-l">

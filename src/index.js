@@ -16,6 +16,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 ReactGA.initialize(process.env.REACT_APP_TRACKING_ID);
+
 ReactDOM.render(
   <App initClient={initClient} />,
   document.getElementById("root")
