@@ -1,4 +1,11 @@
-import { FormClose, FormPreviousLink, Halt, Launch, Save, ShareOption } from "grommet-icons";
+import {
+  FormClose,
+  FormPreviousLink,
+  Halt,
+  Launch,
+  Save,
+  ShareOption
+} from "grommet-icons";
 import PropTypes from "prop-types";
 import React from "react";
 import SubmitForm from "../features/calendar/components/SubmitForm";
@@ -119,9 +126,6 @@ const topDefaultProps = {};
 
 const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
   const [visible, toggleVisibility] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [attendees, setAttendees] = React.useState([]);
-  const [error, setError] = React.useState(false);
 
   switch (true) {
     case state.matches("active"):
@@ -202,21 +206,9 @@ const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
                 </div>
 
                 <EmailForm
-                  email={email}
-                  setEmail={setEmail}
-                  attendees={attendees}
-                  setAttendees={setAttendees}
-                  error={error}
-                  setError={setError}
                   helperText="Add the email addresses of people you would like to send these
                     minutes to."
-                />
-                {/* <hr className="mw3 bb bw1 b--black-10" /> */}
-
-                <button
-                  className="btn btn-blue mv3 dim pointer"
-                  style={{ backgroundColor: "#373F85" }}
-                  onClick={() => {
+                  onSubmit={attendees => {
                     attendees.forEach(recipient =>
                       window.analytics.track("beta_test_invite", {
                         recipient,
@@ -226,9 +218,7 @@ const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
 
                     send({ type: "EMAIL_INVITES_SENT" });
                   }}
-                >
-                  Send
-                </button>
+                />
               </article>
             </Modal>
           )}
@@ -333,76 +323,94 @@ const BottomWidget = ({
 BottomWidget.propTypes = propTypes;
 BottomWidget.defaultProps = defaultProps;
 
-export const EmailForm = ({
-  email,
-  setEmail,
-  attendees,
-  setAttendees,
-  error,
-  setError,
-  helperText
-}) => {
+export const EmailForm = ({ helperText, onSubmit }) => {
+  const [email, setEmail] = React.useState("");
+  const [error, setError] = React.useState({});
+  const [attendees, setAttendees] = React.useState([]);
   return (
-    <form
-      className="mt3"
-      onSubmit={e => {
-        e.preventDefault();
-        if (!email) {
-          return;
-        }
-        setAttendees([
-          ...attendees,
-          {
-            email
+    <>
+      <form
+        className="mt3"
+        onSubmit={e => {
+          e.preventDefault();
+          if (!email) {
+            setError({
+              attendee: "You must enter a recepient."
+            });
+            return;
           }
-        ]);
-        setEmail("");
-      }}
-    >
-      <div class="flex items-center border-b border-b-2 border-blue-800 py-2">
-        <input
-          class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-          type="email"
-          placeholder="email@ddress.com"
-          aria-label="email address"
-          value={email}
-          onChange={e => {
-            setError({});
-            setEmail(e.target.value);
-          }}
-        />
+          setAttendees([
+            ...attendees,
+            {
+              email
+            }
+          ]);
+          setEmail("");
+        }}
+      >
+        <div className="flex items-center border-b border-b-2 border-blue-800 py-2">
+          <input
+            className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+            type="email"
+            placeholder="email@ddress.com"
+            aria-label="email address"
+            value={email}
+            onChange={e => {
+              setError({});
+              setEmail(e.target.value);
+            }}
+            onFocus={() => setError({})}
+          />
 
-        <button
-          class="flex-shrink-0 border-transparent border-4 text-blue-800 hover:blue-teal-800 text-sm py-1 px-2 rounded"
-          type="submit"
-        >
-          Add
-        </button>
-      </div>
+          <button
+            className="flex-shrink-0 border-transparent border-4 text-blue-800 hover:blue-teal-800 text-sm py-1 px-2 rounded"
+            type="submit"
+            data-testid="emailSubmit"
+          >
+            Add
+          </button>
+        </div>
 
-      <div className="mb-4 mt3">
-        {attendees && attendees.length > 0 ? (
-          <ul className="h4 tl overflow-y-scroll black">
-            {attendees.map(({ email }) => (
-              <li key={email}>
-                <FormClose
-                  className="ph-4 cursor-pointer"
-                  onClick={() =>
-                    setAttendees(
-                      attendees.filter(person => person.email !== email)
-                    )
-                  }
-                />
-                {email}
-              </li>
-            ))}
-          </ul>
-        ) : error && error.attendee ? (
-          <p className="text-red-500 text-xs italic">{error.attendee}</p>
-        ) : (
-          <p className="text-gray-600 text-xs italic pt-3">{helperText}</p>
-        )}
-      </div>
-    </form>
+        <div className="mb-4 mt3">
+          {attendees && attendees.length > 0 ? (
+            <ul className="h4 tl overflow-y-scroll black">
+              {attendees.map(({ email }) => (
+                <li key={email}>
+                  <FormClose
+                    className="ph-4 cursor-pointer"
+                    onClick={() =>
+                      setAttendees(
+                        attendees.filter(person => person.email !== email)
+                      )
+                    }
+                  />
+                  {email}
+                </li>
+              ))}
+            </ul>
+          ) : error && error.attendee ? (
+            <p className="text-red-500 text-xs italic">{error.attendee}</p>
+          ) : (
+            <p className="text-gray-600 text-xs italic pt-3">{helperText}</p>
+          )}
+        </div>
+      </form>
+      <button
+        className="btn btn-blue mv3 dim pointer"
+        style={{ backgroundColor: "#373F85" }}
+        onClick={() => {
+          if (attendees.length === 0) {
+            setError({
+              attendee: "You must enter a recepient."
+            });
+            return;
+          }
+          onSubmit(attendees);
+        }}
+        data-testid="sendInvites"
+      >
+        Send
+      </button>
+    </>
   );
 };

@@ -125,7 +125,7 @@ describe("happy Path", () => {
   it.only("lets you share minutes after a meeting", () => {
     const completeMeeting = `meeting/5mB2ocpjw43UwvI0wB4k`;
     cy.visit(completeMeeting)
-      .getByTestId("actinPlanPage")
+      .getByTestId("actionPlanPage")
       .getByTestId("closeNotification")
       .click()
       .getByText("Share")

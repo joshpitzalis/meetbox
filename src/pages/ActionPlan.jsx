@@ -46,7 +46,7 @@ const ActionPlan = ({
     <div
       className="ml6-ns  w-100 vh-100 "
       onClick={() => setFullscreen("")}
-      data-testid="actinPlanPage"
+      data-testid="actionPlanPage"
     >
       {current.matches("complete.actionPlan") && (
         <ReactGA.OutboundLink
