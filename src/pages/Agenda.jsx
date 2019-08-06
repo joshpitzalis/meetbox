@@ -1,10 +1,7 @@
 import { useMachine } from "@xstate/react";
 import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import {
-  handleAddMeeting,
-  useStreamMeeting
-} from "../features/agenda/agendaHelpers";
+import { handleAddMeeting, useStreamMeeting } from "../features/agenda/agendaHelpers";
 import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
 import ActionPlan from "./ActionPlan";
@@ -49,7 +46,7 @@ const Agenda = ({ match }) => {
     }
   }, [meetingId, meeting]);
 
-  console.log("match", match);
+ 
 
   return (
     <div data-testid="agendaPage" className="rf-min-vh-100">
@@ -89,7 +86,7 @@ const Agenda = ({ match }) => {
                     item && item.tasks && Object.values(item.tasks).length > 0
                 )
               }
-              minutesLink={meetingId}
+              minutesLink={match && match.url}
             />
             {current.matches("complete.actionPlan") && (
               <ActionPlan

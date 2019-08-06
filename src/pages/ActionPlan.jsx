@@ -56,7 +56,7 @@ const ActionPlan = ({
           target="_blank"
           trackerNames={["tracker2"]}
         >
-          <span className="lh-title ml3 tc pointer grow">
+          <span className="lh-title ml3 tc pointer">
             What problem is Meetbox not yet solving for your team ?{" "}
             <span className="underline">We need to know.</span>
           </span>

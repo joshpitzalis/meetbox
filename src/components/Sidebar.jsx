@@ -47,7 +47,7 @@ const Sidebar = ({
   return (
     <div
       className={`flex flex-column flex-row-ns 
-      fixed-ns vh-100-ns ${expanded && "shadow-1 z-1 vh-100 pr4 bg-white"}`}
+      fixed-ns vh-100-ns ${expanded && "shadow-1 z-2 vh-100 pr4 bg-white"}`}
       data-testid="sidebar"
     >
       <aside
@@ -184,7 +184,7 @@ const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
           </div>
           {visible && (
             <Modal>
-              <article className="mw5 h-auto center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+              <article className="mw5 h-auto center bg-white br3 pa3  mv3 ba b--black-10">
                 <FormClose
                   className="fr pointer"
                   data-testid="closeModal"
