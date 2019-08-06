@@ -71,6 +71,7 @@ const Sidebar = ({
           firebase={firebase}
           meetingId={meetingId}
           minutesLink={minutesLink}
+          summary={summary}
         />
         <h1
           className="ph4-ns pa3 pv0-ns rotate-ns flex items-center"
@@ -125,7 +126,14 @@ const topPropTypes = {
 
 const topDefaultProps = {};
 
-const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
+const TopWidget = ({
+  state,
+  firebase,
+  meetingId,
+  send,
+  minutesLink,
+  summary
+}) => {
   const [visible, toggleVisibility] = React.useState(false);
 
   switch (true) {
@@ -210,9 +218,11 @@ const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
                   helperText="Add the email addresses of people you would like to send these
                     minutes to."
                   onSubmit={attendees => {
+                    console.log("summary", summary);
                     try {
                       attendees.forEach(recipient =>
                         window.analytics.track("beta_test_invite", {
+                          meetingName: summary,
                           recipient: recipient.email,
                           minutesLink
                         })
@@ -220,7 +230,8 @@ const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
                       send({ type: "EMAIL_INVITES_SENT" });
                       toggleVisibility(!visible);
                       notfication$.next({
-                        message: "Your minutes have been sent."
+                        type: "SUCCESS",
+                        message: "✉️ Your minutes have been sent. ✉️"
                       });
                     } catch (error) {
                       notfication$.next({
