@@ -132,6 +132,9 @@ describe("happy Path", () => {
       .getByTestId("shareMinutesButton")
       .click()
       .queryByTestId("modal")
+      .getAllByTestId("closeModal")
+      .click()
+      .queryByTestId("modal")
       .should("not.exist");
   });
 
