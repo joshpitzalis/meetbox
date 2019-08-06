@@ -55,4 +55,10 @@ describe("invites form", () => {
     expect(props.onSubmit).toHaveBeenCalled();
     // expect(props.onSubmit).toHaveBeenCalledWith([{ email: fakeEmail }]);
   });
+
+  xtest("shoudl close once sent", () => {});
+  xtest("a little banner to say your stuff is sent", () => {});
+  xtest("error handling", () => {});
+  xtest("icon and spinner", () => {});
+  xtest("accessibility testing", () => {});
 });

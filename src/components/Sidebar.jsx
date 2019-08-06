@@ -209,14 +209,16 @@ const TopWidget = ({ state, firebase, meetingId, send, minutesLink }) => {
                   helperText="Add the email addresses of people you would like to send these
                     minutes to."
                   onSubmit={attendees => {
-                    attendees.forEach(recipient =>
+                    attendees.forEach(recipient => {
+                      console.log("frog", recipient.email);
                       window.analytics.track("beta_test_invite", {
-                        recipient,
+                        recipient: recipient.email,
                         minutesLink
-                      })
-                    );
+                      });
+                    });
 
                     send({ type: "EMAIL_INVITES_SENT" });
+                    toggleVisibility(!visible);
                   }}
                 />
               </article>
