@@ -3,10 +3,15 @@ import { Button } from "grommet";
 import { Google } from "grommet-icons";
 import React from "react";
 import ReactGA from "react-ga";
+import { authState } from "rxfire/auth";
 import { notfication$ } from "../components/Banner";
 import rocket from "../styles/images/rocket.svg";
 import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
+
+authState(firebase.auth()).subscribe(user => {
+  console.log(user, " will be null if logged out");
+});
 
 const Landing = ({ match, history }) => {
   const [, send] = useMachine(stateMachine);
@@ -54,9 +59,7 @@ const Landing = ({ match, history }) => {
 
                 const token = googleUser.getAuthResponse().id_token;
 
-                const credential = auth.GoogleAuthProvider.credential(
-                  token
-                );
+                const credential = auth.GoogleAuthProvider.credential(token);
 
                 await auth().signInWithCredential(credential);
 
@@ -68,10 +71,10 @@ const Landing = ({ match, history }) => {
                 send({ type: "NEW_AGENDA_CREATED", payload: history });
               } catch (error) {
                 console.log("error", error, typeof error);
-
+                const message = error.message || error;
                 notfication$.next({
                   type: "ERROR",
-                  message: error.TypeError
+                  message
                 });
               }
             }}
