@@ -66,20 +66,21 @@ function Features() {
       <li className="pa3 pa4-ns mv4 item0 flex x">
         <Schedule className="ma3" size="large" />
         <b className="db f3 mb1 text-gray-700 h3">
-          Use it to create and collaborate on an agenda, then send out google
-          calendar invites.
+          Create and collaborate on an agenda for your next meeting. Send out
+          Google calendar invites once you're done.
         </b>
       </li>
       <li className="pa3 pa4-ns mv4 item1 br2 flex x">
         <Notes className="ma3" size="large" />
         <b className="db f3 mt2 text-gray-700 h3">
-          Then take notes on what happens during the meeting.
+          During the meeting, you can assign tasks and take notes about what
+          happens.
         </b>
       </li>
       <li className="pa3 pa4-ns mv4 item2 br2 flex x ">
         <Task className="ma3 " size="large" />
         <b className="db f3 mb1 text-gray-700 h3">
-          Instantly share everything when the meeting is over so that everyone
+          When the meeting is over, share everything instantly so that everyone
           knows what they have to do.
         </b>
       </li>
@@ -142,23 +143,54 @@ function Start({ firebase, send, history }) {
         onClick={async () => {
           const { gapi, analytics } = window;
           const { auth } = firebase;
+
+          const checkForUser = async user => {
+            const existingUser = await firebase
+              .firestore()
+              .doc(`users/${user.uid}`)
+              .get()
+              .then(doc => doc.data())
+              .catch(error => error);
+
+            if (existingUser === undefined) {
+              return true;
+            }
+          };
           try {
             const googleAuth = gapi.auth2.getAuthInstance();
             const googleUser = await googleAuth.signIn();
             const token = googleUser.getAuthResponse().id_token;
             const credential = auth.GoogleAuthProvider.credential(token);
             const signedIn = await auth().signInWithCredential(credential);
-            console.log("signedIn", signedIn);
-            const newUser = false;
-            if (signedIn) {
-              const { user } = signedIn;
+            const { user } = signedIn;
+            const noUserExists = await checkForUser(user);
 
-              if (newUser) {
-                analytics.track("new_user", {
+            if (noUserExists) {
+              await firebase
+                .firestore()
+                .doc(`users/${user.uid}`)
+                .set({
                   name: user.displayName,
-                  email: user.email
+                  email: user.email,
+                  uid: user.uid,
+                  photoURL: user.photoURL
+                })
+                .then(() => {
+                  console.log("tracking");
+                  analytics.track("new_user", {
+                    name: user.displayName,
+                    email: user.email
+                  });
+                })
+                .catch(error => {
+                  const message = error.message || error;
+                  notfication$.next({
+                    type: "ERROR",
+                    message
+                  });
                 });
-              }
+
+              return;
             }
           } catch (error) {
             const message = error.message || error;

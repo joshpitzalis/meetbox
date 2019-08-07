@@ -1,7 +1,10 @@
 import { useMachine } from "@xstate/react";
 import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import { handleAddMeeting, useStreamMeeting } from "../features/agenda/agendaHelpers";
+import {
+  handleAddMeeting,
+  useStreamMeeting
+} from "../features/agenda/agendaHelpers";
 import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
 import ActionPlan from "./ActionPlan";
@@ -45,8 +48,6 @@ const Agenda = ({ match }) => {
       }
     }
   }, [meetingId, meeting]);
-
- 
 
   return (
     <div data-testid="agendaPage" className="rf-min-vh-100">
@@ -129,9 +130,17 @@ function SorryNoMobileScreen({ current }) {
         `}
     >
       <span className="flex flex-column vh-100 vw-100 items-center justify-center measure center">
-        <h1 className="f1 lh-title pa2">
-          If you want to use this app on your phone, click on the orange button
-          in the bottom right corner and let us know.
+        <h1 className="f2 lh-title pa2">
+          If you want to use this app on a mobile device, click on the orange
+          button in the bottom right corner and let us know. You can also write
+          to{" "}
+          <a
+            className="underline"
+            href="mailto:help@meetbox.io?subject=Mobile Please"
+          >
+            help@meetbox.io
+          </a>
+          .
         </h1>
       </span>
     </div>
