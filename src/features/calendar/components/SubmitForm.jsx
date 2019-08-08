@@ -1,6 +1,4 @@
 import addMinutes from "date-fns/addMinutes";
-import { Button } from "grommet";
-import { Google } from "grommet-icons";
 import React from "react";
 import ConnectedForm from "./ConnectedForm";
 
@@ -118,7 +116,7 @@ const SubmitForm = ({
 
   return (
     <div
-      className="w-full max-w-xs flex flex-col justify-around h-full"
+      className="w-full max-w-xs flex flex-col justify-center items-center h-full"
       data-testid="agendaSubmitForm"
     >
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 h-auto">
@@ -154,7 +152,7 @@ const SubmitForm = ({
           />
         )}
 
-        {state.matches("draft.loggedOut") && (
+        {/* {state.matches("draft.loggedOut") && (
           <div className="flex flex-col items-start tc mt5">
             <p className="text-gray-500 text-sm mb2 tl">
               If you want to send out invites...
@@ -176,7 +174,7 @@ const SubmitForm = ({
               No invites, give me a link to share.
             </p>
           </div>
-        )}
+        )} */}
 
         <div>
           {state.matches("draft.linkOnly") && (
@@ -209,7 +207,6 @@ const SubmitForm = ({
                     dateTime,
                     error,
                     setError,
-
                     attendees,
                     state,
                     insertEvent,
@@ -250,6 +247,13 @@ const SubmitForm = ({
           )}
         </div>
       </div>
+
+      <p
+        className="text-gray-500 underline mt3 hover:text-blue-800 text-sm  underline pointer"
+        onClick={() => send("URL_ONLY")}
+      >
+        No invites, just give me a link to share.
+      </p>
     </div>
   );
 };

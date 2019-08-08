@@ -44,30 +44,26 @@ export default Machine(
           REDIRECTED_TO_ACTIVE_AGENDA: "active",
           REDIRECTED_TO_COMPLETE_AGENDA: "complete"
         },
-        initial: "loggedOut",
+        initial: "loggedIn",
         states: {
-          loggedOut: {
+          loggedIn: {
+            entry: "analyticsGoogle",
             on: {
-              CALENDAR_CONNECTED: "loggedIn",
+              RETURNED: "loggedIn",
               URL_ONLY: "linkOnly"
             }
           },
+
           linkOnly: {
             entry: "analyticsLinkOnly",
             on: {
               FINALISED: "confirm",
-              RETURNED: "loggedOut"
+              RETURNED: "loggedIn"
             }
           },
           confirm: {
             on: {
-              RETURNED: "loggedOut"
-            }
-          },
-          loggedIn: {
-            entry: "analyticsGoogle",
-            on: {
-              RETURNED: "loggedOut"
+              RETURNED: "loggedIn"
             }
           }
         }
@@ -108,50 +104,16 @@ export default Machine(
   },
   {
     actions: {
-      analyticsDraft: () =>
-        window.analytics.page({
-          title: "Draft Page",
-          url: "https://meetbox.io/meeting/draft",
-          path: "/meeting/draft",
-          referrer: "https://segment.com/"
-        }),
-
-      analyticsConfirmed: () =>
-        window.analytics.page({
-          title: "Confirmed Page",
-          url: "https://meetbox.io/meeting/confirmed",
-          path: "/meeting/confirmed",
-          referrer: "https://segment.com/"
-        }),
-
-      analyticsActive: () =>
-        window.analytics.page({
-          title: "Active Page",
-          url: "https://meetbox.io/meeting/active",
-          path: "/meeting/active",
-          referrer: "https://segment.com/"
-        }),
-      analyticsComplete: () =>
-        window.analytics.page({
-          title: "Complete Page",
-          url: "https://meetbox.io/meeting/complete",
-          path: "/meeting/complete",
-          referrer: "https://segment.com/"
-        }),
-      analyticsActionPlan: () =>
-        window.analytics.page({
-          title: "Action Page",
-          url: "https://meetbox.io/meeting/action",
-          path: "/meeting/action",
-          referrer: "https://segment.com/"
-        }),
-
+      analyticsDraft: () => window.analytics.page("Draft Page"),
+      analyticsConfirmed: () => window.analytics.page("Confirmed Page"),
+      analyticsActive: () => window.analytics.page("Active Page"),
+      analyticsComplete: () => window.analytics.page("Complete Page"),
+      analyticsActionPlan: () => window.analytics.page("Action Page"),
       analyticsGoogle: () =>
         window.analytics.track("invite_with_google", {
           category: "User",
           action: "Logged in to Send Invites With Google"
         }),
-
       analyticsLinkOnly: () =>
         window.analytics.track("link_only_invite", {
           category: "User",

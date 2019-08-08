@@ -12,12 +12,7 @@ const Landing = ({ history }) => {
   const [, send] = useMachine(stateMachine);
 
   React.useEffect(() => {
-    window.analytics.page({
-      title: "Landing Page",
-      url: "https://meetbox.io/landing",
-      path: "/landing",
-      referrer: "https://segment.com/"
-    });
+    window.analytics.page('"Landing Page"');
   }, []);
 
   return (
@@ -182,9 +177,16 @@ function Start({ firebase, send, history }) {
                   photoURL: user.photoURL
                 })
                 .then(() =>
-                  analytics.track("new_user", {
+                  analytics.identify(user.uid, {
+                    id: user.uid,
+                    email: user.email,
+                    avatar: user.photoURL,
+                    created_at: new Date(),
+                    first_name: "Joe",
+                    plan_name: "free",
                     name: user.displayName,
-                    email: user.email
+                    meeting_attended: 0,
+                    meeting_created: 0
                   })
                 )
                 .catch(error => {
