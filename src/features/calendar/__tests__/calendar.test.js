@@ -5,6 +5,11 @@ import { App } from "../../../utilities/Routes";
 import ConnectedForm from "../components/ConnectedForm";
 afterEach(cleanup);
 
+window.analytics = {
+  page: jest.fn(),
+  track: jest.fn()
+};
+
 test("When the app load it initializes gapi", () => {
   const props = {
     initClient: jest.fn()

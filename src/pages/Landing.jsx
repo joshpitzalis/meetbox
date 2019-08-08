@@ -2,7 +2,6 @@ import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
 import { Google } from "grommet-icons";
 import React from "react";
-import ReactGA from "react-ga";
 import { authState } from "rxfire/auth";
 import { notfication$ } from "../components/Banner";
 // import rocket from "../styles/images/rocket.svg";
@@ -13,7 +12,12 @@ const Landing = ({ history }) => {
   const [, send] = useMachine(stateMachine);
 
   React.useEffect(() => {
-    ReactGA.pageview("/landing");
+    window.analytics.page({
+      title: "Landing Page",
+      url: "https://meetbox.io/landing",
+      path: "/landing",
+      referrer: "https://segment.com/"
+    });
   }, []);
 
   return (
@@ -109,7 +113,7 @@ function Start({ firebase, send, history }) {
           primary
           label="Create An Agenda To Begin"
           onClick={() => {
-            ReactGA.event({
+            window.analytics.track("new_agenda-created", {
               category: "User",
               action: "NEW_AGENDA_CREATED"
             });
@@ -177,13 +181,12 @@ function Start({ firebase, send, history }) {
                   uid: user.uid,
                   photoURL: user.photoURL
                 })
-                .then(() => {
-                  console.log("tracking");
+                .then(() =>
                   analytics.track("new_user", {
                     name: user.displayName,
                     email: user.email
-                  });
-                })
+                  })
+                )
                 .catch(error => {
                   const message = error.message || error;
                   notfication$.next({

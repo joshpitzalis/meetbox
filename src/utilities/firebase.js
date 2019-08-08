@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import "firebase/firestore";
+import "firebase/performance";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -14,6 +15,20 @@ const config = {
 };
 
 firebase.initializeApp(config);
+
+const perf = firebase.performance();
+
+// window.perfMetrics.onFirstInputDelay((delay, evt) => {
+//   window.analytics.track("input_delay", {
+//     eventCategory: "Perf Metrics",
+//     eventAction: "first-input-delay",
+//     eventLabel: evt.type,
+//     // Event values must be an integer.
+//     eventValue: Math.round(delay),
+//     // Exclude this event from bounce rate calculations.
+//     nonInteraction: true
+//   });
+// });
 
 firebase
   .firestore()

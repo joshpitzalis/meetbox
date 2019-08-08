@@ -1,7 +1,6 @@
 import { Button } from "grommet";
 import { Add, Save } from "grommet-icons";
 import React from "react";
-import ReactGA from "react-ga";
 import AgendaItem from "../features/agenda/components/AgendaItem";
 export function CompletedMinutes({
   meeting,
@@ -26,19 +25,23 @@ export function CompletedMinutes({
           />
         ))}
       {current.matches("complete.minutes") && (
-        <ReactGA.OutboundLink
-          className="bg-lightest-blue navy flex items-center justify-center pa4 w-100"
-          eventLabel="typeform"
-          to="https://joshpitzalis.typeform.com/to/HCWJeW"
+        <a
+          href="https://joshpitzalis.typeform.com/to/HCWJeW"
           target="_blank"
-          trackerNames={["tracker2"]}
+          className="bg-lightest-blue navy flex items-center justify-center pa4 w-100"
+          onClick={() =>
+            window.analytics.track("typeform-submission-minutes", {
+              category: "User",
+              action: "typeform link clicked"
+            })
+          }
         >
           <span className="lh-title ml3 tc pointer grow">
             🚀 What problem would you like Meetbox to solve that it is not
             currently solving? 🚀{" "}
             <span className="underline">We need to know</span>
           </span>
-        </ReactGA.OutboundLink>
+        </a>
       )}
       {(current.matches("draft") || current.matches("active")) && (
         <div className="pa5 tc w-100">

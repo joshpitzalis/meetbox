@@ -1,6 +1,5 @@
 import { Button } from "grommet";
 import React from "react";
-import ReactGA from "react-ga";
 
 export function ConfirmDelete({ deleteItem, id, meetingId, setConfirm }) {
   return (
@@ -14,7 +13,7 @@ export function ConfirmDelete({ deleteItem, id, meetingId, setConfirm }) {
           onClick={() => {
             deleteItem(id, meetingId);
             setConfirm(false);
-            ReactGA.event({
+            window.analytics.track("agenda_deleted", {
               category: "User",
               action: "Delete Agneda Item"
             });

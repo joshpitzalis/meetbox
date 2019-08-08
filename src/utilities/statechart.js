@@ -1,4 +1,3 @@
-import ReactGA from "react-ga";
 import { Machine } from "xstate";
 import {
   handleAgendaSetNotification,
@@ -109,19 +108,52 @@ export default Machine(
   },
   {
     actions: {
-      analyticsDraft: () => ReactGA.pageview("/meeting/draft"),
-      analyticsConfirmed: () => ReactGA.pageview("/meeting/confirmed"),
-      analyticsActive: () => ReactGA.pageview("/meeting/active"),
-      analyticsComplete: () => ReactGA.pageview("/meeting/complete"),
-      analyticsActionPlan: () => ReactGA.pageview("/meeting/action"),
+      analyticsDraft: () =>
+        window.analytics.page({
+          title: "Draft Page",
+          url: "https://meetbox.io/meeting/draft",
+          path: "/meeting/draft",
+          referrer: "https://segment.com/"
+        }),
+
+      analyticsConfirmed: () =>
+        window.analytics.page({
+          title: "Confirmed Page",
+          url: "https://meetbox.io/meeting/confirmed",
+          path: "/meeting/confirmed",
+          referrer: "https://segment.com/"
+        }),
+
+      analyticsActive: () =>
+        window.analytics.page({
+          title: "Active Page",
+          url: "https://meetbox.io/meeting/active",
+          path: "/meeting/active",
+          referrer: "https://segment.com/"
+        }),
+      analyticsComplete: () =>
+        window.analytics.page({
+          title: "Complete Page",
+          url: "https://meetbox.io/meeting/complete",
+          path: "/meeting/complete",
+          referrer: "https://segment.com/"
+        }),
+      analyticsActionPlan: () =>
+        window.analytics.page({
+          title: "Action Page",
+          url: "https://meetbox.io/meeting/action",
+          path: "/meeting/action",
+          referrer: "https://segment.com/"
+        }),
+
       analyticsGoogle: () =>
-        ReactGA.event({
+        window.analytics.track("invite_with_google", {
           category: "User",
-          action: ":ogged in to Send Invites With Google"
+          action: "Logged in to Send Invites With Google"
         }),
 
       analyticsLinkOnly: () =>
-        ReactGA.event({
+        window.analytics.track("link_only_invite", {
           category: "User",
           action: "Sent Invites With Link Only"
         }),
