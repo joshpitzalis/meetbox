@@ -218,7 +218,6 @@ const TopWidget = ({
                   helperText="Add the email addresses of people you would like to send these
                     minutes to."
                   onSubmit={attendees => {
-                    console.log("summary", summary);
                     try {
                       attendees.forEach(recipient =>
                         window.analytics.track("beta_test_invite", {
@@ -308,25 +307,25 @@ const BottomWidget = ({
         </div>
       );
     case state.matches("complete"):
-      return (
-        agendaViewAvailable && (
-          <button
-            className="w3 dn dib-ns"
-            onClick={() =>
-              send(
-                state.matches("complete.actionPlan")
-                  ? "REDIRECTED_TO_MINUTES_VIEW"
-                  : "REDIRECTED_TO_ACTION_PLAN"
-              )
-            }
-          >
-            <small className="silver small-caps  tc">
-              {state.matches("complete.actionPlan")
-                ? "Switch to the minutes view"
-                : "Switch to the Action view"}
-            </small>
-          </button>
-        )
+      return agendaViewAvailable ? (
+        <button
+          className="w3 dn dib-ns"
+          onClick={() =>
+            send(
+              state.matches("complete.actionPlan")
+                ? "REDIRECTED_TO_MINUTES_VIEW"
+                : "REDIRECTED_TO_ACTION_PLAN"
+            )
+          }
+        >
+          <small className="silver small-caps  tc">
+            {state.matches("complete.actionPlan")
+              ? "Switch to the minutes view"
+              : "Switch to the Action view"}
+          </small>
+        </button>
+      ) : (
+        <span> </span>
       );
 
     default:

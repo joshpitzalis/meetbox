@@ -146,7 +146,6 @@ export const TaskList = ({
               <p className="fw7 mb4 f3 lh-solid">{truncate(name, 30)}</p>
             </div>
 
-            <hr />
             {tasks &&
               taskArray
                 .sort((a, b) => {
