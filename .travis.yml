@@ -1,17 +1,16 @@
 language: node_js
 os: osx
 node_js:
-  - "10"
+  - "stable"
 cache:
   directories:
     - node_modules
-install:
-  - npm install -q --no-color --no-progress
 before_script:
+  - npm install
+  - npm install nyc -g
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-script:
-  - npm run test
+script: npm test
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build -t lcov --exit-code $TRAVIS_TEST_RESULT
