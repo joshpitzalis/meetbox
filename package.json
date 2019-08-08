@@ -43,7 +43,8 @@
     "cypress:open": "npx cypress open",
     "cypress": "start-server-and-test start http://localhost:3000 cypress:open",
     "book": "start-storybook -p 6006",
-    "buildbook": "build-storybook"
+    "buildbook": "build-storybook",
+    "coverage": "npm run test -- --coverage"
   },
   "eslintConfig": {
     "extends": "react-app",

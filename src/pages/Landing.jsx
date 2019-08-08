@@ -1,10 +1,11 @@
 import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
-import { Google, Notes, Schedule, Task } from "grommet-icons";
+import { Google } from "grommet-icons";
 import React from "react";
 import ReactGA from "react-ga";
 import { authState } from "rxfire/auth";
 import { notfication$ } from "../components/Banner";
+// import rocket from "../styles/images/rocket.svg";
 import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
 
@@ -40,19 +41,14 @@ const Landing = ({ history }) => {
           <h1 className="mb-16 font-extrabold mt4 text-5xl text-8xl lh-title ">
             Turn team meetings into action plans.
           </h1>
-
+          {/* <img
+            className="w-auto h4 di"
+            src={rocket}
+            alt="team rocket building"
+          /> */}
           <Start firebase={firebase} send={send} history={history} />
         </header>
         <Features />
-        {/* <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l flex items-end justify-end dn db-l">
-          
-          
-          <img
-            className="w-auto h-50 mb3 pb4"
-            src={rocket}
-            alt="team rocket building"
-          />
-        </article> */}
       </article>
     </div>
   );
@@ -60,30 +56,36 @@ const Landing = ({ history }) => {
 
 export default Landing;
 
-function Features() {
+function Features({ firebase, send, history }) {
   return (
     <ul className="list pl0 w-50-ns w-100 dn db-l mt3">
-      <li className="pa3 pa4-ns mv4 item0 flex x">
-        <Schedule className="ma3" size="large" />
+      <li className="pa3 pa4-ns mv4 item0 flex rf-x">
+        {/* <Schedule className="ma3" size="large" /> */}
+        <span className="f1 b text-gray-700 mr3 flex items-center">1.</span>
         <b className="db f3 mb1 text-gray-700 h3">
           Create and collaborate on an agenda for your next meeting. Send out
           Google calendar invites once you're done.
         </b>
       </li>
-      <li className="pa3 pa4-ns mv4 item1 br2 flex x">
-        <Notes className="ma3" size="large" />
+      <li className="pa3 pa4-ns mv4 item1 br2 flex rf-x">
+        {/* <Notes className="ma3" size="large" /> */}
+        <span className="f1 b text-gray-700 mr3 flex items-center">2.</span>
         <b className="db f3 mt2 text-gray-700 h3">
           During the meeting, you can assign tasks and take notes about what
           happens.
         </b>
       </li>
-      <li className="pa3 pa4-ns mv4 item2 br2 flex x ">
-        <Task className="ma3 " size="large" />
+      <li className="pa3 pa4-ns mv4 item2 br2 flex rf-x ">
+        {/* <Task className="ma3 " size="large" /> */}
+        <span className="f1 b text-gray-700 mr3 flex items-center">3.</span>
         <b className="db f3 mb1 text-gray-700 h3">
           When the meeting is over, share everything instantly so that everyone
           knows what they have to do.
         </b>
       </li>
+      {/* <span className="flex rf-x">
+        <Start firebase={firebase} send={send} history={history} />
+      </span> */}
     </ul>
   );
 }
