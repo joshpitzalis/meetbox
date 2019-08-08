@@ -28,3 +28,7 @@ ReactDOM.render(
 serviceWorker.unregister();
 
 // configuring test coverage https://jasonraimondi.com/posts/showing-code-coverage-for-a-react-app-using-code-climate-with-travis-ci/
+
+// latest https://gist.github.com/rbournissent/0a704cae6347bbda460c
+
+// travis own doc https://docs.codeclimate.com/docs/travis-ci-test-coverage
