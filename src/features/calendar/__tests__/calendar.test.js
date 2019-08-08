@@ -10,7 +10,7 @@ window.analytics = {
   track: jest.fn()
 };
 
-test("When the app load it initializes gapi", () => {
+test.skip("When the app load it initializes gapi", () => {
   const props = {
     initClient: jest.fn()
   };
