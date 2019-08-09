@@ -120,7 +120,7 @@ function Start({ firebase, send, history }) {
         />
         <Button
           plain
-          label={<small className="dark-red small-caps ml3">Logout</small>}
+          label={<small className="washed-red small-caps ml3">Logout</small>}
           onClick={async () => {
             const { auth } = firebase;
             try {
@@ -176,7 +176,9 @@ function Start({ firebase, send, history }) {
                   uid: user.uid,
                   photoURL: user.photoURL
                 })
-                .then(() =>
+                .then(() => {
+                  console.log("identify");
+
                   analytics.identify(user.uid, {
                     id: user.uid,
                     email: user.email,
@@ -187,8 +189,8 @@ function Start({ firebase, send, history }) {
                     name: user.displayName,
                     meeting_attended: 0,
                     meeting_created: 0
-                  })
-                )
+                  });
+                })
                 .catch(error => {
                   const message = error.message || error;
                   notfication$.next({

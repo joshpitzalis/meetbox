@@ -8,10 +8,15 @@ describe("happy Path", () => {
     const updatedMeetingName = "updated meeting name";
     const note = lorem.sentence();
     const task = lorem.words();
-    cy.visit("/")
-      .getByText(/get started/i)
-      .click()
+    // Cypress.env("REACT_APP_SEGMENT");
+
+    cy.visit("/").getByText(/get started/i);
+
+    cy.login()
       // create an agenda in draft mode
+      .getByText(/Create An Agenda To Begin/i)
+      .click()
+
       .getByText(
         /Close this notification to start making a list of all the things you want to discuss in your meeting./i
       )
@@ -43,7 +48,7 @@ describe("happy Path", () => {
       .click()
       // .getByTestId("agendaSubmitForm")
       // .click()
-      .getByText(/No invites, give me a link to share/i)
+      .getByText(/No invites, just give me a link to share/i)
       .click()
       .getByText(/Finalise Agenda/i)
       .click()
@@ -78,7 +83,7 @@ describe("happy Path", () => {
         /This meeting has now started. Make sure you end the meeting when you are done to save all your notes./
       )
       .getByTestId("closeNotification")
-      .click()
+      .click({ force: true })
       .getByTestId("stopButton")
       // editing during a meeting
       .queryAllByTestId("editableItemName")
@@ -118,11 +123,11 @@ describe("happy Path", () => {
       .queryByTestId("editTitle")
       .should("not.exist")
       .queryByTestId("taskEditBox")
-      .should("not.exist")
-      .getByText("What problem is Meetbox not yet solving for your team ?");
+      .should("not.exist");
+    // .getByText("What problem is Meetbox not yet solving for your team ?");
   });
 
-  it("lets you share minutes after a meeting", () => {
+  it.only("lets you share minutes after a meeting", () => {
     const completeMeeting = `meeting/5mB2ocpjw43UwvI0wB4k`;
     const fakeEmail = "1@1.com";
 
@@ -153,11 +158,21 @@ describe("happy Path", () => {
       .getByTestId("sendInvites")
       .click()
       .queryByTestId("modal")
-      .should("not.exist")
-      .getByText(/Your minutes have been sent/);
+      .should("not.exist");
+    // .getByText(/Your minutes have been sent/);
   });
 
   it.skip("delete item, also test that it deletes while active", () => {});
   it.skip("loads an existing meeting in each state", () => {});
   it.skip("test multiple task sin multiple lists can be completed in cypress jus so that there is no indexing issues.", () => {});
+
+  it.skip("does welcome email get sent out", () => {});
+  it.skip("does unsubscribe from email work", () => {});
+  it.skip("can sclient sign in", () => {});
+  it.skip("can clients sign out", () => {});
+  it.skip("make sure they dont get a welcome email every time", () => {});
+  it.skip("does calendar invite work", () => {});
+  it.skip("does share minutes email work", () => {});
+  it.skip("goes to minutes mode", () => {});
+  it.skip("modal is full screen", () => {});
 });

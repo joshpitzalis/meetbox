@@ -19,7 +19,12 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-
+    <!-- <script>
+      window.analytics = {
+        page: () => {},
+        track: () => {}
+      };
+    </script> -->
     <script>
       !(function() {
         var analytics = (window.analytics = window.analytics || []);
@@ -73,12 +78,15 @@
               analytics._loadOptions = e;
             };
             analytics.SNIPPET_VERSION = "4.1.0";
-            analytics.load("zpFmMj1XA9sRNJx6OoO0pl5QC7WZ65S2");
-            // analytics.load("Uy58Wt92ZeogPYIOl36wvu4O395ohbYS");
+
+            // analytics.load("zpFmMj1XA9sRNJx6OoO0pl5QC7WZ65S2");
+            analytics.load("Uy58Wt92ZeogPYIOl36wvu4O395ohbYS");
             analytics.page();
           }
       })();
     </script>
+
+    <title></title>
 
     <script>
       !(function(n, e) {

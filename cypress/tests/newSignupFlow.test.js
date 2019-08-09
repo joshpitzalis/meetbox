@@ -11,7 +11,7 @@ import { lorem } from "faker";
 // In another terminal window, run a test command such as npm run test:open
 
 describe("new signup flow", () => {
-  it("lets me submit an agenda, activate it, edit it during a meeting, then complete it, also tests banners appear for each state", () => {
+  it.skip("lets me submit an agenda, activate it, edit it during a meeting, then complete it, also tests banners appear for each state", () => {
     const itemName = "example item name";
     const prepName = "example prep item";
     const meetingName = "test meeting name";

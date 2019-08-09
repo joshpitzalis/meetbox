@@ -220,7 +220,7 @@ const TopWidget = ({
                   onSubmit={attendees => {
                     try {
                       attendees.forEach(recipient =>
-                        window.analytics.track("beta_test_invite", {
+                        window.analytics.track("share_minutes", {
                           meetingName: summary,
                           recipient: recipient.email,
                           minutesLink
