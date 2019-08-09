@@ -89,20 +89,20 @@ const DateTime = ({ value, onClick, error }) => {
       ${!value ? "text-gray-500" : "text-gray-700"}
       ${error && "border-red-500"}`}
       onClick={onClick}
-      value={value || "When ?"}
+      value={value || "When is this meeting?"}
       readOnly
     />
   );
 };
 
-function PeopleForm({
+const PeopleForm = ({
   email,
   setAttendees,
   attendees,
   setEmail,
   setError,
   error
-}) {
+}) => {
   return (
     <form
       onSubmit={e => {
@@ -170,7 +170,7 @@ function PeopleForm({
       </div>
     </form>
   );
-}
+};
 
 function Duration({ duration, setDuration }) {
   return (

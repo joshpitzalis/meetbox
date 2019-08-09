@@ -16,7 +16,8 @@
 .env
 .envD
 .envP
-
+serviceAccount.json
+cypress.env.json
 
 npm-debug.log*
 yarn-debug.log*

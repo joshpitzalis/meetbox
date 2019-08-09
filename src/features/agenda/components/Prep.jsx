@@ -1,7 +1,6 @@
 import { Button, Form, FormField } from "grommet";
 import { Close } from "grommet-icons";
 import React, { useState } from "react";
-import ReactGA from "react-ga";
 import firebase from "../../../utilities/firebase";
 
 // interface IProps {
@@ -62,7 +61,7 @@ export const Prerequisites = ({ meetingId, id, prep, state }) => {
                   }
                 })
                 .then(() =>
-                  ReactGA.event({
+                  window.analytics.track("prep_item_added", {
                     category: "User",
                     action: "Added Prep Item"
                   })
@@ -144,7 +143,7 @@ export const PrepItem = ({ name, id, editMode, meetingId, itemId, state }) => {
             [`items.${itemId}.prep.${id}`]: firebase.firestore.FieldValue.delete()
           })
           .then(() =>
-            ReactGA.event({
+            window.analytics.track("prep_item_deleted", {
               category: "User",
               action: "Deleted Prep Item"
             })

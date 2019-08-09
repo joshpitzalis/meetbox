@@ -1,14 +1,18 @@
 import { useMachine } from "@xstate/react";
+import { Button } from "grommet";
+import { Google } from "grommet-icons";
 import React from "react";
-import ReactGA from "react-ga";
-import rocket from "../styles/images/rocket.svg";
+import { authState } from "rxfire/auth";
+import { notfication$ } from "../components/Banner";
+// import rocket from "../styles/images/rocket.svg";
+import firebase from "../utilities/firebase";
 import stateMachine from "../utilities/statechart";
 
-const Landing = ({ match, history }) => {
+const Landing = ({ history }) => {
   const [, send] = useMachine(stateMachine);
 
   React.useEffect(() => {
-    ReactGA.pageview("/landing");
+    window.analytics.page('"Landing Page"');
   }, []);
 
   return (
@@ -34,53 +38,16 @@ const Landing = ({ match, history }) => {
       <article className="pa3 pv4-ns ph5-ns h-screen flex flex-wrap flex-grow-1">
         <header className="w-50-ns w-100 pl3 tl">
           <h1 className="mb-16 font-extrabold mt4 text-5xl text-8xl lh-title ">
-            {/* Meetbox.io */}
-            {/* Help meetings stay on point. */}
-            {/* Create An Agenda For Your Next Meeting */}
             Turn team meetings into action plans.
-            {/* Keep track of what happens in a meeting so that
-            everyone knows what to do afterwards. */}
           </h1>
-          {/* <h2 className="f3 mid-gray lh-title ">
-            A tool to help meetings stay on point.
-          </h2> */}
-          {/* <p className="db block text-gray-700 font-bold mb-2">
-            In-person and online.
-          </p> */}
-          <button
-            className="btn btn-blue mv3 dim pointer"
-            style={{ backgroundColor: "#373F85" }}
-            onClick={() => {
-              ReactGA.event({
-                category: "User",
-                action: "NEW_AGENDA_CREATED"
-              });
-
-              send({ type: "NEW_AGENDA_CREATED", payload: history });
-            }}
-          >
-            Get Started
-          </button>
-        </header>
-
-        {/* <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l">
-          <div className="aspect-ratio aspect-ratio--3x4 mb4 w-100 h-auto">
-            <div
-              className="aspect-ratio--object cover"
-             
-            />
-          </div>
-        </article> */}
-
-        <article className="mw5 mw6-ns center pt4 list pl0 w-50-ns w-100 dn db-l flex items-end justify-end dn db-l">
-          <img
-            className="w-auto h-50 mb3 pb4"
+          {/* <img
+            className="w-auto h4 di"
             src={rocket}
             alt="team rocket building"
-          />
-        </article>
-
-        {/* <Features /> */}
+          /> */}
+          <Start firebase={firebase} send={send} history={history} />
+        </header>
+        <Features />
       </article>
     </div>
   );
@@ -88,37 +55,161 @@ const Landing = ({ match, history }) => {
 
 export default Landing;
 
-function Features({}) {
+function Features({ firebase, send, history }) {
   return (
-    <ul className="list pl0 w-50-ns w-100 dn db-l">
-      <li className="pa3 pa4-ns mv4 item0">
+    <ul className="list pl0 w-50-ns w-100 dn db-l mt3">
+      <li className="pa3 pa4-ns mv4 item0 flex rf-x">
+        {/* <Schedule className="ma3" size="large" /> */}
+        <span className="f1 b text-gray-700 mr3 flex items-center">1.</span>
         <b className="db f3 mb1 text-gray-700 h3">
-          📅 Use it to create and collaborate on an agenda, then send out google
-          calendar invites.
+          Create and collaborate on an agenda for your next meeting. Send out
+          Google calendar invites once you're done.
         </b>
-        {/* <span className="f5 db lh-copy measure">
-       Use Meetbox to draft a list of everything you want to discuss in
-       your next meeting. You can share teh draft with other people that
-       might want to add to teh agenda.
+      </li>
+      <li className="pa3 pa4-ns mv4 item1 br2 flex rf-x">
+        {/* <Notes className="ma3" size="large" /> */}
+        <span className="f1 b text-gray-700 mr3 flex items-center">2.</span>
+        <b className="db f3 mt2 text-gray-700 h3">
+          During the meeting, you can assign tasks and take notes about what
+          happens.
+        </b>
+      </li>
+      <li className="pa3 pa4-ns mv4 item2 br2 flex rf-x ">
+        {/* <Task className="ma3 " size="large" /> */}
+        <span className="f1 b text-gray-700 mr3 flex items-center">3.</span>
+        <b className="db f3 mb1 text-gray-700 h3">
+          When the meeting is over, share everything instantly so that everyone
+          knows what they have to do.
+        </b>
+      </li>
+      {/* <span className="flex rf-x">
+        <Start firebase={firebase} send={send} history={history} />
       </span> */}
-      </li>
-      <li className="pa3 pa4-ns mv4 item1 br2">
-        <b className="db f3 mb1 text-gray-700 h3">
-          📝 Then take notes on what happens during the meeting.
-        </b>
-      </li>
-      <li className="pa3 pa4-ns mv4 item2 br2 ">
-        <b className="db f3 mb1 text-gray-700 h3">
-          ✅ Instantly share everything when the meeting is over so that
-          everyone knows what they have to do.
-        </b>
-        {/* <span className="f5 db lh-copy measure">
-       When you start a meeting anyone can take notes and assign tasks on
-       each agenda item. You can also park ideas at the bottom of the
-       agenda during teh meeting. That way you can stay on point without
-       constantly addressing tangents.
-      </span> */}
-      </li>
     </ul>
   );
+}
+
+function Start({ firebase, send, history }) {
+  const [user, setUser] = React.useState("loading");
+
+  React.useEffect(() => {
+    const userListener = authState(firebase.auth()).subscribe(user =>
+      setUser(user)
+    );
+    return () => userListener.unsubscribe();
+  }, []);
+
+  if (user === "loading") {
+    return <Button label="Loading..." plain disbaled />;
+  } else if (user) {
+    return (
+      <>
+        <Button
+          primary
+          label="Create An Agenda To Begin"
+          onClick={() => {
+            window.analytics.track("new_agenda-created", {
+              category: "User",
+              action: "NEW_AGENDA_CREATED"
+            });
+            send({
+              type: "NEW_AGENDA_CREATED",
+              payload: history
+            });
+          }}
+        />
+        <Button
+          plain
+          label={<small className="washed-red small-caps ml3">Logout</small>}
+          onClick={async () => {
+            const { auth } = firebase;
+            try {
+              await auth().signOut();
+            } catch (error) {
+              const message = error.message || error;
+              notfication$.next({
+                type: "ERROR",
+                message
+              });
+            }
+          }}
+        />
+      </>
+    );
+  } else {
+    return (
+      <Button
+        icon={<Google color="plain" className="ma1" />}
+        label="Get Started"
+        onClick={async () => {
+          const { gapi, analytics } = window;
+          const { auth } = firebase;
+
+          const checkForUser = async user => {
+            const existingUser = await firebase
+              .firestore()
+              .doc(`users/${user.uid}`)
+              .get()
+              .then(doc => doc.data())
+              .catch(error => error);
+
+            if (existingUser === undefined) {
+              return true;
+            }
+          };
+          try {
+            const googleAuth = gapi.auth2.getAuthInstance();
+            const googleUser = await googleAuth.signIn();
+            const token = googleUser.getAuthResponse().id_token;
+            const credential = auth.GoogleAuthProvider.credential(token);
+            const signedIn = await auth().signInWithCredential(credential);
+            const { user } = signedIn;
+            const noUserExists = await checkForUser(user);
+
+            if (noUserExists) {
+              await firebase
+                .firestore()
+                .doc(`users/${user.uid}`)
+                .set({
+                  name: user.displayName,
+                  email: user.email,
+                  uid: user.uid,
+                  photoURL: user.photoURL
+                })
+                .then(() => {
+                  console.log("identify");
+
+                  analytics.identify(user.uid, {
+                    id: user.uid,
+                    email: user.email,
+                    avatar: user.photoURL,
+                    created_at: new Date(),
+                    first_name: "Joe",
+                    plan_name: "free",
+                    name: user.displayName,
+                    meeting_attended: 0,
+                    meeting_created: 0
+                  });
+                })
+                .catch(error => {
+                  const message = error.message || error;
+                  notfication$.next({
+                    type: "ERROR",
+                    message
+                  });
+                });
+
+              return;
+            }
+          } catch (error) {
+            const message = error.message || error;
+            notfication$.next({
+              type: "ERROR",
+              message
+            });
+          }
+        }}
+      />
+    );
+  }
 }

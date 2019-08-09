@@ -1,7 +1,6 @@
 import { Button, CheckBox, Form, FormField } from "grommet";
 import { Close } from "grommet-icons";
 import React, { useState } from "react";
-import ReactGA from "react-ga";
 
 export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
   const [editMode, setEditMode] = useState(false);
@@ -43,7 +42,7 @@ export function TaskList({ firebase, itemId, meetingId, state, tasks }) {
                   }
                 })
                 .then(() =>
-                  ReactGA.event({
+                  window.analytics.track("task_added", {
                     category: "User",
                     action: "Added Task"
                   })
@@ -121,7 +120,7 @@ export function Task({
                 [`items.${itemId}.tasks.${taskId}`]: firebase.firestore.FieldValue.delete()
               })
               .then(() =>
-                ReactGA.event({
+                window.analytics.track("task_deleted", {
                   category: "User",
                   action: "Deleted Task"
                 })
@@ -143,7 +142,7 @@ export function Task({
                   .checked
               })
               .then(() =>
-                ReactGA.event({
+                window.analytics.track("task_toggled", {
                   category: "User",
                   action: "Toggled Task"
                 })

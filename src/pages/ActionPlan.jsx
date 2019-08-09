@@ -1,13 +1,8 @@
 import { CheckBox } from "grommet";
 import React from "react";
-import ReactGA from "react-ga";
-// import Overdrive from "react-overdrive";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 import { CompletedMinutes } from "./CompletedMinutes";
 import { SelectedTaskList } from "./TaskListPage";
-
-const truncate = (name, count) =>
-  name && name.length > count ? `${name.substr(0, count)}...` : name;
 
 const ActionPlan = ({
   send,
@@ -43,20 +38,28 @@ const ActionPlan = ({
     Object.values(meeting.items).find(item => item.id === fullscreen);
 
   return (
-    <div className="ml6-ns  w-100 vh-100 " onClick={() => setFullscreen("")}>
+    <div
+      className="ml6-ns  w-100 vh-100 "
+      onClick={() => setFullscreen("")}
+      data-testid="actionPlanPage"
+    >
       {current.matches("complete.actionPlan") && (
-        <ReactGA.OutboundLink
-          className="navy flex items-center justify-center pa4 w-100"
-          eventLabel="typeform"
-          to="https://joshpitzalis.typeform.com/to/HCWJeW"
+        <a
+          href="https://joshpitzalis.typeform.com/to/HCWJeW"
           target="_blank"
-          trackerNames={["tracker2"]}
+          className="navy flex items-center justify-center pa4 w-100"
+          onClick={() =>
+            window.analytics.track("typeform-submission-action", {
+              category: "User",
+              action: "typeform link clicked"
+            })
+          }
         >
-          <span className="lh-title ml3 tc pointer grow">
+          <span className="lh-title ml3 tc pointer">
             What problem is Meetbox not yet solving for your team ?{" "}
             <span className="underline">We need to know.</span>
           </span>
-        </ReactGA.OutboundLink>
+        </a>
       )}
       <p className="dn-ns dib w-100">
         <CompletedMinutes
@@ -118,6 +121,9 @@ export const TaskList = ({
   const taskArray = Object.values(tasks);
   const unfinishedTaskCount =
     taskArray && taskArray.filter(tasks => tasks.complete === false).length;
+
+  const truncate = (name, count) =>
+    name && name.length > count ? `${name.substr(0, count)}...` : name;
   return (
     <div>
       <div className="dn flex-ns flex-column flex-grow-1 ma3-ns mv4-ns w-100 w5-ns">
@@ -140,7 +146,6 @@ export const TaskList = ({
               <p className="fw7 mb4 f3 lh-solid">{truncate(name, 30)}</p>
             </div>
 
-            <hr />
             {tasks &&
               taskArray
                 .sort((a, b) => {
@@ -167,7 +172,7 @@ export const TaskList = ({
                                 .target.checked
                             })
                             .then(() =>
-                              ReactGA.event({
+                              window.analytics.track("task_toggled", {
                                 category: "User",
                                 action: "Toggled Task"
                               })

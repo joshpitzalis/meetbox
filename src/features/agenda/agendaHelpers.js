@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import ReactGA from "react-ga";
 import { doc } from "rxfire/firestore";
 import firebase from "../../utilities/firebase";
 
@@ -70,10 +69,11 @@ export const handleMinutesTextUpdate = (
     setSaved
   };
   textInput$.next(payload);
-  ReactGA.event({
+  window.analytics.track("minutes-updated", {
     category: "User",
     action: "Minutes Updated"
   });
+
   setSaved(false);
 };
 
