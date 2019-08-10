@@ -4,16 +4,23 @@ import React from "react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 
 const Dashboard = ({ stateMachine }) => {
-  const [state, send] = useMachine(stateMachine);
+  const [state] = useMachine(stateMachine);
 
-  // React.useEffect(() => {
-  //   window.analytics.page('"Dashboard"');
-  // }, []);
+  React.useEffect(() => {
+    window.analytics.page('"Dashboard"');
+  }, []);
 
   switch (true) {
-    case state.matches("idle"):
+    case state.matches("loggedIn.empty"):
       return (
         <div data-testid="dashboardPage">
+          <p>I'm Dashboard a empty</p>
+        </div>
+      );
+
+    case state.matches("loggedIn.idle"):
+      return (
+        <div data-testid="dashboardPage" className="ml5">
           {/* <h1> Project Timeline</h1> */}
           <Menu
             // className="actionButton"
@@ -25,7 +32,7 @@ const Dashboard = ({ stateMachine }) => {
               { label: "Add a past meeting from a URL", onClick: () => {} }
             ]}
           />
-          <ol className="timeline">
+          <ul className="timeline">
             <li className="tl-node ">
               {/* <div>
                 <dl class={`dib mr3 pa3 text-gray-700`}>
@@ -51,22 +58,18 @@ const Dashboard = ({ stateMachine }) => {
               <div className="tl-stamp">July 13th, 2013</div>
               <div className="tl-content">Initial contact</div>
             </li>
-          </ol>
+          </ul>
         </div>
       );
-    case state.matches("empty"):
-      return (
-        <div data-testid="dashboardPage">
-          <p>I'm Dashboard a empty</p>
-        </div>
-      );
-    case state.matches("chaos"):
+
+    case state.matches("loggedIn.chaos"):
       return (
         <div data-testid="dashboardPage">
           <p>I'm Dashboard a chaos</p>
         </div>
       );
     default:
+      console.log("state.value", state.value);
       return <p>Error</p>;
   }
 };

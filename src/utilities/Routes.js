@@ -5,6 +5,7 @@ import Banner from "../components/Banner";
 import Agenda from "../pages/Agenda";
 import Dashboard from "../pages/Dashboard";
 import Landing from "../pages/Landing";
+import stateMachine from "../utilities/statechart";
 
 const theme = {
   global: {
@@ -42,7 +43,13 @@ export const Routes = () => {
       <Switch>
         <Route exact path="/" component={Landing} />
         <Route exact path="/meeting/:meetingId" component={Agenda} />
-        <Route exact path="/dashboard" component={Dashboard} />
+        <Route
+          exact
+          path="/dashboard/:userId"
+          component={props => (
+            <Dashboard {...props} stateMachine={stateMachine} />
+          )}
+        />
         <Route component={NoMatch} />
       </Switch>
     </div>

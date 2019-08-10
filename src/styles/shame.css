@@ -1,3 +1,44 @@
+@import "./tachyons.css";
+@import "./palette.css";
+
+.titleText {
+  font-size: 100px;
+}
+
+@media screen and (max-width: 30em) {
+  .titleText {
+    font-size: 4rem;
+    padding: 1rem;
+  }
+}
+
+.sidebar {
+  text-align: center;
+  font-size: 23px;
+  text-transform: uppercase;
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 23px;
+  color: #363d87;
+}
+
+/* ns */
+@media screen and (min-width: 30em) {
+  .rotate-ns {
+    -webkit-writing-mode: vertical-rl;
+    -ms-writing-mode: tb-rl;
+    writing-mode: vertical-rl;
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+}
+.textPointer {
+  cursor: text;
+}
+
 /* WIDGETS */
 
 .rf-badge {
@@ -18,27 +59,7 @@
   border-top: 5px solid #dddddd;
   padding: 5em 0;
   position: relative;
-  /* margin-left: 13rem;
-    border-radius: 15px; */
 }
-/* .timeline:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -1.47em;
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
-    background: #dddddd;
-    border: 5px solid #dddddd;
-  } */
-
-/* .actionButton {
-    position: relative;
-    bottom: 5em;
-    left: 2em;
-    text-decoration: underline;
-  } */
 
 /* Individual Timeline Item */
 .tl-node {
@@ -50,7 +71,6 @@
   display: block;
 }
 .tl-node:before {
-  content: "";
   position: absolute;
   top: 0;
   left: -0.95em;
@@ -59,6 +79,7 @@
   border-radius: 20px;
   background: #fff;
   border: 5px solid #dddddd;
+  content: "";
 }
 
 /* Timestamp */
@@ -77,10 +98,20 @@
   border-radius: 4px;
   border: none;
   cursor: pointer;
-  display: inline-block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 
+  -webkit-box-align: center;
+
+  -ms-flex-align: center;
+
+  align-items: center;
   font-size: 14px;
   font-weight: 600;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   margin: 0;
   outline: none;
   overflow: hidden;
@@ -91,6 +122,42 @@
   transition: -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
   transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
   transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1), -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
   transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
     -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
   transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
@@ -162,6 +229,42 @@
     -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
   transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
     -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
   vertical-align: middle;
   white-space: nowrap;
   -webkit-appearance: none;
@@ -175,7 +278,7 @@
   min-width: 16rem;
 }
 
-.1stpointofcontact {
+.entryBox {
   -webkit-font-smoothing: antialiased;
   cursor: initial;
   -webkit-tap-highlight-color: transparent;

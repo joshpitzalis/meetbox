@@ -1,5 +1,5 @@
 import { useMachine } from "@xstate/react";
-import React, { useEffect } from "react";
+import React from "react";
 import Sidebar from "../components/Sidebar";
 import {
   handleAddMeeting,
@@ -29,25 +29,25 @@ const Agenda = ({ match }) => {
     }
   }, [meeting]);
 
-  useEffect(() => {
-    if (meetingId && meeting) {
-      if (meeting.status === "complete") {
-        send("REDIRECTED_TO_COMPLETE_AGENDA");
-      }
+  // useEffect(() => {
+  //   if (meetingId && meeting) {
+  //     if (meeting.status === "complete") {
+  //       send("REDIRECTED_TO_COMPLETE_AGENDA");
+  //     }
 
-      if (meeting.status === "active") {
-        send("REDIRECTED_TO_ACTIVE_AGENDA");
-      }
+  //     if (meeting.status === "active") {
+  //       send("REDIRECTED_TO_ACTIVE_AGENDA");
+  //     }
 
-      if (meeting.status === "confirmed") {
-        send("REDIRECTED_TO_CONFIRMED_AGENDA");
-      }
+  //     if (meeting.status === "confirmed") {
+  //       send("REDIRECTED_TO_CONFIRMED_AGENDA");
+  //     }
 
-      if (meeting.status === "draft") {
-        send("REDIRECTED_TO_EXISTING_AGENDA");
-      }
-    }
-  }, [meetingId, meeting]);
+  //     if (meeting.status === "draft") {
+  //       send("REDIRECTED_TO_EXISTING_AGENDA");
+  //     }
+  //   }
+  // }, [meetingId, meeting]);
 
   return (
     <div data-testid="agendaPage" className="rf-min-vh-100">

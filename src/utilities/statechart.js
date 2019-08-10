@@ -6,96 +6,131 @@ import {
   handleWelcomeNotification
 } from "../features/agenda/agendaActions";
 import { createAgenda } from "../features/agenda/agendaHelpers";
-// tk rather than redirecting on idle you can persist state instead https://xstate.js.org/docs/guides/states.html#persisting-state
+import { onSignup } from "../features/auth/authActions";
 
 export default Machine(
   {
-    id: "agenda",
-    initial: "idle",
+    id: "meetbox",
+    initial: "loggedIn",
     states: {
-      idle: {
+      loggedOut: {
         on: {
-          NEW_AGENDA_CREATED: "creatingAgenda",
-          REDIRECTED_TO_EXISTING_AGENDA: "draft",
-          REDIRECTED_TO_CONFIRMED_AGENDA: "confirmed",
-          REDIRECTED_TO_ACTIVE_AGENDA: "active",
-          REDIRECTED_TO_COMPLETE_AGENDA: "complete"
+          SIGNED_IN: "loading",
+          USER_ALREADY_LOGGED_IN: "loggedIn"
         }
       },
-      creatingAgenda: {
+      loading: {
         invoke: {
-          id: "createAgenda",
-          src: (context, event) => createAgenda(event),
-          onDone: {
-            target: "draft"
-            // The resolved data is placed into a 'done.invoke.<id>' event, under the data property http://bit.ly/2Ft2WR8
-          },
-          onError: {
-            target: "idle"
-          }
-        }
-      },
-      draft: {
-        entry: ["handleWelcomeNotification", "analyticsDraft"],
-        on: {
-          SAVED_DRAFT: "confirmed",
-          SAVED_TO_CAL: "confirmed",
-          REDIRECTED_TO_CONFIRMED_AGENDA: "confirmed",
-          REDIRECTED_TO_ACTIVE_AGENDA: "active",
-          REDIRECTED_TO_COMPLETE_AGENDA: "complete"
+          id: "login",
+          src: (context, { payload }) =>
+            onSignup(
+              payload.firebase,
+              payload.gapi,
+              payload.analytics,
+              payload.notfication$,
+              payload.history
+            )
         },
-        initial: "loggedIn",
-        states: {
-          loggedIn: {
-            entry: "analyticsGoogle",
-            on: {
-              RETURNED: "loggedIn",
-              URL_ONLY: "linkOnly"
-            }
-          },
 
-          linkOnly: {
-            entry: "analyticsLinkOnly",
-            on: {
-              FINALISED: "confirm",
-              RETURNED: "loggedIn"
-            }
-          },
-          confirm: {
-            on: {
-              RETURNED: "loggedIn"
-            }
-          }
+        onDone: {
+          target: "loggedIn"
+          // The resolved data is placed into a 'done.invoke.<id>' event, under the data property http://bit.ly/2Ft2WR8
+
+          // use this data to show the error?
+        },
+        onError: {
+          target: "loggedOut"
         }
       },
 
-      confirmed: {
-        entry: ["handleAgendaSetNotification", "analyticsConfirmed"],
-        on: {
-          STARTED: "active",
-          REDIRECTED_TO_ACTIVE_AGENDA: "active",
-          REDIRECTED_TO_COMPLETE_AGENDA: "complete"
-        }
-      },
-      active: {
-        entry: ["handleMeetingStartNotification", "analyticsActive"],
-        on: {
-          ENDED: "complete",
-          REDIRECTED_TO_COMPLETE_AGENDA: "complete"
-        }
-      },
-      complete: {
-        entry: ["handleMeetingOverNotification", "analyticsActionPlan"],
-        initial: "actionPlan",
+      loggedIn: {
+        initial: "idle",
         states: {
-          actionPlan: {
+          idle: {
             on: {
-              REDIRECTED_TO_MINUTES_VIEW: "minutes"
+              NEW_AGENDA_CREATED: "creatingAgenda",
+              REDIRECTED_TO_EXISTING_AGENDA: "draft",
+              REDIRECTED_TO_CONFIRMED_AGENDA: "confirmed",
+              REDIRECTED_TO_ACTIVE_AGENDA: "active",
+              REDIRECTED_TO_COMPLETE_AGENDA: "complete"
             }
           },
-          minutes: {
+          creatingAgenda: {
+            invoke: {
+              id: "createAgenda",
+              src: (context, event) => createAgenda(event),
+              onDone: {
+                target: "draft"
+                // The resolved data is placed into a 'done.invoke.<id>' event, under the data property http://bit.ly/2Ft2WR8
+              },
+              onError: {
+                target: "idle"
+              }
+            }
+          },
+          draft: {
+            entry: ["handleWelcomeNotification", "analyticsDraft"],
             on: {
-              REDIRECTED_TO_ACTION_PLAN: "actionPlan"
+              SAVED_DRAFT: "confirmed",
+              SAVED_TO_CAL: "confirmed",
+              REDIRECTED_TO_CONFIRMED_AGENDA: "confirmed",
+              REDIRECTED_TO_ACTIVE_AGENDA: "active",
+              REDIRECTED_TO_COMPLETE_AGENDA: "complete"
+            },
+            initial: "loggedIn",
+            states: {
+              loggedIn: {
+                entry: "analyticsGoogle",
+                on: {
+                  RETURNED: "loggedIn",
+                  URL_ONLY: "linkOnly"
+                }
+              },
+
+              linkOnly: {
+                entry: "analyticsLinkOnly",
+                on: {
+                  FINALISED: "confirm",
+                  RETURNED: "loggedIn"
+                }
+              },
+              confirm: {
+                on: {
+                  RETURNED: "loggedIn"
+                }
+              }
+            }
+          },
+
+          confirmed: {
+            entry: ["handleAgendaSetNotification", "analyticsConfirmed"],
+            on: {
+              STARTED: "active",
+              REDIRECTED_TO_ACTIVE_AGENDA: "active",
+              REDIRECTED_TO_COMPLETE_AGENDA: "complete"
+            }
+          },
+          active: {
+            entry: ["handleMeetingStartNotification", "analyticsActive"],
+            on: {
+              ENDED: "complete",
+              REDIRECTED_TO_COMPLETE_AGENDA: "complete"
+            }
+          },
+          complete: {
+            entry: ["handleMeetingOverNotification", "analyticsActionPlan"],
+            initial: "actionPlan",
+            states: {
+              actionPlan: {
+                on: {
+                  REDIRECTED_TO_MINUTES_VIEW: "minutes"
+                }
+              },
+              minutes: {
+                on: {
+                  REDIRECTED_TO_ACTION_PLAN: "actionPlan"
+                }
+              }
             }
           }
         }
