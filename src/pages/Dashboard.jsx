@@ -1,5 +1,5 @@
 import { useMachine } from "@xstate/react";
-import { CheckBox } from "grommet";
+import { CheckBox, Menu } from "grommet";
 import React from "react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 
@@ -14,10 +14,25 @@ const Dashboard = ({ stateMachine }) => {
     case state.matches("idle"):
       return (
         <div data-testid="dashboardPage">
-          <h1> Project Timeline</h1>
+          {/* <h1> Project Timeline</h1> */}
+          <Menu
+            // className="actionButton"
+            label="Add Meeting"
+            size="xlarge"
+            items={[
+              { label: "Plan a future meeting", onClick: () => {} },
+              { label: "I'm about to start a meeting now", onClick: () => {} },
+              { label: "Add a past meeting from a URL", onClick: () => {} }
+            ]}
+          />
           <ol className="timeline">
-            <small className="actionButton"> Plan your next meeting</small>
-            <li className="tl-node">
+            <li className="tl-node ">
+              {/* <div>
+                <dl class={`dib mr3 pa3 text-gray-700`}>
+                  <dd class="f6 f4-ns b ml0">{format(new Date(), "MMM")}</dd>
+                  <dd class="f3 f2-ns b ml0 mt2">{format(new Date(), "Do")}</dd>
+                </dl>
+              </div> */}
               <div className="tl-stamp">August 14th, 2019</div>
               <div className="tl-content">Kickoff Meeting</div>
               <a href="#">Meeting Notes</a>

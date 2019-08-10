@@ -19,7 +19,7 @@ const Landing = ({ history }) => {
     <div className="flex-ns" data-testid="landingPage">
       <div className="vh-100-ns flex justify-center">
         <h1
-          className="ph4-ns pa3 rotate-ns"
+          className="ph4-ns pa3 rotate-ns "
           style={{
             textAlign: "center",
             fontSize: "23px",
@@ -35,9 +35,9 @@ const Landing = ({ history }) => {
           Meetbox
         </h1>
       </div>
-      <article className="pa3 pv4-ns ph5-ns h-screen flex flex-wrap flex-grow-1">
-        <header className="w-50-ns w-100 pl3 tl">
-          <h1 className="mb-16 font-extrabold mt4 text-5xl text-8xl lh-title ">
+      <article className=" pv4-ns ph5-ns w-100 flex flex-wrap flex-grow-1">
+        <header className="w-50-ns w-100 pl3-ns tl flex items-center">
+          <h1 className="mb-16 font-extrabold mt4 text-5xl text-8xl lh-title tc tl-ns">
             Turn team meetings into action plans.
           </h1>
           {/* <img
@@ -45,9 +45,9 @@ const Landing = ({ history }) => {
             src={rocket}
             alt="team rocket building"
           /> */}
-          <Start firebase={firebase} send={send} history={history} />
+          {/* <Start firebase={firebase} send={send} history={history} /> */}
         </header>
-        <Features />
+        <Features firebase={firebase} send={send} history={history} />
       </article>
     </div>
   );
@@ -57,34 +57,34 @@ export default Landing;
 
 function Features({ firebase, send, history }) {
   return (
-    <ul className="list pl0 w-50-ns w-100 dn db-l mt3">
-      <li className="pa3 pa4-ns mv4 item0 flex rf-x">
+    <ul className="list pl0 w-50-ns w-100 db mt3 flex flex-column justify-center">
+      <li className="pa3 pa4-ns mv3-ns item0 flex rf-x ">
         {/* <Schedule className="ma3" size="large" /> */}
         <span className="f1 b text-gray-700 mr3 flex items-center">1.</span>
-        <b className="db f3 mb1 text-gray-700 h3">
+        <b className="db f3 mb1 text-gray-700 rf-min-h3">
           Create and collaborate on an agenda for your next meeting. Send out
           Google calendar invites once you're done.
         </b>
       </li>
-      <li className="pa3 pa4-ns mv4 item1 br2 flex rf-x">
+      <li className="pa3 pa4-ns mv3-ns item1 br2 flex rf-x">
         {/* <Notes className="ma3" size="large" /> */}
         <span className="f1 b text-gray-700 mr3 flex items-center">2.</span>
-        <b className="db f3 mt2 text-gray-700 h3">
+        <b className="db f3 mt2 text-gray-700 rf-min-h3">
           During the meeting, you can assign tasks and take notes about what
           happens.
         </b>
       </li>
-      <li className="pa3 pa4-ns mv4 item2 br2 flex rf-x ">
+      <li className="pa3 pa4-ns mv3-ns item2 br2 flex rf-x ">
         {/* <Task className="ma3 " size="large" /> */}
         <span className="f1 b text-gray-700 mr3 flex items-center">3.</span>
-        <b className="db f3 mb1 text-gray-700 h3">
+        <b className="db f3 mb1 text-gray-700 rf-min-h3">
           When the meeting is over, share everything instantly so that everyone
           knows what they have to do.
         </b>
       </li>
-      {/* <span className="flex rf-x">
+      <span className="flex rf-x mt3">
         <Start firebase={firebase} send={send} history={history} />
-      </span> */}
+      </span>
     </ul>
   );
 }
@@ -138,9 +138,8 @@ function Start({ firebase, send, history }) {
     );
   } else {
     return (
-      <Button
-        icon={<Google color="plain" className="ma1" />}
-        label="Get Started"
+      <button
+        className="rf-btn"
         onClick={async () => {
           const { gapi, analytics } = window;
           const { auth } = firebase;
@@ -209,7 +208,10 @@ function Start({ firebase, send, history }) {
             });
           }
         }}
-      />
+      >
+        <Google color="plain" className="mr3" />
+        Get Started
+      </button>
     );
   }
 }

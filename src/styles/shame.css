@@ -1,0 +1,212 @@
+/* WIDGETS */
+
+.rf-badge {
+  background-color: white;
+  border-radius: 9999px;
+  color: black;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+}
+
+/************Timeline**************/
+/* Timeline Container */
+.timeline {
+  border-left: 5px solid #dddddd;
+  border-top: 5px solid #dddddd;
+  padding: 5em 0;
+  position: relative;
+  /* margin-left: 13rem;
+    border-radius: 15px; */
+}
+/* .timeline:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1.47em;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    background: #dddddd;
+    border: 5px solid #dddddd;
+  } */
+
+/* .actionButton {
+    position: relative;
+    bottom: 5em;
+    left: 2em;
+    text-decoration: underline;
+  } */
+
+/* Individual Timeline Item */
+.tl-node {
+  padding-left: 1em;
+  margin-bottom: 3em;
+  position: relative;
+}
+.tl-node a {
+  display: block;
+}
+.tl-node:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -0.95em;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  background: #fff;
+  border: 5px solid #dddddd;
+}
+
+/* Timestamp */
+.tl-stamp {
+  font-size: 0.7em;
+  color: gray;
+}
+
+/************End Timeline**************/
+
+.rf-btn {
+  -webkit-font-smoothing: antialiased;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 12px;
+  text-align: center;
+  text-overflow: ellipsis;
+  -webkit-transition: -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1), -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  vertical-align: middle;
+  white-space: nowrap;
+  -webkit-appearance: none;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 0 1px rgba(20, 11, 47, 0.12),
+    0 4px 4px -4px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 0 0 1px rgba(20, 11, 47, 0.12),
+    0 4px 4px -4px rgba(0, 0, 0, 0.32);
+  color: var(--primary-blue);
+  height: 40px;
+  line-height: 40px;
+  text-decoration: none;
+  min-width: 16rem;
+}
+
+.rf-btn-primary {
+  -webkit-font-smoothing: antialiased;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 12px;
+  text-align: center;
+  text-overflow: ellipsis;
+  -webkit-transition: -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1), -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  transition: box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1),
+    -webkit-box-shadow 150ms cubic-bezier(0.2, 0.6, 0.6, 1);
+  vertical-align: middle;
+  white-space: nowrap;
+  -webkit-appearance: none;
+  background-color: var(--primary-blue);
+  -webkit-box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.32);
+  color: #fff;
+  height: 40px;
+  line-height: 40px;
+  text-decoration: none;
+  min-width: 16rem;
+}
+
+.1stpointofcontact {
+  -webkit-font-smoothing: antialiased;
+  cursor: initial;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #cceae7;
+  background-position: 50% 50%;
+  background-size: cover;
+  border-radius: 4px;
+  color: rgb(39, 94, 88);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  font-size: 48px;
+  font-weight: 700;
+  height: 96px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  line-height: 96px;
+  overflow: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 96px;
+}
