@@ -1,4 +1,3 @@
-import { useMachine } from "@xstate/react";
 import { Button } from "grommet";
 import { Google } from "grommet-icons";
 import React from "react";
@@ -6,13 +5,14 @@ import { authState } from "rxfire/auth";
 import { notfication$ } from "../components/Banner";
 // import rocket from "../styles/images/rocket.svg";
 import firebase from "../utilities/firebase";
-import stateMachine from "../utilities/statechart";
 
 const Landing = ({ history }) => {
-  const [, send] = useMachine(stateMachine);
-
   React.useEffect(() => {
     window.analytics.page('"Landing Page"');
+    const userListener = authState(firebase.auth()).subscribe(
+      user => user && user.uid && history.push(`/dashboard/${user.uid}`)
+    );
+    return () => userListener.unsubscribe();
   }, []);
 
   return (
@@ -45,7 +45,7 @@ const Landing = ({ history }) => {
             src={rocket}
             alt="team rocket building"
           /> */}
-          <Start firebase={firebase} send={send} history={history} />
+          <Start firebase={firebase} />
         </header>
         <Features />
       </article>
@@ -89,127 +89,76 @@ function Features({ firebase, send, history }) {
   );
 }
 
-function Start({ firebase, send, history }) {
-  const [user, setUser] = React.useState("loading");
+function Start({ firebase }) {
+  return (
+    <Button
+      icon={<Google color="plain" className="ma1" />}
+      label="Get Started"
+      onClick={async () => {
+        const { gapi, analytics } = window;
+        const { auth } = firebase;
 
-  React.useEffect(() => {
-    const userListener = authState(firebase.auth()).subscribe(user =>
-      setUser(user)
-    );
-    return () => userListener.unsubscribe();
-  }, []);
+        const checkForUser = async user => {
+          const existingUser = await firebase
+            .firestore()
+            .doc(`users/${user.uid}`)
+            .get()
+            .then(doc => doc.data())
+            .catch(error => error);
 
-  if (user === "loading") {
-    return <Button label="Loading..." plain disbaled />;
-  } else if (user) {
-    return (
-      <>
-        <Button
-          primary
-          label="Create An Agenda To Begin"
-          onClick={() => {
-            window.analytics.track("new_agenda-created", {
-              category: "User",
-              action: "NEW_AGENDA_CREATED"
-            });
-            send({
-              type: "NEW_AGENDA_CREATED",
-              payload: history
-            });
-          }}
-        />
-        <Button
-          plain
-          label={<small className="washed-red small-caps ml3">Logout</small>}
-          onClick={async () => {
-            const { auth } = firebase;
-            try {
-              await auth().signOut();
-            } catch (error) {
-              const message = error.message || error;
-              notfication$.next({
-                type: "ERROR",
-                message
-              });
-            }
-          }}
-        />
-      </>
-    );
-  } else {
-    return (
-      <Button
-        icon={<Google color="plain" className="ma1" />}
-        label="Get Started"
-        onClick={async () => {
-          const { gapi, analytics } = window;
-          const { auth } = firebase;
+          if (existingUser === undefined) {
+            return true;
+          }
+        };
+        try {
+          const googleAuth = gapi.auth2.getAuthInstance();
+          const googleUser = await googleAuth.signIn();
+          const token = googleUser.getAuthResponse().id_token;
+          const credential = auth.GoogleAuthProvider.credential(token);
+          const signedIn = await auth().signInWithCredential(credential);
+          const { user } = signedIn;
+          const noUserExists = await checkForUser(user);
 
-          const checkForUser = async user => {
-            const existingUser = await firebase
+          if (noUserExists && user && user.uid) {
+            return firebase
               .firestore()
               .doc(`users/${user.uid}`)
-              .get()
-              .then(doc => doc.data())
-              .catch(error => error);
-
-            if (existingUser === undefined) {
-              return true;
-            }
-          };
-          try {
-            const googleAuth = gapi.auth2.getAuthInstance();
-            const googleUser = await googleAuth.signIn();
-            const token = googleUser.getAuthResponse().id_token;
-            const credential = auth.GoogleAuthProvider.credential(token);
-            const signedIn = await auth().signInWithCredential(credential);
-            const { user } = signedIn;
-            const noUserExists = await checkForUser(user);
-
-            if (noUserExists) {
-              await firebase
-                .firestore()
-                .doc(`users/${user.uid}`)
-                .set({
-                  name: user.displayName,
+              .set({
+                name: user.displayName,
+                email: user.email,
+                uid: user.uid,
+                photoURL: user.photoURL
+              })
+              .then(() =>
+                analytics.identify(user.uid, {
+                  id: user.uid,
                   email: user.email,
-                  uid: user.uid,
-                  photoURL: user.photoURL
+                  avatar: user.photoURL,
+                  created_at: new Date(),
+                  first_name: "Joe",
+                  plan_name: "free",
+                  name: user.displayName,
+                  meeting_attended: 0,
+                  meeting_created: 0
                 })
-                .then(() => {
-                  console.log("identify");
+              )
 
-                  analytics.identify(user.uid, {
-                    id: user.uid,
-                    email: user.email,
-                    avatar: user.photoURL,
-                    created_at: new Date(),
-                    first_name: "Joe",
-                    plan_name: "free",
-                    name: user.displayName,
-                    meeting_attended: 0,
-                    meeting_created: 0
-                  });
-                })
-                .catch(error => {
-                  const message = error.message || error;
-                  notfication$.next({
-                    type: "ERROR",
-                    message
-                  });
+              .catch(error => {
+                const message = error.message || error;
+                notfication$.next({
+                  type: "ERROR",
+                  message
                 });
-
-              return;
-            }
-          } catch (error) {
-            const message = error.message || error;
-            notfication$.next({
-              type: "ERROR",
-              message
-            });
+              });
           }
-        }}
-      />
-    );
-  }
+        } catch (error) {
+          const message = error.message || error;
+          notfication$.next({
+            type: "ERROR",
+            message
+          });
+        }
+      }}
+    />
+  );
 }

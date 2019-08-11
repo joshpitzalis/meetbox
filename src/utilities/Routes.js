@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Banner from "../components/Banner";
 import Agenda from "../pages/Agenda";
+import Dashboard from "../pages/Dashboard";
 import Landing from "../pages/Landing";
 
 const theme = {
@@ -41,8 +42,29 @@ export const Routes = () => {
       <Switch>
         <Route exact path="/" component={Landing} />
         <Route exact path="/meeting/:meetingId" component={Agenda} />
+        <Route exact path="/dashboard/:userId" component={Dashboard} />
         <Route component={NoMatch} />
       </Switch>
     </div>
   );
 };
+
+// function PrivateRoute({ component: Component, ...rest }) {
+//   return (
+//     <Route
+//       {...rest}
+//       render={props =>
+//         fakeAuth.isAuthenticated ? (
+//           <Component {...props} />
+//         ) : (
+//           <Redirect
+//             to={{
+//               pathname: "/",
+//               state: { from: props.location }
+//             }}
+//           />
+//         )
+//       }
+//     />
+//   );
+// }
