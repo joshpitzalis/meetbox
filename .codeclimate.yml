@@ -1,3 +1,17 @@
 exclude_patterns:
   - "wallaby.ts"
   - "wallaby.js"
+engines:
+  eslint:
+    enabled: true
+    extensions:
+      - ".js"
+      - ".jsx"
+ratings:
+  paths:
+    - "**.js"
+    - "**.jsx"
+exclude_paths:
+  - "**/__tests__/**"
+  - public
+  - node_modules
